@@ -8,10 +8,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.g47.cem.cemauthentication.dto.request.ForgotPasswordRequest;
 import com.g47.cem.cemauthentication.dto.request.LoginRequest;
+import com.g47.cem.cemauthentication.dto.request.ResetPasswordRequest;
 import com.g47.cem.cemauthentication.dto.response.AuthResponse;
 import com.g47.cem.cemauthentication.dto.response.RoleResponse;
 import com.g47.cem.cemauthentication.dto.response.UserResponse;
@@ -34,6 +37,8 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
     private final ModelMapper modelMapper;
+    private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthResponse login(LoginRequest request) {
         log.info("Login attempt for email: {}", request.getEmail());
@@ -106,6 +111,74 @@ public class AuthService {
         log.info("Logout for user: {}", email);
         // In a real implementation, you might want to blacklist the token
         // For now, we'll just log the logout event
+    }
+
+    @Transactional
+    public void forgotPassword(ForgotPasswordRequest request) {
+        log.info("Forgot password request for email: {}", request.getEmail());
+
+        // Find user by email
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
+
+        // Check if account is active
+        if (user.getStatus() != com.g47.cem.cemauthentication.entity.AccountStatus.ACTIVE) {
+            throw new BusinessException("Account is not active", HttpStatus.FORBIDDEN);
+        }
+
+        // Generate reset token
+        String resetToken = emailService.generateResetToken();
+        
+        // Set reset token and expiration (15 minutes from now)
+        user.setPasswordResetToken(resetToken);
+        user.setPasswordResetExpiresAt(LocalDateTime.now().plusMinutes(15));
+        
+        // Save user with reset token
+        userRepository.save(user);
+
+        // Send password reset email asynchronously
+        emailService.sendPasswordResetEmail(
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                resetToken
+        );
+
+        log.info("Password reset email sent successfully for user: {}", user.getEmail());
+    }
+
+    @Transactional
+    public void resetPassword(ResetPasswordRequest request) {
+        log.info("Reset password request for email: {}", request.getEmail());
+
+        // Find user by email
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
+
+        // Check if reset token exists and matches
+        if (user.getPasswordResetToken() == null || !user.getPasswordResetToken().equals(request.getResetToken())) {
+            throw new BusinessException("Invalid reset token", HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if reset token has expired
+        if (user.getPasswordResetExpiresAt() == null || user.getPasswordResetExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new BusinessException("Reset token has expired", HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if account is active
+        if (user.getStatus() != com.g47.cem.cemauthentication.entity.AccountStatus.ACTIVE) {
+            throw new BusinessException("Account is not active", HttpStatus.FORBIDDEN);
+        }
+
+        // Update password and clear reset token
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setPasswordResetToken(null);
+        user.setPasswordResetExpiresAt(null);
+        user.setLoginAttempts(0); // Reset failed login attempts
+        
+        userRepository.save(user);
+
+        log.info("Password reset successful for user: {}", user.getEmail());
     }
 
     private void handleFailedLogin(String email) {

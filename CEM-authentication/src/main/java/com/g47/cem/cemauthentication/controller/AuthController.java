@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.g47.cem.cemauthentication.dto.request.CreateUserRequest;
+import com.g47.cem.cemauthentication.dto.request.ForgotPasswordRequest;
 import com.g47.cem.cemauthentication.dto.request.LoginRequest;
+import com.g47.cem.cemauthentication.dto.request.ResetPasswordRequest;
 import com.g47.cem.cemauthentication.dto.response.ApiResponse;
 import com.g47.cem.cemauthentication.dto.response.AuthResponse;
 import com.g47.cem.cemauthentication.dto.response.RoleResponse;
@@ -94,7 +96,41 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/forgot-password")
+    @Operation(summary = "Forgot password", description = "Send password reset email to user")
+    public ResponseEntity<ApiResponse<Void>> forgotPassword(
+            @Valid @RequestBody ForgotPasswordRequest request,
+            HttpServletRequest httpRequest) {
+        
+        log.info("Forgot password request received for email: {}", request.getEmail());
+        
+        authService.forgotPassword(request);
+        
+        ApiResponse<Void> response = ApiResponse.success(
+            "If an account with this email exists, a password reset email has been sent."
+        );
+        response.setPath(httpRequest.getRequestURI());
+        
+        return ResponseEntity.ok(response);
+    }
 
+    @PostMapping("/reset-password")
+    @Operation(summary = "Reset password", description = "Reset user password using reset token")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(
+            @Valid @RequestBody ResetPasswordRequest request,
+            HttpServletRequest httpRequest) {
+        
+        log.info("Reset password request received for email: {}", request.getEmail());
+        
+        authService.resetPassword(request);
+        
+        ApiResponse<Void> response = ApiResponse.success(
+            "Password has been reset successfully. You can now login with your new password."
+        );
+        response.setPath(httpRequest.getRequestURI());
+        
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/admin/create-user")
     @Operation(summary = "Create user account", description = "Create a new user account (Admin only)")

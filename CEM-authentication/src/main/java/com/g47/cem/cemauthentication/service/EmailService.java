@@ -71,6 +71,78 @@ public class EmailService {
             """, firstName, lastName, email, temporaryPassword);
     }
     
+    @Async("taskExecutor")
+    public void sendPasswordResetEmail(String toEmail, String firstName, String lastName, String resetToken) {
+        try {
+            log.info("Sending password reset email to: {}", toEmail);
+            
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
+            message.setTo(toEmail);
+            message.setSubject("CEM - Password Reset Request");
+            
+            String emailBody = buildPasswordResetEmailBody(firstName, lastName, resetToken);
+            message.setText(emailBody);
+            
+            mailSender.send(message);
+            
+            log.info("Password reset email sent successfully to: {}", toEmail);
+            
+        } catch (Exception e) {
+            log.error("Failed to send password reset email to: {}. Error: {}", toEmail, e.getMessage(), e);
+        }
+    }
+    
+    private String buildPasswordResetEmailBody(String firstName, String lastName, String resetToken) {
+        return String.format("""
+            Dear %s %s,
+            
+            We received a request to reset your password for your CEM (Construction Equipment Management) System account.
+            
+            Your password reset token is: %s
+            
+            IMPORTANT SECURITY NOTICE:
+            - This token is valid for 15 minutes from the time of this email
+            - Use this token to reset your password through the CEM system
+            - If you did not request a password reset, please ignore this email
+            - Do not share this token with anyone
+            
+            To reset your password:
+            1. Go to the CEM password reset page
+            2. Enter your email address
+            3. Enter the reset token provided above
+            4. Create a new secure password
+            
+            If you have any questions or need assistance, please contact your system administrator.
+            
+            Best regards,
+            CEM System Team
+            
+            ---
+            This is an automated message. Please do not reply to this email.
+            """, firstName, lastName, resetToken);
+    }
+
+    /**
+     * Generate a secure reset token
+     */
+    public String generateResetToken() {
+        String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerCase = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        
+        String allChars = upperCase + lowerCase + numbers;
+        SecureRandom random = new SecureRandom();
+        StringBuilder token = new StringBuilder();
+        
+        // Generate 8 character token
+        for (int i = 0; i < 8; i++) {
+            token.append(allChars.charAt(random.nextInt(allChars.length())));
+        }
+        
+        return token.toString();
+    }
+
     /**
      * Generate a secure temporary password
      */

@@ -107,7 +107,59 @@ Logout current user.
 }
 ```
 
-### 4. Create User Account (Admin Only)
+### 4. Forgot Password
+**POST** `/v1/auth/forgot-password`
+
+**Authentication Required:** No
+
+Send password reset email to user. The email will contain a reset token valid for 15 minutes.
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "If an account with this email exists, a password reset email has been sent.",
+  "data": null,
+  "timestamp": "2024-01-01T00:00:00Z",
+  "path": "/v1/auth/forgot-password"
+}
+```
+
+### 5. Reset Password
+**POST** `/v1/auth/reset-password`
+
+**Authentication Required:** No
+
+Reset user password using the reset token received via email.
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "resetToken": "ABC123DE",
+  "newPassword": "NewSecurePassword123!"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Password has been reset successfully. You can now login with your new password.",
+  "data": null,
+  "timestamp": "2024-01-01T00:00:00Z",
+  "path": "/v1/auth/reset-password"
+}
+```
+
+### 6. Create User Account (Admin Only)
 **POST** `/v1/auth/admin/create-user`
 
 **Authentication Required:** Yes (ADMIN or SUPER_ADMIN role)
@@ -154,7 +206,7 @@ Create a new user account. An email with login credentials will be sent to the u
 }
 ```
 
-### 5. Get All Roles (Admin Only)
+### 7. Get All Roles (Admin Only)
 **GET** `/v1/auth/admin/roles`
 
 **Authentication Required:** Yes (ADMIN or SUPER_ADMIN role)
