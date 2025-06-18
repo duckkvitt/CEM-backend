@@ -365,3 +365,8 @@ This generated password is for development use only. Your security configuration
 2025-06-19 00:20:46 [http-nio-8082-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing POST /error
 2025-06-19 00:20:46 [http-nio-8082-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
 2025-06-19 00:20:46 [http-nio-8082-exec-2] DEBUG o.s.s.w.a.Http403ForbiddenEntryPoint - Pre-authenticated entry point called. Rejecting access
+2025-06-19 00:49:09 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-19 00:49:09 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-19 00:49:09 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-19 00:49:09 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-CUSTOMER - Shutdown initiated...
+2025-06-19 00:49:10 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-CUSTOMER - Shutdown completed.
