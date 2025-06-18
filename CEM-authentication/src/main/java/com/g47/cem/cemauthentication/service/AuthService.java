@@ -1,7 +1,6 @@
 package com.g47.cem.cemauthentication.service;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -9,16 +8,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.g47.cem.cemauthentication.dto.request.LoginRequest;
-import com.g47.cem.cemauthentication.dto.request.RegisterRequest;
 import com.g47.cem.cemauthentication.dto.response.AuthResponse;
+import com.g47.cem.cemauthentication.dto.response.RoleResponse;
 import com.g47.cem.cemauthentication.dto.response.UserResponse;
-import com.g47.cem.cemauthentication.entity.AccountStatus;
-import com.g47.cem.cemauthentication.entity.Role;
 import com.g47.cem.cemauthentication.entity.User;
 import com.g47.cem.cemauthentication.exception.BusinessException;
 import com.g47.cem.cemauthentication.exception.ResourceNotFoundException;
@@ -35,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
     private final ModelMapper modelMapper;
@@ -69,8 +64,7 @@ public class AuthService {
             userRepository.save(user);
 
             // Create user response
-            UserResponse userResponse = modelMapper.map(user, UserResponse.class);
-            userResponse.setFullName(user.getFullName());
+            UserResponse userResponse = mapToUserResponse(user);
 
             log.info("Login successful for user: {}", user.getEmail());
 
@@ -80,48 +74,6 @@ public class AuthService {
             handleFailedLogin(request.getEmail());
             throw new BusinessException("Invalid email or password", HttpStatus.UNAUTHORIZED);
         }
-    }
-
-    public AuthResponse register(RegisterRequest request) {
-        log.info("Registration attempt for email: {}", request.getEmail());
-
-        // Validate password confirmation
-        if (!request.getPassword().equals(request.getConfirmPassword())) {
-            throw new BusinessException("Password confirmation does not match");
-        }
-
-        // Check if email already exists
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new BusinessException("Email already exists", HttpStatus.CONFLICT);
-        }
-
-        // Create new user
-        User user = User.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .phone(request.getPhone())
-                .role(Role.USER)
-                .status(AccountStatus.ACTIVE)
-                .emailVerified(false)
-                .emailVerificationToken(UUID.randomUUID().toString())
-                .loginAttempts(0)
-                .build();
-
-        user = userRepository.save(user);
-
-        // Generate tokens
-        String accessToken = jwtUtil.generateToken(user);
-        String refreshToken = jwtUtil.generateRefreshToken(user);
-
-        // Create user response
-        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
-        userResponse.setFullName(user.getFullName());
-
-        log.info("Registration successful for user: {}", user.getEmail());
-
-        return AuthResponse.of(accessToken, refreshToken, jwtUtil.getExpirationTime(), userResponse);
     }
 
     public AuthResponse refreshToken(String refreshToken) {
@@ -136,8 +88,7 @@ public class AuthService {
                 String newAccessToken = jwtUtil.generateToken(user);
                 String newRefreshToken = jwtUtil.generateRefreshToken(user);
 
-                UserResponse userResponse = modelMapper.map(user, UserResponse.class);
-                userResponse.setFullName(user.getFullName());
+                UserResponse userResponse = mapToUserResponse(user);
 
                 log.info("Token refresh successful for user: {}", user.getEmail());
 
@@ -172,14 +123,14 @@ public class AuthService {
         });
     }
 
-    public void verifyEmail(String token) {
-        User user = userRepository.findByEmailVerificationToken(token)
-                .orElseThrow(() -> new BusinessException("Invalid verification token"));
+    private UserResponse mapToUserResponse(User user) {
+        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
+        userResponse.setFullName(user.getFullName());
+        userResponse.setRole(mapToRoleResponse(user.getRole()));
+        return userResponse;
+    }
 
-        user.setEmailVerified(true);
-        user.setEmailVerificationToken(null);
-        userRepository.save(user);
-
-        log.info("Email verified for user: {}", user.getEmail());
+    private RoleResponse mapToRoleResponse(com.g47.cem.cemauthentication.entity.Role role) {
+        return modelMapper.map(role, RoleResponse.class);
     }
 } 

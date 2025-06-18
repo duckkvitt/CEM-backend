@@ -1,23 +1,29 @@
 package com.g47.cem.cemauthentication.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.g47.cem.cemauthentication.dto.request.CreateUserRequest;
 import com.g47.cem.cemauthentication.dto.request.LoginRequest;
-import com.g47.cem.cemauthentication.dto.request.RegisterRequest;
 import com.g47.cem.cemauthentication.dto.response.ApiResponse;
 import com.g47.cem.cemauthentication.dto.response.AuthResponse;
+import com.g47.cem.cemauthentication.dto.response.RoleResponse;
+import com.g47.cem.cemauthentication.dto.response.UserResponse;
 import com.g47.cem.cemauthentication.service.AuthService;
+import com.g47.cem.cemauthentication.service.UserManagementService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -28,10 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/v1/auth")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Authentication", description = "Authentication management APIs")
+@Tag(name = "Authentication", description = "Authentication and user management APIs")
 public class AuthController {
 
     private final AuthService authService;
+    private final UserManagementService userManagementService;
 
     @PostMapping("/login")
     @Operation(summary = "User login", description = "Authenticate user with email and password")
@@ -52,25 +59,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/register")
-    @Operation(summary = "User registration", description = "Register a new user account")
-    public ResponseEntity<ApiResponse<AuthResponse>> register(
-            @Valid @RequestBody RegisterRequest request,
-            HttpServletRequest httpRequest) {
-        
-        log.info("Registration request received for email: {}", request.getEmail());
-        
-        AuthResponse authResponse = authService.register(request);
-        
-        ApiResponse<AuthResponse> response = ApiResponse.success(
-            authResponse, 
-            "Registration successful"
-        );
-        response.setPath(httpRequest.getRequestURI());
-        response.setStatus(HttpStatus.CREATED.value());
-        
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+
 
     @PostMapping("/refresh-token")
     @Operation(summary = "Refresh access token", description = "Generate new access token using refresh token")
@@ -92,6 +81,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     @Operation(summary = "User logout", description = "Logout current user")
+    @SecurityRequirement(name = "Bearer Authentication")
     public ResponseEntity<ApiResponse<Void>> logout(
             Authentication authentication,
             HttpServletRequest httpRequest) {
@@ -104,15 +94,47 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/verify-email")
-    @Operation(summary = "Verify email address", description = "Verify user email using verification token")
-    public ResponseEntity<ApiResponse<Void>> verifyEmail(
-            @RequestParam String token,
+
+
+    @PostMapping("/admin/create-user")
+    @Operation(summary = "Create user account", description = "Create a new user account (Admin only)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    public ResponseEntity<ApiResponse<UserResponse>> createUser(
+            @Valid @RequestBody CreateUserRequest request,
+            Authentication authentication,
             HttpServletRequest httpRequest) {
         
-        authService.verifyEmail(token);
+        log.info("Create user request received by admin: {} for email: {}", 
+                authentication.getName(), request.getEmail());
         
-        ApiResponse<Void> response = ApiResponse.success("Email verification successful");
+        UserResponse userResponse = userManagementService.createUser(request, authentication.getName());
+        
+        ApiResponse<UserResponse> response = ApiResponse.success(
+            userResponse, 
+            "User account created successfully. Login credentials have been sent to the user's email."
+        );
+        response.setPath(httpRequest.getRequestURI());
+        response.setStatus(HttpStatus.CREATED.value());
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/admin/roles")
+    @Operation(summary = "Get all roles", description = "Retrieve all available roles (Admin only)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    public ResponseEntity<ApiResponse<List<RoleResponse>>> getAllRoles(
+            HttpServletRequest httpRequest) {
+        
+        log.info("Get all roles request received");
+        
+        List<RoleResponse> roles = userManagementService.getAllRoles();
+        
+        ApiResponse<List<RoleResponse>> response = ApiResponse.success(
+            roles, 
+            "Roles retrieved successfully"
+        );
         response.setPath(httpRequest.getRequestURI());
         
         return ResponseEntity.ok(response);
