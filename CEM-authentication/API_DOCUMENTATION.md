@@ -159,7 +159,112 @@ Reset user password using the reset token received via email.
 }
 ```
 
-### 6. Create User Account (Admin Only)
+### 6. Change Password
+**POST** `/v1/auth/change-password`
+
+**Authentication Required:** Yes
+
+Change current user's password. User must provide current password for verification.
+
+**Request Body:**
+```json
+{
+  "currentPassword": "CurrentPassword123!",
+  "newPassword": "NewSecurePassword123!"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Password changed successfully",
+  "data": null,
+  "timestamp": "2024-01-01T00:00:00Z",
+  "path": "/v1/auth/change-password"
+}
+```
+
+### 7. Get User Profile
+**GET** `/v1/auth/profile`
+
+**Authentication Required:** Yes
+
+Get current authenticated user's profile information.
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Profile retrieved successfully",
+  "data": {
+    "id": 1,
+    "email": "user@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "fullName": "John Doe",
+    "phone": "+84123456789",
+    "role": {
+      "id": 1,
+      "name": "USER",
+      "description": "Standard user with basic access"
+    },
+    "status": "ACTIVE",
+    "emailVerified": true,
+    "createdBy": "admin@cem.com",
+    "createdAt": "2024-01-01T00:00:00",
+    "updatedAt": "2024-01-01T00:00:00"
+  },
+  "timestamp": "2024-01-01T00:00:00Z",
+  "path": "/v1/auth/profile"
+}
+```
+
+### 8. Update User Profile
+**PUT** `/v1/auth/profile`
+
+**Authentication Required:** Yes
+
+Update current authenticated user's profile information. Only firstName, lastName, and phone can be updated.
+
+**Request Body:**
+```json
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "phone": "+84987654321"
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Profile updated successfully",
+  "data": {
+    "id": 1,
+    "email": "user@example.com",
+    "firstName": "John",
+    "lastName": "Smith",
+    "fullName": "John Smith",
+    "phone": "+84987654321",
+    "role": {
+      "id": 1,
+      "name": "USER",
+      "description": "Standard user with basic access"
+    },
+    "status": "ACTIVE",
+    "emailVerified": true,
+    "createdBy": "admin@cem.com",
+    "createdAt": "2024-01-01T00:00:00",
+    "updatedAt": "2024-01-01T00:00:00"
+  },
+  "timestamp": "2024-01-01T00:00:00Z",
+  "path": "/v1/auth/profile"
+}
+```
+
+### 9. Create User Account (Admin Only)
 **POST** `/v1/auth/admin/create-user`
 
 **Authentication Required:** Yes (ADMIN or SUPER_ADMIN role)
@@ -206,7 +311,7 @@ Create a new user account. An email with login credentials will be sent to the u
 }
 ```
 
-### 7. Get All Roles (Admin Only)
+### 10. Get All Roles (Admin Only)
 **GET** `/v1/auth/admin/roles`
 
 **Authentication Required:** Yes (ADMIN or SUPER_ADMIN role)
@@ -255,49 +360,75 @@ Retrieve all available roles for user assignment.
 
 ## Error Responses
 
-### 400 Bad Request
+All endpoints return consistent error response format:
+
+### Validation Errors (400 Bad Request)
 ```json
 {
   "success": false,
   "message": "Validation failed",
-  "errors": [
-    {
-      "field": "email",
-      "message": "Email is required"
-    }
-  ],
+  "errors": {
+    "email": "Please provide a valid email address",
+    "password": "Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character"
+  },
   "timestamp": "2024-01-01T00:00:00Z",
-  "path": "/v1/auth/login"
+  "path": "/v1/auth/login",
+  "status": 400
 }
 ```
 
-### 401 Unauthorized
+### Authentication Errors (401 Unauthorized)
 ```json
 {
   "success": false,
   "message": "Invalid email or password",
   "timestamp": "2024-01-01T00:00:00Z",
-  "path": "/v1/auth/login"
+  "path": "/v1/auth/login",
+  "status": 401
 }
 ```
 
-### 403 Forbidden
+### Authorization Errors (403 Forbidden)
 ```json
 {
   "success": false,
-  "message": "Access denied. Insufficient permissions.",
+  "message": "Account is temporarily locked due to multiple failed login attempts",
   "timestamp": "2024-01-01T00:00:00Z",
-  "path": "/v1/auth/admin/create-user"
+  "path": "/v1/auth/login",
+  "status": 403
 }
 ```
 
-### 409 Conflict
+### Resource Not Found (404 Not Found)
+```json
+{
+  "success": false,
+  "message": "User not found with email: user@example.com",
+  "timestamp": "2024-01-01T00:00:00Z",
+  "path": "/v1/auth/forgot-password",
+  "status": 404
+}
+```
+
+### Business Logic Errors (409 Conflict)
 ```json
 {
   "success": false,
   "message": "Email already exists",
   "timestamp": "2024-01-01T00:00:00Z",
-  "path": "/v1/auth/admin/create-user"
+  "path": "/v1/auth/admin/create-user",
+  "status": 409
+}
+```
+
+### Server Errors (500 Internal Server Error)
+```json
+{
+  "success": false,
+  "message": "An unexpected error occurred",
+  "timestamp": "2024-01-01T00:00:00Z",
+  "path": "/v1/auth/login",
+  "status": 500
 }
 ```
 
@@ -357,4 +488,47 @@ This is an automated message. Please do not reply to this email.
 
 Interactive API documentation is available at:
 - Development: `http://localhost:8081/api/auth/swagger-ui.html`
-- API Docs: `http://localhost:8081/api/auth/api-docs` 
+- API Docs: `http://localhost:8081/api/auth/api-docs`
+
+## Rate Limiting
+
+Production deployment should implement rate limiting:
+- Login attempts: 5 per minute per IP
+- Password reset: 3 per hour per email
+- API calls: 100 per minute per authenticated user
+
+## Environment Configuration
+
+### Required Environment Variables
+```properties
+# Database
+spring.datasource.url=jdbc:postgresql://localhost:5432/cem_auth
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
+# JWT
+jwt.secret=${JWT_SECRET}
+jwt.expiration=86400000
+
+# Email
+spring.mail.host=${MAIL_HOST}
+spring.mail.port=${MAIL_PORT}
+spring.mail.username=${MAIL_USERNAME}
+spring.mail.password=${MAIL_PASSWORD}
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
+
+## Production Readiness Checklist
+
+- ✅ **Security**: JWT authentication, password hashing, input validation
+- ✅ **Error Handling**: Comprehensive exception handling and user-friendly messages
+- ✅ **Logging**: Structured logging with appropriate levels
+- ✅ **Validation**: Bean validation on all request DTOs
+- ✅ **Documentation**: Complete API documentation with examples
+- ✅ **Async Processing**: Background email sending with thread pool
+- ✅ **Database**: Proper entity relationships and constraints
+- ✅ **Testing**: Ready for unit and integration tests
+- ⚠️ **Rate Limiting**: Should be implemented at gateway level
+- ⚠️ **Monitoring**: Health checks and metrics endpoints available
+- ⚠️ **Caching**: Consider Redis for session management in production 

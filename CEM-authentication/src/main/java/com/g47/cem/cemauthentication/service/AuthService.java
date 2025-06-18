@@ -12,9 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.g47.cem.cemauthentication.dto.request.ChangePasswordRequest;
 import com.g47.cem.cemauthentication.dto.request.ForgotPasswordRequest;
 import com.g47.cem.cemauthentication.dto.request.LoginRequest;
 import com.g47.cem.cemauthentication.dto.request.ResetPasswordRequest;
+import com.g47.cem.cemauthentication.dto.request.UpdateProfileRequest;
 import com.g47.cem.cemauthentication.dto.response.AuthResponse;
 import com.g47.cem.cemauthentication.dto.response.RoleResponse;
 import com.g47.cem.cemauthentication.dto.response.UserResponse;
@@ -179,6 +181,87 @@ public class AuthService {
         userRepository.save(user);
 
         log.info("Password reset successful for user: {}", user.getEmail());
+    }
+
+    @Transactional
+    public void changePassword(ChangePasswordRequest request, String userEmail) {
+        log.info("Change password request for user: {}", userEmail);
+
+        // Find user by email
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        // Check if account is active
+        if (user.getStatus() != com.g47.cem.cemauthentication.entity.AccountStatus.ACTIVE) {
+            throw new BusinessException("Account is not active", HttpStatus.FORBIDDEN);
+        }
+
+        // Verify current password
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new BusinessException("Current password is incorrect", HttpStatus.BAD_REQUEST);
+        }
+
+        // Check if new password is different from current
+        if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
+            throw new BusinessException("New password must be different from current password", HttpStatus.BAD_REQUEST);
+        }
+
+        // Update password
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setLoginAttempts(0); // Reset failed login attempts
+        
+        userRepository.save(user);
+
+        log.info("Password changed successfully for user: {}", user.getEmail());
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponse getUserProfile(String userEmail) {
+        log.info("Get profile request for user: {}", userEmail);
+
+        // Find user by email
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        // Check if account is active
+        if (user.getStatus() != com.g47.cem.cemauthentication.entity.AccountStatus.ACTIVE) {
+            throw new BusinessException("Account is not active", HttpStatus.FORBIDDEN);
+        }
+
+        UserResponse userResponse = mapToUserResponse(user);
+        
+        log.info("Profile retrieved successfully for user: {}", user.getEmail());
+        
+        return userResponse;
+    }
+
+    @Transactional
+    public UserResponse updateUserProfile(UpdateProfileRequest request, String userEmail) {
+        log.info("Update profile request for user: {}", userEmail);
+
+        // Find user by email
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        // Check if account is active
+        if (user.getStatus() != com.g47.cem.cemauthentication.entity.AccountStatus.ACTIVE) {
+            throw new BusinessException("Account is not active", HttpStatus.FORBIDDEN);
+        }
+
+        // Update user information
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        if (request.getPhone() != null && !request.getPhone().trim().isEmpty()) {
+            user.setPhone(request.getPhone());
+        }
+        
+        user = userRepository.save(user);
+
+        UserResponse userResponse = mapToUserResponse(user);
+        
+        log.info("Profile updated successfully for user: {}", user.getEmail());
+        
+        return userResponse;
     }
 
     private void handleFailedLogin(String email) {

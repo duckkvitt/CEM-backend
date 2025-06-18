@@ -8,15 +8,18 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.g47.cem.cemauthentication.dto.request.ChangePasswordRequest;
 import com.g47.cem.cemauthentication.dto.request.CreateUserRequest;
 import com.g47.cem.cemauthentication.dto.request.ForgotPasswordRequest;
 import com.g47.cem.cemauthentication.dto.request.LoginRequest;
 import com.g47.cem.cemauthentication.dto.request.ResetPasswordRequest;
+import com.g47.cem.cemauthentication.dto.request.UpdateProfileRequest;
 import com.g47.cem.cemauthentication.dto.response.ApiResponse;
 import com.g47.cem.cemauthentication.dto.response.AuthResponse;
 import com.g47.cem.cemauthentication.dto.response.RoleResponse;
@@ -170,6 +173,67 @@ public class AuthController {
         ApiResponse<List<RoleResponse>> response = ApiResponse.success(
             roles, 
             "Roles retrieved successfully"
+        );
+        response.setPath(httpRequest.getRequestURI());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/change-password")
+    @Operation(summary = "Change password", description = "Change user password")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<ApiResponse<Void>> changePassword(
+            @Valid @RequestBody ChangePasswordRequest request,
+            Authentication authentication,
+            HttpServletRequest httpRequest) {
+        
+        log.info("Change password request received for user: {}", authentication.getName());
+        
+        authService.changePassword(request, authentication.getName());
+        
+        ApiResponse<Void> response = ApiResponse.success(
+            "Password changed successfully"
+        );
+        response.setPath(httpRequest.getRequestURI());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/profile")
+    @Operation(summary = "Get user profile", description = "Get current user profile information")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<ApiResponse<UserResponse>> getUserProfile(
+            Authentication authentication,
+            HttpServletRequest httpRequest) {
+        
+        log.info("Get profile request received for user: {}", authentication.getName());
+        
+        UserResponse userResponse = authService.getUserProfile(authentication.getName());
+        
+        ApiResponse<UserResponse> response = ApiResponse.success(
+            userResponse,
+            "Profile retrieved successfully"
+        );
+        response.setPath(httpRequest.getRequestURI());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/profile")
+    @Operation(summary = "Update user profile", description = "Update current user profile information")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<ApiResponse<UserResponse>> updateUserProfile(
+            @Valid @RequestBody UpdateProfileRequest request,
+            Authentication authentication,
+            HttpServletRequest httpRequest) {
+        
+        log.info("Update profile request received for user: {}", authentication.getName());
+        
+        UserResponse userResponse = authService.updateUserProfile(request, authentication.getName());
+        
+        ApiResponse<UserResponse> response = ApiResponse.success(
+            userResponse,
+            "Profile updated successfully"
         );
         response.setPath(httpRequest.getRequestURI());
         
