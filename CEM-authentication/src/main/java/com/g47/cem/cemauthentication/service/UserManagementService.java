@@ -97,28 +97,65 @@ public class UserManagementService {
     public void initializeDefaultRoles() {
         log.info("Initializing default roles");
 
-        if (!roleRepository.existsByName("USER")) {
-            Role userRole = new Role("USER", "Standard user with basic access");
-            roleRepository.save(userRole);
-            log.info("Created default USER role");
-        }
-
-        if (!roleRepository.existsByName("ADMIN")) {
-            Role adminRole = new Role("ADMIN", "Administrator with full access");
+        if (!roleRepository.existsByName("ADMINISTRATOR")) {
+            Role adminRole = new Role("ADMINISTRATOR", "System Administrator with full access to all features and settings");
             roleRepository.save(adminRole);
-            log.info("Created default ADMIN role");
+            log.info("Created default ADMINISTRATOR role");
         }
 
-        if (!roleRepository.existsByName("MODERATOR")) {
-            Role moderatorRole = new Role("MODERATOR", "Moderator with limited administrative access");
-            roleRepository.save(moderatorRole);
-            log.info("Created default MODERATOR role");
+        if (!roleRepository.existsByName("STAFF")) {
+            Role staffRole = new Role("STAFF", "Staff member with access to daily operations and customer management");
+            roleRepository.save(staffRole);
+            log.info("Created default STAFF role");
         }
 
-        if (!roleRepository.existsByName("SUPER_ADMIN")) {
-            Role superAdminRole = new Role("SUPER_ADMIN", "Super administrator with ultimate access");
-            roleRepository.save(superAdminRole);
-            log.info("Created default SUPER_ADMIN role");
+        if (!roleRepository.existsByName("MANAGER")) {
+            Role managerRole = new Role("MANAGER", "Manager with access to staff management and advanced operations");
+            roleRepository.save(managerRole);
+            log.info("Created default MANAGER role");
+        }
+
+        if (!roleRepository.existsByName("CUSTOMER")) {
+            Role customerRole = new Role("CUSTOMER", "Customer with access to their own account and services");
+            roleRepository.save(customerRole);
+            log.info("Created default CUSTOMER role");
+        }
+
+        if (!roleRepository.existsByName("SUPPORT_TEAM")) {
+            Role supportRole = new Role("SUPPORT_TEAM", "Support team member with access to customer service functions");
+            roleRepository.save(supportRole);
+            log.info("Created default SUPPORT_TEAM role");
+        }
+    }
+
+    @Transactional
+    public void initializeDefaultAdmin() {
+        log.info("Initializing default administrator account");
+        
+        // Check if admin account already exists
+        if (!userRepository.existsByEmail("admin@cem.com")) {
+            // Find ADMINISTRATOR role
+            Role adminRole = roleRepository.findByName("ADMINISTRATOR")
+                    .orElseThrow(() -> new BusinessException("ADMINISTRATOR role not found", HttpStatus.INTERNAL_SERVER_ERROR));
+            
+            // Create default admin user
+            User admin = User.builder()
+                    .email("admin@cem.com")
+                    .password(passwordEncoder.encode("Admin@CEM2025"))
+                    .firstName("System")
+                    .lastName("Administrator")
+                    .phone("+84901234567")
+                    .role(adminRole)
+                    .status(AccountStatus.ACTIVE)
+                    .emailVerified(true)
+                    .loginAttempts(0)
+                    .createdBy("SYSTEM")
+                    .build();
+            
+            userRepository.save(admin);
+            log.info("Default administrator account created successfully: admin@cem.com");
+        } else {
+            log.info("Default administrator account already exists");
         }
     }
 
@@ -131,5 +168,34 @@ public class UserManagementService {
 
     private RoleResponse mapToRoleResponse(Role role) {
         return modelMapper.map(role, RoleResponse.class);
+    }
+
+    @Transactional
+    public void assignRole(Long userId, Long roleId) {
+        log.info("Assigning role {} to user {}", roleId, userId);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+
+        Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with ID: " + roleId));
+
+        user.setRole(role);
+        userRepository.save(user);
+
+        log.info("Role {} assigned to user {} successfully", role.getName(), user.getEmail());
+    }
+
+    @Transactional
+    public void deactivateUser(Long userId) {
+        log.info("Deactivating user {}", userId);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+
+        user.setStatus(AccountStatus.INACTIVE);
+        userRepository.save(user);
+
+        log.info("User {} deactivated successfully", user.getEmail());
     }
 } 

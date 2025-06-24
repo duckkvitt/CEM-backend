@@ -2,10 +2,10 @@ package com.g47.cem.cemgateway.config;
 
 import java.util.List;
 
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springdoc.core.models.GroupedOpenApi;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -51,6 +51,24 @@ public class GatewaySwaggerConfig {
                 .group("auth-service")
                 .displayName("Authentication Service APIs")
                 .pathsToMatch("/auth/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi customerApi() {
+        return GroupedOpenApi.builder()
+                .group("customer-service")
+                .displayName("Customer Service APIs")
+                .pathsToMatch("/customer/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi deviceApi() {
+        return GroupedOpenApi.builder()
+                .group("device-service")
+                .displayName("Device Service APIs")
+                .pathsToMatch("/device/**")
                 .build();
     }
 

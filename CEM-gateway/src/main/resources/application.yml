@@ -12,9 +12,31 @@ spring:
       routes:
         # Authentication Service Routes
         - id: auth-service
-          uri: http://localhost:8081
+          uri: http://localhost:8081/api/auth
           predicates:
             - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        
+        # ---------------------------------------------
+        # Added routes to proxy Customer and Device APIs
+        # ---------------------------------------------
+        
+        # Customer Service Routes
+        - id: customer-service
+          uri: http://localhost:8082/api/customer
+          predicates:
+            - Path=/customer/**
+          filters:
+            - StripPrefix=1
+        
+        # Device Service Routes
+        - id: device-service
+          uri: http://localhost:8083/api/device
+          predicates:
+            - Path=/device/**
+          filters:
+            - StripPrefix=1
         
         # Future service routes can be added here
         # - id: user-service

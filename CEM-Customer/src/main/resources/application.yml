@@ -18,6 +18,12 @@ spring:
       auto-registration:
         enabled: false
 
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: UTC
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+
   datasource:
     url: jdbc:postgresql://ep-royal-bird-a1m9xsdr.ap-southeast-1.aws.neon.tech:5432/CEM_DB?sslmode=require
     username: default

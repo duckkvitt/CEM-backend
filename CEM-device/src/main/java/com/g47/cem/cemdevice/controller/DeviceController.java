@@ -48,7 +48,7 @@ public class DeviceController {
      * Create a new device (Staff only)
      */
     @PostMapping
-    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('STAFF')")
     @Operation(summary = "Create a new device", description = "Creates a new device entry (Staff access required)")
     public ResponseEntity<ApiResponse<DeviceResponse>> createDevice(
             @Valid @RequestBody CreateDeviceRequest request,
@@ -66,6 +66,7 @@ public class DeviceController {
      * Get device by ID
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('STAFF') or hasRole('MANAGER') or hasRole('SUPPORT_TEAM')")
     @Operation(summary = "Get device by ID", description = "Retrieves device details by ID")
     public ResponseEntity<ApiResponse<DeviceResponse>> getDeviceById(
             @Parameter(description = "Device ID") @PathVariable Long id) {
@@ -81,6 +82,7 @@ public class DeviceController {
      * Get all devices with pagination and filtering
      */
     @GetMapping
+    @PreAuthorize("hasRole('STAFF') or hasRole('MANAGER') or hasRole('SUPPORT_TEAM')")
     @Operation(summary = "Get all devices", description = "Retrieves paginated list of devices with optional filtering")
     public ResponseEntity<ApiResponse<Page<DeviceResponse>>> getAllDevices(
             @Parameter(description = "Device name filter") @RequestParam(required = false) String name,
@@ -109,7 +111,7 @@ public class DeviceController {
      * Update device (Staff only)
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('STAFF')")
     @Operation(summary = "Update device", description = "Updates device information (Staff access required)")
     public ResponseEntity<ApiResponse<DeviceResponse>> updateDevice(
             @Parameter(description = "Device ID") @PathVariable Long id,
@@ -127,7 +129,7 @@ public class DeviceController {
      * Delete device (Staff only)
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('STAFF')")
     @Operation(summary = "Delete device", description = "Deletes a device (Staff access required)")
     public ResponseEntity<ApiResponse<String>> deleteDevice(
             @Parameter(description = "Device ID") @PathVariable Long id,

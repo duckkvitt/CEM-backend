@@ -1,14 +1,1137 @@
-2025-06-19 00:49:19 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
-2025-06-19 00:49:20 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
-2025-06-19 00:49:20 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-06-19 00:49:20 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+2025-06-25 01:09:18 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Starting CemAuthenticationApplication using Java 17.0.11 with PID 33256 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 01:09:18 [restartedMain] DEBUG c.g.c.c.CemAuthenticationApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 01:09:18 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 01:09:18 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 01:09:18 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 01:09:19 [restartedMain] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 01:09:20 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 01:09:20 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 60 ms. Found 2 JPA repository interfaces.
+2025-06-25 01:09:21 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-06-25 01:09:21 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 01:09:21 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 01:09:21 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api/auth] - Initializing Spring embedded WebApplicationContext
+2025-06-25 01:09:21 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3261 ms
+2025-06-25 01:09:22 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 01:09:22 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-06-25 01:09:22 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-25 01:09:22 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 01:09:23 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Starting...
+2025-06-25 01:09:24 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@7ff79180
+2025-06-25 01:09:24 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Start completed.
+2025-06-25 01:09:24 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 01:09:24 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 01:09:25 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 01:09:26 [restartedMain] DEBUG org.hibernate.SQL - 
     set client_min_messages = WARNING
-2025-06-19 00:49:20 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+2025-06-25 01:09:26 [restartedMain] DEBUG org.hibernate.SQL - 
     alter table if exists users 
        drop constraint if exists FKp56c1712k691lhsyewcssf40f
-2025-06-19 00:49:20 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+2025-06-25 01:09:26 [restartedMain] DEBUG org.hibernate.SQL - 
     drop table if exists roles cascade
-2025-06-19 00:49:20 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+2025-06-25 01:09:26 [restartedMain] DEBUG org.hibernate.SQL - 
     drop table if exists users cascade
-2025-06-19 00:49:20 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown initiated...
-2025-06-19 00:49:20 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown completed.
+2025-06-25 01:09:26 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table roles (
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        updated_at timestamp(6),
+        name varchar(50) not null unique,
+        description varchar(255),
+        primary key (id)
+    )
+2025-06-25 01:09:26 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table users (
+        email_verified boolean,
+        login_attempts integer,
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        last_login_at timestamp(6),
+        locked_until timestamp(6),
+        password_reset_expires_at timestamp(6),
+        role_id bigint not null,
+        updated_at timestamp(6),
+        phone varchar(15),
+        first_name varchar(100) not null,
+        last_name varchar(100) not null,
+        created_by varchar(255),
+        email varchar(255) not null unique,
+        email_verification_token varchar(255),
+        password varchar(255) not null,
+        password_reset_token varchar(255),
+        status varchar(255) not null check (status in ('ACTIVE','INACTIVE','SUSPENDED','PENDING_VERIFICATION','DELETED')),
+        primary key (id)
+    )
+2025-06-25 01:09:26 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       add constraint FKp56c1712k691lhsyewcssf40f 
+       foreign key (role_id) 
+       references roles
+2025-06-25 01:09:26 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 01:09:26 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-25 01:09:27 [restartedMain] DEBUG c.g.c.c.c.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 01:09:28 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 01:09:28 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 01:09:29 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 01:09:29 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 01:09:30 [restartedMain] WARN  o.s.b.d.a.OptionalLiveReloadServer - Unable to start LiveReload server
+2025-06-25 01:09:30 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 01:09:30 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Started CemAuthenticationApplication in 13.167 seconds (process running for 13.811)
+2025-06-25 01:09:30 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default roles
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:09:31 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default ADMINISTRATOR role
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:09:31 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default STAFF role
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:09:31 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default MANAGER role
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:09:31 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default CUSTOMER role
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:09:31 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default SUPPORT_TEAM role
+2025-06-25 01:09:31 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default administrator account
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2025-06-25 01:09:31 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 01:09:32 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.User */insert 
+    into
+        users (created_at, created_by, email, email_verification_token, email_verified, first_name, last_login_at, last_name, locked_until, login_attempts, password, password_reset_expires_at, password_reset_token, phone, role_id, status, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-25 01:09:32 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Default administrator account created successfully: admin@cem.com
+2025-06-25 01:09:57 [http-nio-8081-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api/auth] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 01:09:57 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-25 01:09:57 [http-nio-8081-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-25 01:09:57 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui.html
+2025-06-25 01:09:57 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui.html
+2025-06-25 01:09:57 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/index.html
+2025-06-25 01:09:57 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/index.html
+2025-06-25 01:09:57 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/swagger-ui.css
+2025-06-25 01:09:57 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/swagger-ui.css
+2025-06-25 01:09:57 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/index.css
+2025-06-25 01:09:57 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/swagger-ui-bundle.js
+2025-06-25 01:09:57 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-5] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/index.css
+2025-06-25 01:09:57 [http-nio-8081-exec-5] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/swagger-ui-bundle.js
+2025-06-25 01:09:57 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/swagger-ui-standalone-preset.js
+2025-06-25 01:09:57 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/swagger-ui-standalone-preset.js
+2025-06-25 01:09:57 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/swagger-initializer.js
+2025-06-25 01:09:57 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/swagger-initializer.js
+2025-06-25 01:09:57 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api-docs/swagger-config
+2025-06-25 01:09:57 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api-docs/swagger-config
+2025-06-25 01:09:57 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/favicon-32x32.png
+2025-06-25 01:09:57 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/favicon-32x32.png
+2025-06-25 01:09:57 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api-docs
+2025-06-25 01:09:57 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:09:57 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api-docs
+2025-06-25 01:09:58 [http-nio-8081-exec-9] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 978 ms
+2025-06-25 01:15:40 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 01:15:41 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 01:15:41 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 01:15:41 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    set client_min_messages = WARNING
+2025-06-25 01:15:41 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       drop constraint if exists FKp56c1712k691lhsyewcssf40f
+2025-06-25 01:15:41 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    drop table if exists roles cascade
+2025-06-25 01:15:41 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    drop table if exists users cascade
+2025-06-25 01:15:41 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 01:15:42 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown completed.
+2025-06-25 01:15:58 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Starting CemAuthenticationApplication using Java 17.0.11 with PID 23816 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 01:15:58 [restartedMain] DEBUG c.g.c.c.CemAuthenticationApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 01:15:58 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 01:15:58 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 01:15:58 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 01:16:00 [restartedMain] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 01:16:00 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 01:16:00 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 65 ms. Found 2 JPA repository interfaces.
+2025-06-25 01:16:02 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-06-25 01:16:02 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 01:16:02 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 01:16:02 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api/auth] - Initializing Spring embedded WebApplicationContext
+2025-06-25 01:16:02 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3755 ms
+2025-06-25 01:16:02 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 01:16:02 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-06-25 01:16:02 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-25 01:16:03 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 01:16:03 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Starting...
+2025-06-25 01:16:04 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@47cf74c9
+2025-06-25 01:16:04 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Start completed.
+2025-06-25 01:16:04 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 01:16:04 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 01:16:05 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 01:16:05 [restartedMain] DEBUG org.hibernate.SQL - 
+    set client_min_messages = WARNING
+2025-06-25 01:16:06 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       drop constraint if exists FKp56c1712k691lhsyewcssf40f
+2025-06-25 01:16:06 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists roles cascade
+2025-06-25 01:16:06 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists users cascade
+2025-06-25 01:16:06 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table roles (
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        updated_at timestamp(6),
+        name varchar(50) not null unique,
+        description varchar(255),
+        primary key (id)
+    )
+2025-06-25 01:16:06 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table users (
+        email_verified boolean,
+        login_attempts integer,
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        last_login_at timestamp(6),
+        locked_until timestamp(6),
+        password_reset_expires_at timestamp(6),
+        role_id bigint not null,
+        updated_at timestamp(6),
+        phone varchar(15),
+        first_name varchar(100) not null,
+        last_name varchar(100) not null,
+        created_by varchar(255),
+        email varchar(255) not null unique,
+        email_verification_token varchar(255),
+        password varchar(255) not null,
+        password_reset_token varchar(255),
+        status varchar(255) not null check (status in ('ACTIVE','INACTIVE','SUSPENDED','PENDING_VERIFICATION','DELETED')),
+        primary key (id)
+    )
+2025-06-25 01:16:06 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       add constraint FKp56c1712k691lhsyewcssf40f 
+       foreign key (role_id) 
+       references roles
+2025-06-25 01:16:06 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 01:16:06 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-25 01:16:07 [restartedMain] DEBUG c.g.c.c.c.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 01:16:07 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 01:16:07 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 01:16:08 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 01:16:08 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 01:16:09 [restartedMain] WARN  o.s.b.d.a.OptionalLiveReloadServer - Unable to start LiveReload server
+2025-06-25 01:16:09 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 01:16:10 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Started CemAuthenticationApplication in 12.359 seconds (process running for 13.241)
+2025-06-25 01:16:10 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default roles
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:16:10 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default ADMINISTRATOR role
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:16:10 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default STAFF role
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:16:10 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default MANAGER role
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:16:10 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default CUSTOMER role
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:16:10 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:16:10 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default SUPPORT_TEAM role
+2025-06-25 01:16:11 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default administrator account
+2025-06-25 01:16:11 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2025-06-25 01:16:11 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 01:16:11 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.User */insert 
+    into
+        users (created_at, created_by, email, email_verification_token, email_verified, first_name, last_login_at, last_name, locked_until, login_attempts, password, password_reset_expires_at, password_reset_token, phone, role_id, status, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-25 01:16:11 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Default administrator account created successfully: admin@cem.com
+2025-06-25 01:17:07 [http-nio-8081-exec-4] INFO  o.a.c.c.C.[.[localhost].[/api/auth] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 01:17:07 [http-nio-8081-exec-4] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-25 01:17:07 [http-nio-8081-exec-4] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-25 01:17:07 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api-docs
+2025-06-25 01:17:07 [http-nio-8081-exec-4] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:17:07 [http-nio-8081-exec-4] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api-docs
+2025-06-25 01:17:08 [http-nio-8081-exec-4] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 437 ms
+2025-06-25 01:17:35 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api-docs
+2025-06-25 01:17:35 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:17:35 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api-docs
+2025-06-25 01:23:08 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 01:23:09 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 01:23:09 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 01:23:09 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    set client_min_messages = WARNING
+2025-06-25 01:23:09 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       drop constraint if exists FKp56c1712k691lhsyewcssf40f
+2025-06-25 01:23:09 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    drop table if exists roles cascade
+2025-06-25 01:23:09 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    drop table if exists users cascade
+2025-06-25 01:23:09 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 01:23:10 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown completed.
+2025-06-25 01:24:13 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Starting CemAuthenticationApplication using Java 17.0.11 with PID 31016 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 01:24:13 [restartedMain] DEBUG c.g.c.c.CemAuthenticationApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 01:24:13 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 01:24:13 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 01:24:13 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 01:24:14 [restartedMain] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 01:24:15 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 01:24:15 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 84 ms. Found 2 JPA repository interfaces.
+2025-06-25 01:24:17 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-06-25 01:24:17 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 01:24:17 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 01:24:17 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api/auth] - Initializing Spring embedded WebApplicationContext
+2025-06-25 01:24:17 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3514 ms
+2025-06-25 01:24:17 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 01:24:17 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-06-25 01:24:17 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-25 01:24:17 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 01:24:17 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Starting...
+2025-06-25 01:24:18 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@344d4d70
+2025-06-25 01:24:18 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Start completed.
+2025-06-25 01:24:19 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 01:24:19 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 01:24:20 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 01:24:20 [restartedMain] DEBUG org.hibernate.SQL - 
+    set client_min_messages = WARNING
+2025-06-25 01:24:20 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       drop constraint if exists FKp56c1712k691lhsyewcssf40f
+2025-06-25 01:24:20 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists roles cascade
+2025-06-25 01:24:20 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists users cascade
+2025-06-25 01:24:20 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table roles (
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        updated_at timestamp(6),
+        name varchar(50) not null unique,
+        description varchar(255),
+        primary key (id)
+    )
+2025-06-25 01:24:20 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table users (
+        email_verified boolean,
+        login_attempts integer,
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        last_login_at timestamp(6),
+        locked_until timestamp(6),
+        password_reset_expires_at timestamp(6),
+        role_id bigint not null,
+        updated_at timestamp(6),
+        phone varchar(15),
+        first_name varchar(100) not null,
+        last_name varchar(100) not null,
+        created_by varchar(255),
+        email varchar(255) not null unique,
+        email_verification_token varchar(255),
+        password varchar(255) not null,
+        password_reset_token varchar(255),
+        status varchar(255) not null check (status in ('ACTIVE','INACTIVE','SUSPENDED','PENDING_VERIFICATION','DELETED')),
+        primary key (id)
+    )
+2025-06-25 01:24:20 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       add constraint FKp56c1712k691lhsyewcssf40f 
+       foreign key (role_id) 
+       references roles
+2025-06-25 01:24:21 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 01:24:21 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-25 01:24:22 [restartedMain] DEBUG c.g.c.c.c.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 01:24:22 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 01:24:22 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 01:24:22 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 01:24:23 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 01:24:23 [restartedMain] WARN  o.s.b.d.a.OptionalLiveReloadServer - Unable to start LiveReload server
+2025-06-25 01:24:23 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 01:24:23 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Started CemAuthenticationApplication in 11.159 seconds (process running for 11.804)
+2025-06-25 01:24:23 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default roles
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:24:24 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default ADMINISTRATOR role
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:24:24 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default STAFF role
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:24:24 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default MANAGER role
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:24:24 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default CUSTOMER role
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:24:24 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default SUPPORT_TEAM role
+2025-06-25 01:24:24 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default administrator account
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2025-06-25 01:24:24 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 01:24:25 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.User */insert 
+    into
+        users (created_at, created_by, email, email_verification_token, email_verified, first_name, last_login_at, last_name, locked_until, login_attempts, password, password_reset_expires_at, password_reset_token, phone, role_id, status, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-25 01:24:25 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Default administrator account created successfully: admin@cem.com
+2025-06-25 01:24:37 [http-nio-8081-exec-3] INFO  o.a.c.c.C.[.[localhost].[/api/auth] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 01:24:37 [http-nio-8081-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-25 01:24:37 [http-nio-8081-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-06-25 01:24:37 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api-docs
+2025-06-25 01:24:37 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:24:37 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api-docs
+2025-06-25 01:24:38 [http-nio-8081-exec-3] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 389 ms
+2025-06-25 01:24:59 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/index.html
+2025-06-25 01:24:59 [http-nio-8081-exec-6] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:24:59 [http-nio-8081-exec-6] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/index.html
+2025-06-25 01:24:59 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/swagger-ui.css
+2025-06-25 01:24:59 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:24:59 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/swagger-ui.css
+2025-06-25 01:24:59 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/swagger-ui-bundle.js
+2025-06-25 01:24:59 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/index.css
+2025-06-25 01:24:59 [http-nio-8081-exec-10] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:24:59 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/swagger-initializer.js
+2025-06-25 01:24:59 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Securing GET /swagger-ui/swagger-ui-standalone-preset.js
+2025-06-25 01:24:59 [http-nio-8081-exec-10] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/swagger-ui-bundle.js
+2025-06-25 01:24:59 [http-nio-8081-exec-9] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:24:59 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:24:59 [http-nio-8081-exec-8] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:24:59 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/swagger-initializer.js
+2025-06-25 01:24:59 [http-nio-8081-exec-9] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/index.css
+2025-06-25 01:24:59 [http-nio-8081-exec-8] DEBUG o.s.security.web.FilterChainProxy - Secured GET /swagger-ui/swagger-ui-standalone-preset.js
+2025-06-25 01:24:59 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api-docs/swagger-config
+2025-06-25 01:24:59 [http-nio-8081-exec-2] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:24:59 [http-nio-8081-exec-2] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api-docs/swagger-config
+2025-06-25 01:24:59 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api-docs
+2025-06-25 01:24:59 [http-nio-8081-exec-3] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:24:59 [http-nio-8081-exec-3] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api-docs
+2025-06-25 01:25:06 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api-docs
+2025-06-25 01:25:06 [http-nio-8081-exec-1] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:25:06 [http-nio-8081-exec-1] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api-docs
+2025-06-25 01:29:35 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Securing GET /api-docs
+2025-06-25 01:29:35 [http-nio-8081-exec-7] DEBUG o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2025-06-25 01:29:35 [http-nio-8081-exec-7] DEBUG o.s.security.web.FilterChainProxy - Secured GET /api-docs
+2025-06-25 01:29:42 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 01:29:44 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 01:29:44 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 01:29:44 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    set client_min_messages = WARNING
+2025-06-25 01:29:44 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       drop constraint if exists FKp56c1712k691lhsyewcssf40f
+2025-06-25 01:29:44 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    drop table if exists roles cascade
+2025-06-25 01:29:44 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    drop table if exists users cascade
+2025-06-25 01:29:44 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 01:29:44 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown completed.
+2025-06-25 01:30:03 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Starting CemAuthenticationApplication using Java 17.0.11 with PID 32456 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 01:30:03 [restartedMain] DEBUG c.g.c.c.CemAuthenticationApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 01:30:03 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 01:30:03 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 01:30:03 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 01:30:05 [restartedMain] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 01:30:06 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 01:30:07 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 80 ms. Found 2 JPA repository interfaces.
+2025-06-25 01:30:08 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-06-25 01:30:08 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 01:30:08 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 01:30:08 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api/auth] - Initializing Spring embedded WebApplicationContext
+2025-06-25 01:30:08 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4645 ms
+2025-06-25 01:30:08 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 01:30:08 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-06-25 01:30:08 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-25 01:30:09 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 01:30:09 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Starting...
+2025-06-25 01:30:10 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@127343a7
+2025-06-25 01:30:10 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Start completed.
+2025-06-25 01:30:10 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 01:30:10 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 01:30:11 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 01:30:11 [restartedMain] DEBUG org.hibernate.SQL - 
+    set client_min_messages = WARNING
+2025-06-25 01:30:11 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       drop constraint if exists FKp56c1712k691lhsyewcssf40f
+2025-06-25 01:30:11 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists roles cascade
+2025-06-25 01:30:11 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists users cascade
+2025-06-25 01:30:11 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table roles (
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        updated_at timestamp(6),
+        name varchar(50) not null unique,
+        description varchar(255),
+        primary key (id)
+    )
+2025-06-25 01:30:11 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table users (
+        email_verified boolean,
+        login_attempts integer,
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        last_login_at timestamp(6),
+        locked_until timestamp(6),
+        password_reset_expires_at timestamp(6),
+        role_id bigint not null,
+        updated_at timestamp(6),
+        phone varchar(15),
+        first_name varchar(100) not null,
+        last_name varchar(100) not null,
+        created_by varchar(255),
+        email varchar(255) not null unique,
+        email_verification_token varchar(255),
+        password varchar(255) not null,
+        password_reset_token varchar(255),
+        status varchar(255) not null check (status in ('ACTIVE','INACTIVE','SUSPENDED','PENDING_VERIFICATION','DELETED')),
+        primary key (id)
+    )
+2025-06-25 01:30:12 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       add constraint FKp56c1712k691lhsyewcssf40f 
+       foreign key (role_id) 
+       references roles
+2025-06-25 01:30:12 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 01:30:12 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-25 01:30:13 [restartedMain] DEBUG c.g.c.c.c.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 01:30:13 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 01:30:13 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 01:30:13 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 01:30:14 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 01:30:14 [restartedMain] WARN  o.s.b.d.a.OptionalLiveReloadServer - Unable to start LiveReload server
+2025-06-25 01:30:14 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 01:30:14 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Started CemAuthenticationApplication in 12.065 seconds (process running for 12.872)
+2025-06-25 01:30:14 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default roles
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:30:15 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default ADMINISTRATOR role
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:30:15 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default STAFF role
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:30:15 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default MANAGER role
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:30:15 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default CUSTOMER role
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:30:15 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default SUPPORT_TEAM role
+2025-06-25 01:30:15 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default administrator account
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2025-06-25 01:30:15 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 01:30:16 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.User */insert 
+    into
+        users (created_at, created_by, email, email_verification_token, email_verified, first_name, last_login_at, last_name, locked_until, login_attempts, password, password_reset_expires_at, password_reset_token, phone, role_id, status, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-25 01:30:16 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Default administrator account created successfully: admin@cem.com
+2025-06-25 01:32:19 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 01:32:21 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 01:32:21 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 01:32:21 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    set client_min_messages = WARNING
+2025-06-25 01:32:21 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       drop constraint if exists FKp56c1712k691lhsyewcssf40f
+2025-06-25 01:32:21 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    drop table if exists roles cascade
+2025-06-25 01:32:21 [SpringApplicationShutdownHook] DEBUG org.hibernate.SQL - 
+    drop table if exists users cascade
+2025-06-25 01:32:22 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 01:32:22 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Shutdown completed.
+2025-06-25 01:40:21 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Starting CemAuthenticationApplication using Java 17.0.11 with PID 34136 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 01:40:21 [restartedMain] DEBUG c.g.c.c.CemAuthenticationApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 01:40:21 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 01:40:21 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 01:40:21 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 01:40:22 [restartedMain] INFO  o.s.b.f.s.DefaultListableBeanFactory - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 01:40:23 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 01:40:23 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 85 ms. Found 2 JPA repository interfaces.
+2025-06-25 01:40:25 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2025-06-25 01:40:25 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 01:40:25 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 01:40:25 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api/auth] - Initializing Spring embedded WebApplicationContext
+2025-06-25 01:40:25 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4042 ms
+2025-06-25 01:40:25 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 01:40:25 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-06-25 01:40:25 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-25 01:40:26 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 01:40:26 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Starting...
+2025-06-25 01:40:27 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@127343a7
+2025-06-25 01:40:27 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-AUTH - Start completed.
+2025-06-25 01:40:27 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 01:40:27 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 01:40:29 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 01:40:29 [restartedMain] DEBUG org.hibernate.SQL - 
+    set client_min_messages = WARNING
+2025-06-25 01:40:29 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       drop constraint if exists FKp56c1712k691lhsyewcssf40f
+2025-06-25 01:40:29 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists roles cascade
+2025-06-25 01:40:29 [restartedMain] DEBUG org.hibernate.SQL - 
+    drop table if exists users cascade
+2025-06-25 01:40:29 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table roles (
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        updated_at timestamp(6),
+        name varchar(50) not null unique,
+        description varchar(255),
+        primary key (id)
+    )
+2025-06-25 01:40:29 [restartedMain] DEBUG org.hibernate.SQL - 
+    create table users (
+        email_verified boolean,
+        login_attempts integer,
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        last_login_at timestamp(6),
+        locked_until timestamp(6),
+        password_reset_expires_at timestamp(6),
+        role_id bigint not null,
+        updated_at timestamp(6),
+        phone varchar(15),
+        first_name varchar(100) not null,
+        last_name varchar(100) not null,
+        created_by varchar(255),
+        email varchar(255) not null unique,
+        email_verification_token varchar(255),
+        password varchar(255) not null,
+        password_reset_token varchar(255),
+        status varchar(255) not null check (status in ('ACTIVE','INACTIVE','SUSPENDED','PENDING_VERIFICATION','DELETED')),
+        primary key (id)
+    )
+2025-06-25 01:40:29 [restartedMain] DEBUG org.hibernate.SQL - 
+    alter table if exists users 
+       add constraint FKp56c1712k691lhsyewcssf40f 
+       foreign key (role_id) 
+       references roles
+2025-06-25 01:40:29 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 01:40:30 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-25 01:40:31 [restartedMain] DEBUG c.g.c.c.c.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 01:40:31 [restartedMain] INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 01:40:31 [restartedMain] WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 01:40:31 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 01:40:32 [restartedMain] DEBUG o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 01:40:32 [restartedMain] WARN  o.s.b.d.a.OptionalLiveReloadServer - Unable to start LiveReload server
+2025-06-25 01:40:32 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 01:40:32 [restartedMain] INFO  c.g.c.c.CemAuthenticationApplication - Started CemAuthenticationApplication in 12.514 seconds (process running for 13.792)
+2025-06-25 01:40:32 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default roles
+2025-06-25 01:40:32 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:40:33 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default ADMINISTRATOR role
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:40:33 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default STAFF role
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:40:33 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default MANAGER role
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:40:33 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default CUSTOMER role
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id 
+    from
+        roles r1_0 
+    where
+        r1_0.name=? 
+    fetch
+        first ? rows only
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.Role */insert 
+    into
+        roles (created_at, description, name, updated_at) 
+    values
+        (?, ?, ?, ?)
+2025-06-25 01:40:33 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Created default SUPPORT_TEAM role
+2025-06-25 01:40:33 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Initializing default administrator account
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2025-06-25 01:40:33 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 01:40:34 [restartedMain] DEBUG org.hibernate.SQL - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.User */insert 
+    into
+        users (created_at, created_by, email, email_verification_token, email_verified, first_name, last_login_at, last_name, locked_until, login_attempts, password, password_reset_expires_at, password_reset_token, phone, role_id, status, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-25 01:40:34 [restartedMain] INFO  c.g.c.c.s.UserManagementService - Default administrator account created successfully: admin@cem.com

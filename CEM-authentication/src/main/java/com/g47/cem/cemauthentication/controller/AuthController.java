@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.g47.cem.cemauthentication.dto.request.ChangePasswordRequest;
@@ -138,7 +139,7 @@ public class AuthController {
     @PostMapping("/admin/create-user")
     @Operation(summary = "Create user account", description = "Create a new user account (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
             @Valid @RequestBody CreateUserRequest request,
             Authentication authentication,
@@ -162,7 +163,7 @@ public class AuthController {
     @GetMapping("/admin/roles")
     @Operation(summary = "Get all roles", description = "Retrieve all available roles (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<ApiResponse<List<RoleResponse>>> getAllRoles(
             HttpServletRequest httpRequest) {
         
@@ -193,6 +194,47 @@ public class AuthController {
         
         ApiResponse<Void> response = ApiResponse.success(
             "Password changed successfully"
+        );
+        response.setPath(httpRequest.getRequestURI());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/admin/assign-role")
+    @Operation(summary = "Assign role to user", description = "Assign system rights by role (Admin only)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<ApiResponse<Void>> assignRole(
+            @RequestParam Long userId,
+            @RequestParam Long roleId,
+            HttpServletRequest httpRequest) {
+        
+        log.info("Assigning role {} to user {} by admin", roleId, userId);
+        
+        userManagementService.assignRole(userId, roleId);
+        
+        ApiResponse<Void> response = ApiResponse.success(
+            "Role assigned successfully"
+        );
+        response.setPath(httpRequest.getRequestURI());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/admin/deactivate-user")
+    @Operation(summary = "Deactivate user", description = "Deactivate unused user accounts (Admin only)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<ApiResponse<Void>> deactivateUser(
+            @RequestParam Long userId,
+            HttpServletRequest httpRequest) {
+        
+        log.info("Deactivating user {} by admin", userId);
+        
+        userManagementService.deactivateUser(userId);
+        
+        ApiResponse<Void> response = ApiResponse.success(
+            "User deactivated successfully"
         );
         response.setPath(httpRequest.getRequestURI());
         

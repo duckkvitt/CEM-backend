@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +51,7 @@ public class CustomerController {
     @PostMapping
     @Operation(summary = "Create customer", description = "Create a new customer")
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('STAFF')")
     public ResponseEntity<ApiResponse<CustomerResponse>> createCustomer(
             @Valid @RequestBody CreateCustomerRequest request,
             Authentication authentication,
@@ -76,6 +78,7 @@ public class CustomerController {
     @GetMapping("/{id}")
     @Operation(summary = "Get customer by ID", description = "Retrieve a customer by their ID")
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('STAFF') or hasRole('MANAGER') or hasRole('SUPPORT_TEAM')")
     public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerById(
             @PathVariable Long id,
             HttpServletRequest httpRequest) {
@@ -116,6 +119,7 @@ public class CustomerController {
     @GetMapping
     @Operation(summary = "Get all customers", description = "Retrieve all customers with pagination and optional filters")
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('STAFF') or hasRole('MANAGER') or hasRole('SUPPORT_TEAM')")
     public ResponseEntity<ApiResponse<Page<CustomerResponse>>> getAllCustomers(
             @Parameter(description = "Page number (0-based)")
             @RequestParam(defaultValue = "0") int page,
@@ -192,6 +196,7 @@ public class CustomerController {
     @GetMapping("/hidden")
     @Operation(summary = "Get hidden customers", description = "Retrieve only hidden customers")
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<ApiResponse<Page<CustomerResponse>>> getHiddenCustomers(
             @Parameter(description = "Page number (0-based)")
             @RequestParam(defaultValue = "0") int page,
@@ -223,6 +228,7 @@ public class CustomerController {
     @PutMapping("/{id}/hide")
     @Operation(summary = "Hide customer", description = "Mark a customer as hidden")
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<ApiResponse<CustomerResponse>> hideCustomer(
             @PathVariable Long id,
             HttpServletRequest httpRequest) {
@@ -246,6 +252,7 @@ public class CustomerController {
     @PutMapping("/{id}/show")
     @Operation(summary = "Show customer", description = "Restore a customer from hidden status")
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<ApiResponse<CustomerResponse>> showCustomer(
             @PathVariable Long id,
             HttpServletRequest httpRequest) {
@@ -269,6 +276,7 @@ public class CustomerController {
     @GetMapping("/tag/{tag}")
     @Operation(summary = "Get customers by tag", description = "Retrieve customers that have a specific tag")
     @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('STAFF')")
     public ResponseEntity<ApiResponse<List<CustomerResponse>>> getCustomersByTag(
             @PathVariable String tag,
             HttpServletRequest httpRequest) {
