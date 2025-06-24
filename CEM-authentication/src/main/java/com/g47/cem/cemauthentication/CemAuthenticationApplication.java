@@ -20,6 +20,7 @@ public class CemAuthenticationApplication {
     CommandLineRunner initDatabase(UserManagementService userManagementService) {
         return args -> {
             userManagementService.initializeDefaultRoles();
+            userManagementService.initializeDefaultAdmin();
         };
     }
 }

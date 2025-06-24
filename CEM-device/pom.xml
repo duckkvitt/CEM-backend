@@ -77,6 +77,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Jackson JSR310 support for Java 8 time types -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
         <!-- ModelMapper for DTO conversions -->
         <dependency>
             <groupId>org.modelmapper</groupId>

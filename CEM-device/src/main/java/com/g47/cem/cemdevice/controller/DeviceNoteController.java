@@ -48,7 +48,7 @@ public class DeviceNoteController {
      * Add a note to a device (Staff only)
      */
     @PostMapping
-    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('STAFF')")
     @Operation(summary = "Add device note", description = "Adds a note to a device (Staff access required)")
     public ResponseEntity<ApiResponse<DeviceNoteResponse>> addDeviceNote(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
@@ -111,7 +111,7 @@ public class DeviceNoteController {
      * Update device note (Staff only)
      */
     @PutMapping("/{noteId}")
-    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('STAFF')")
     @Operation(summary = "Update device note", description = "Updates a device note (Staff access required)")
     public ResponseEntity<ApiResponse<DeviceNoteResponse>> updateDeviceNote(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
@@ -130,7 +130,7 @@ public class DeviceNoteController {
      * Delete device note (Staff only)
      */
     @DeleteMapping("/{noteId}")
-    @PreAuthorize("hasRole('STAFF') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('STAFF')")
     @Operation(summary = "Delete device note", description = "Deletes a device note (Staff access required)")
     public ResponseEntity<ApiResponse<String>> deleteDeviceNote(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
