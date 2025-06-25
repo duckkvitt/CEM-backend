@@ -126,6 +126,8 @@ app:
   cors:
     allowedOrigins: "http://localhost:8080,http://localhost:3000,http://localhost:3001,https://yourdomain.com"
   security:
-    permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/v1/auth/login,/v1/auth/refresh-token,/actuator/health"
+    permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/v1/auth/login,/v1/auth/refresh-token,/v1/auth/forgot-password,/v1/auth/reset-password,/actuator/health"
   admin:
     password: "Abc123!@"
+  reset-password:
+    url: "http://localhost:3000/reset-password"
