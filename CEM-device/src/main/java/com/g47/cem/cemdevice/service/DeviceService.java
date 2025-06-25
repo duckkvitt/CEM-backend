@@ -220,6 +220,15 @@ public class DeviceService {
         return deviceRepository.countByStatus(status);
     }
     
+    /**
+     * Search devices by generic keyword across name, model, serial number
+     */
+    @Transactional(readOnly = true)
+    public Page<DeviceResponse> searchDevicesByKeyword(String keyword, Long customerId, DeviceStatus status, Pageable pageable) {
+        Page<Device> devices = deviceRepository.searchByKeyword(keyword, customerId, status, pageable);
+        return devices.map(this::mapToDeviceResponse);
+    }
+    
     private DeviceResponse mapToDeviceResponse(Device device) {
         return modelMapper.map(device, DeviceResponse.class);
     }

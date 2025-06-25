@@ -46,4 +46,18 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     
     @Query("SELECT d FROM Device d WHERE d.warrantyExpiry IS NOT NULL AND d.warrantyExpiry < CURRENT_DATE")
     Page<Device> findExpiredWarrantyDevices(Pageable pageable);
+
+    /**
+     * Search devices by a generic keyword that matches name, model or serial number (case-insensitive)
+     */
+    @Query("SELECT d FROM Device d WHERE " +
+           "(:keyword IS NULL OR LOWER(d.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+           "OR LOWER(d.model) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+           "OR d.serialNumber LIKE CONCAT('%', :keyword, '%')) " +
+           "AND (:customerId IS NULL OR d.customerId = :customerId) " +
+           "AND (:status IS NULL OR d.status = :status)")
+    Page<Device> searchByKeyword(@Param("keyword") String keyword,
+                                 @Param("customerId") Long customerId,
+                                 @Param("status") DeviceStatus status,
+                                 Pageable pageable);
 } 
