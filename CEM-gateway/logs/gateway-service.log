@@ -600,3 +600,1346 @@ Each configuration key has been temporarily mapped to its replacement for your c
 2025-06-25 01:43:35 [http-nio-8080-exec-3] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 433 ms
 2025-06-25 01:43:41 [http-nio-8080-exec-5] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 68 ms
 2025-06-25 01:43:42 [http-nio-8080-exec-7] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 48 ms
+2025-06-25 19:40:56 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:40:56 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:40:56 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:40:56 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 19:40:56 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 19:40:59 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=a68f30a2-4464-33ae-957d-8ecada9a3cdc
+2025-06-25 19:41:00 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:41:00 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:41:00 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:41:00 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:41:00 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3723 ms
+2025-06-25 19:41:01 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:41:02 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:41:02 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:41:04 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 11.011 seconds (process running for 12.824)
+2025-06-25 19:41:04 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:41:05 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 19:41:05 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-25 19:41:05 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2025-06-25 19:41:06 [http-nio-8080-exec-4] INFO  o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 287 ms
+2025-06-25 19:44:10 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 19:44:10 [Thread-6] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:44:11 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:44:12 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:44:12 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:44:12 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:44:13 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=2b9ba018-ddb4-3d4a-993d-afa1484545d1
+2025-06-25 19:44:13 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:44:13 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:44:13 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:44:13 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:44:13 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 799 ms
+2025-06-25 19:44:14 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:44:14 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:44:14 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:44:15 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 3.823 seconds (process running for 204.089)
+2025-06-25 19:44:15 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:44:15 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-06-25 19:44:16 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 19:44:16 [Thread-9] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:44:17 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:44:18 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:44:18 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:44:18 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:44:18 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=2b9ba018-ddb4-3d4a-993d-afa1484545d1
+2025-06-25 19:44:18 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:44:18 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:44:18 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:44:18 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:44:18 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 628 ms
+2025-06-25 19:44:19 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:44:19 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:44:19 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:44:19 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 2.039 seconds (process running for 208.334)
+2025-06-25 19:44:19 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:44:19 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-06-25 19:44:20 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 19:44:20 [Thread-15] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:44:21 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:44:22 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:44:22 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:44:22 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:44:22 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=2b9ba018-ddb4-3d4a-993d-afa1484545d1
+2025-06-25 19:44:22 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:44:22 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:44:22 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:44:22 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:44:22 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 645 ms
+2025-06-25 19:44:23 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:44:23 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:44:23 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:44:24 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 2.486 seconds (process running for 212.555)
+2025-06-25 19:44:24 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:44:24 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-06-25 19:44:27 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 19:44:27 [Thread-21] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:44:28 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:44:28 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:44:28 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:44:28 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:44:29 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 19:44:29 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:44:29 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:44:29 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:44:29 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:44:29 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 424 ms
+2025-06-25 19:44:29 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:44:29 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:44:29 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:44:30 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 1.851 seconds (process running for 218.674)
+2025-06-25 19:44:30 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:44:30 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+    None
+
+
+Negative matches:
+-----------------
+
+   MultipleOpenApiSupportConfiguration:
+      Did not match:
+         - AnyNestedCondition 0 matched 2 did not; NestedCondition on MultipleOpenApiSupportCondition.OnActuatorDifferentPort found non-matching nested conditions Management Port actual port type (SAME) did not match required type (DIFFERENT), @ConditionalOnProperty (springdoc.show-actuator) found different value in property 'springdoc.show-actuator'; NestedCondition on MultipleOpenApiSupportCondition.OnMultipleOpenApiSupportCondition AnyNestedCondition 0 matched 3 did not; NestedCondition on MultipleOpenApiGroupsCondition.OnListGroupedOpenApiBean @ConditionalOnBean (types: org.springdoc.core.models.GroupedOpenApi; SearchStrategy: all) did not find any beans of type org.springdoc.core.models.GroupedOpenApi; NestedCondition on MultipleOpenApiGroupsCondition.OnGroupConfigProperty @ConditionalOnProperty (springdoc.group-configs[0].group) did not find property 'springdoc.group-configs[0].group'; NestedCondition on MultipleOpenApiGroupsCondition.OnGroupedOpenApiBean @ConditionalOnBean (types: org.springdoc.core.models.GroupedOpenApi; SearchStrategy: all) did not find any beans of type org.springdoc.core.models.GroupedOpenApi (MultipleOpenApiSupportCondition)
+      Matched:
+         - found 'session' scope (OnWebApplicationCondition)
+         - @ConditionalOnProperty (springdoc.api-docs.enabled) matched (OnPropertyCondition)
+
+   SpringDocConfiguration#springdocBeanFactoryPostProcessor:
+      Did not match:
+         - AnyNestedCondition 0 matched 2 did not; NestedCondition on CacheOrGroupedOpenApiCondition.OnCacheDisabled found non-matching nested conditions @ConditionalOnProperty (springdoc.cache.disabled) did not find property 'springdoc.cache.disabled'; NestedCondition on CacheOrGroupedOpenApiCondition.OnMultipleOpenApiSupportCondition AnyNestedCondition 0 matched 2 did not; NestedCondition on MultipleOpenApiSupportCondition.OnActuatorDifferentPort found non-matching nested conditions Management Port actual port type (SAME) did not match required type (DIFFERENT), @ConditionalOnProperty (springdoc.show-actuator) found different value in property 'springdoc.show-actuator'; NestedCondition on MultipleOpenApiSupportCondition.OnMultipleOpenApiSupportCondition AnyNestedCondition 0 matched 3 did not; NestedCondition on MultipleOpenApiGroupsCondition.OnListGroupedOpenApiBean @ConditionalOnBean (types: org.springdoc.core.models.GroupedOpenApi; SearchStrategy: all) did not find any beans of type org.springdoc.core.models.GroupedOpenApi; NestedCondition on MultipleOpenApiGroupsCondition.OnGroupConfigProperty @ConditionalOnProperty (springdoc.group-configs[0].group) did not find property 'springdoc.group-configs[0].group'; NestedCondition on MultipleOpenApiGroupsCondition.OnGroupedOpenApiBean @ConditionalOnBean (types: org.springdoc.core.models.GroupedOpenApi; SearchStrategy: all) did not find any beans of type org.springdoc.core.models.GroupedOpenApi (CacheOrGroupedOpenApiCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.boot.context.properties.bind.BindResult' (OnClassCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2025-06-25 19:45:02 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 19:45:02 [Thread-27] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:45:03 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:45:04 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:45:04 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:45:04 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:45:04 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:45:05 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:45:05 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:45:05 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:45:05 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:45:05 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 618 ms
+2025-06-25 19:45:05 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+2025-06-25 19:45:05 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:45:05 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:45:05 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:45:05 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:18) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:45:07 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:45:07 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:45:07 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:45:08 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:45:08 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:45:08 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:45:08 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:45:08 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:45:08 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 453 ms
+2025-06-25 19:45:08 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+2025-06-25 19:45:08 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:45:08 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:45:08 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:45:08 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:18) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:45:10 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:45:10 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:45:10 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:45:10 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:45:10 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:45:10 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:45:10 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:45:11 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:45:11 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 663 ms
+2025-06-25 19:45:11 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+2025-06-25 19:45:11 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:45:11 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:45:11 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:45:11 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:18) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:45:13 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:45:13 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:45:13 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:45:13 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:45:13 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:45:13 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:45:13 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:45:13 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:45:13 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 402 ms
+2025-06-25 19:45:13 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+2025-06-25 19:45:13 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:45:13 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:45:13 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:45:13 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:22) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:45:52 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:45:52 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:45:52 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:45:53 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:45:53 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:45:53 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:45:53 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:45:53 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:45:53 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 462 ms
+2025-06-25 19:45:53 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+2025-06-25 19:45:53 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:45:53 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:45:53 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:45:53 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:22) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:45:56 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:45:56 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:45:56 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:45:57 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:45:57 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:45:57 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:45:57 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:45:57 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:45:57 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1017 ms
+2025-06-25 19:45:57 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+2025-06-25 19:45:57 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:45:57 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:45:57 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:45:57 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:18) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:46:00 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:46:00 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:46:00 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:46:01 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:46:01 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:46:01 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:46:01 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:46:01 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:46:01 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 841 ms
+2025-06-25 19:46:01 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+2025-06-25 19:46:01 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:46:01 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:46:01 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:46:01 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problems: 
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+	The method addUrl(String) in the type SwaggerUiConfigParameters is not applicable for the arguments (String, String)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:18) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:46:03 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:46:03 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:46:03 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:46:04 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:46:04 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:46:04 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:46:04 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:46:04 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:46:04 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 409 ms
+2025-06-25 19:46:04 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+2025-06-25 19:46:04 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:46:04 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:46:04 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:46:04 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:22) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:46:16 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:46:16 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:46:16 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:46:17 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:46:17 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:46:17 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:46:17 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:46:17 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:46:17 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 400 ms
+2025-06-25 19:46:17 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+2025-06-25 19:46:17 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:46:17 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:46:17 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:46:17 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:22) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:46:19 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:46:19 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:46:19 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:46:19 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:46:20 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:46:20 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:46:20 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:46:20 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:46:20 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 815 ms
+2025-06-25 19:46:20 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+2025-06-25 19:46:20 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:46:20 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:46:20 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:46:20 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:22) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:46:22 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:46:22 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:46:22 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:46:23 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c80bf6c7-7def-34a9-b3b4-7034315007e5
+2025-06-25 19:46:23 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:46:23 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:46:23 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:46:23 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:46:23 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 833 ms
+2025-06-25 19:46:23 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+2025-06-25 19:46:23 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-25 19:46:23 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:46:23 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-25 19:46:23 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'swaggerUiConfigParameters' defined in class path resource [com/g47/cem/cemgateway/config/GatewaySwaggerConfig.class]: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:657) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:489) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1375) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1205) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.7.jar:6.2.7]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:753) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362) ~[spring-boot-3.5.0.jar:3.5.0]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351) ~[spring-boot-3.5.0.jar:3.5.0]
+	at com.g47.cem.cemgateway.CemGatewayApplication.main(CemGatewayApplication.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.5.0.jar:3.5.0]
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springdoc.core.properties.SwaggerUiConfigParameters]: Factory method 'swaggerUiConfigParameters' threw exception with message: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:199) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiateWithFactoryMethod(SimpleInstantiationStrategy.java:88) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:168) ~[spring-beans-6.2.7.jar:6.2.7]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 26 common frames omitted
+Caused by: java.lang.Error: Unresolved compilation problem: 
+	The method setUrls(Set<AbstractSwaggerUiConfigProperties.SwaggerUrl>) in the type AbstractSwaggerUiConfigProperties is not applicable for the arguments (Set<String>)
+
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig.swaggerUiConfigParameters(GatewaySwaggerConfig.java:22) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.CGLIB$swaggerUiConfigParameters$0(<generated>) ~[classes/:na]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$FastClass$$1.invoke(<generated>) ~[classes/:na]
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:258) ~[spring-core-6.2.7.jar:6.2.7]
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:393) ~[spring-context-6.2.7.jar:6.2.7]
+	at com.g47.cem.cemgateway.config.GatewaySwaggerConfig$$SpringCGLIB$$0.swaggerUiConfigParameters(<generated>) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.lambda$instantiate$0(SimpleInstantiationStrategy.java:171) ~[spring-beans-6.2.7.jar:6.2.7]
+	... 29 common frames omitted
+2025-06-25 19:46:26 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:46:26 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:46:26 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:46:26 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 19:46:27 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:46:27 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:46:27 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:46:27 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:46:27 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 635 ms
+2025-06-25 19:46:27 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:46:27 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:46:27 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:46:28 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 2.473 seconds (process running for 336.815)
+2025-06-25 19:46:28 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:46:28 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-06-25 19:46:30 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2025-06-25 19:46:30 [Thread-33] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:46:31 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:46:32 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:46:32 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:46:32 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:46:33 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 19:46:33 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:46:33 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:46:33 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:46:33 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:46:33 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 876 ms
+2025-06-25 19:46:33 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:46:34 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:46:34 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:46:35 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 19:46:35 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 3.825 seconds (process running for 344.359)
+2025-06-25 19:46:35 [Thread-83] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:46:35 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:46:35 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-06-25 19:46:36 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:46:37 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:46:37 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:46:37 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:46:38 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=48ab0038-15cc-3df2-9273-c9ca1ebd2195
+2025-06-25 19:46:38 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:46:38 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:46:38 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:46:38 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:46:38 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 455 ms
+2025-06-25 19:46:38 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:46:39 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:46:39 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:46:39 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 2.867 seconds (process running for 348.379)
+2025-06-25 19:46:39 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:46:39 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-06-25 19:46:39 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 19:46:39 [Thread-89] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:46:40 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:46:41 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 12732 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:46:41 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:46:41 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:46:42 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 19:46:42 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:46:42 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:46:42 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:46:42 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:46:42 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 405 ms
+2025-06-25 19:46:42 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:46:42 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:46:42 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:46:43 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 2.057 seconds (process running for 351.682)
+2025-06-25 19:46:43 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:46:43 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-06-25 19:47:11 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:47:12 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:47:32 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 27804 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:47:32 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:47:32 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:47:32 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 19:47:32 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 19:47:34 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 19:47:35 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:47:35 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:47:35 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:47:35 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:47:35 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2790 ms
+2025-06-25 19:47:36 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:47:36 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:47:36 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:47:37 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 7.329 seconds (process running for 8.507)
+2025-06-25 19:47:37 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 126
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:47:58 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 19:47:58 [Thread-6] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:47:58 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:47:59 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 27804 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:47:59 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:47:59 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:47:59 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 19:47:59 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:47:59 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:47:59 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:47:59 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:47:59 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 535 ms
+2025-06-25 19:48:00 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:48:00 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:48:00 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:48:01 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 2.362 seconds (process running for 32.424)
+2025-06-25 19:48:01 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 133
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 19:48:01 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-06-25 19:50:19 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 19:50:21 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 19:52:58 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 18720 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 19:52:58 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 19:52:58 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 19:52:58 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 19:52:58 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 19:53:00 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 19:53:00 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 19:53:01 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 19:53:01 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 19:53:01 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 19:53:01 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2487 ms
+2025-06-25 19:53:02 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 19:53:02 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 19:53:02 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 19:53:02 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 19:53:02 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-25 19:53:02 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-06-25 19:53:03 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 7.145 seconds (process running for 8.238)
+2025-06-25 19:53:03 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 133
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 20:12:05 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 20:12:06 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-25 20:12:34 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Starting CemGatewayApplication using Java 17.0.11 with PID 23128 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 20:12:34 [restartedMain] DEBUG c.g.c.c.CemGatewayApplication - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:12:34 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:12:35 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 20:12:35 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 20:12:37 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 20:12:37 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-25 20:12:37 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-25 20:12:37 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:12:37 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:12:37 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2723 ms
+2025-06-25 20:12:38 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-06-25 20:12:40 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:12:40 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 20:12:42 [restartedMain] INFO  c.g.c.c.CemGatewayApplication - Started CemGatewayApplication in 10.071 seconds (process running for 11.398)
+2025-06-25 20:12:42 [restartedMain] WARN  o.s.b.c.p.m.PropertiesMigrationListener - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 133
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+

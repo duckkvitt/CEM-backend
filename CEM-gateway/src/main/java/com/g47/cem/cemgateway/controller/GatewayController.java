@@ -1,72 +1,52 @@
 package com.g47.cem.cemgateway.controller;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
-
 @RestController
 @RequestMapping("/gateway")
-@Slf4j
-@Tag(name = "Gateway", description = "Gateway management APIs")
 public class GatewayController {
 
-    @Value("${spring.application.name}")
-    private String applicationName;
-
     @GetMapping("/health")
-    @Operation(summary = "Gateway health check", description = "Check if gateway service is running")
-    public ResponseEntity<Map<String, Object>> healthCheck() {
+    public ResponseEntity<Map<String, Object>> health() {
         Map<String, Object> response = new HashMap<>();
-        response.put("service", applicationName);
         response.put("status", "UP");
-        response.put("timestamp", LocalDateTime.now());
-        response.put("message", "Gateway service is running");
+        response.put("message", "CEM Gateway is running");
+        response.put("timestamp", System.currentTimeMillis());
         
-        log.debug("Gateway health check requested");
+        Map<String, String> services = new HashMap<>();
+        services.put("auth-service", "http://localhost:8081/api/auth");
+        services.put("customer-service", "http://localhost:8082/api/customer");
+        services.put("device-service", "http://localhost:8083/api/device");
+        response.put("services", services);
         
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/info")
-    @Operation(summary = "Gateway information", description = "Get gateway service information")
-    public ResponseEntity<Map<String, Object>> getInfo() {
+    public ResponseEntity<Map<String, Object>> info() {
         Map<String, Object> response = new HashMap<>();
-        response.put("service", applicationName);
+        response.put("name", "CEM Gateway Service");
         response.put("version", "1.0.0");
-        response.put("description", "CEM API Gateway Service");
-        response.put("timestamp", LocalDateTime.now());
+        response.put("description", "API Gateway for CEM microservices architecture");
         
-        Map<String, Object> routes = new HashMap<>();
-        routes.put("auth-service", "http://localhost:8081");
-        // Add more routes as services are added
+        Map<String, String> routes = new HashMap<>();
+        routes.put("/api/auth/**", "Authentication Service (port 8081)");
+        routes.put("/api/customer/**", "Customer Service (port 8082)");
+        routes.put("/api/device/**", "Device Service (port 8083)");
         response.put("routes", routes);
         
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/status")
-    @Operation(summary = "Gateway status", description = "Get detailed gateway status")
-    public ResponseEntity<Map<String, Object>> getStatus() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("service", applicationName);
-        response.put("uptime", LocalDateTime.now());
-        response.put("status", "HEALTHY");
-        
-        // Add circuit breaker status
-        Map<String, String> circuitBreakers = new HashMap<>();
-        circuitBreakers.put("auth-service", "CLOSED");
-        response.put("circuitBreakers", circuitBreakers);
+        Map<String, String> swaggerUrls = new HashMap<>();
+        swaggerUrls.put("auth", "http://localhost:8081/api/auth/swagger-ui.html");
+        swaggerUrls.put("customer", "http://localhost:8082/api/customer/swagger-ui.html");
+        swaggerUrls.put("device", "http://localhost:8083/api/device/swagger-ui.html");
+        response.put("swagger-urls", swaggerUrls);
         
         return ResponseEntity.ok(response);
     }
-} 
+}

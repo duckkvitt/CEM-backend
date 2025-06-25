@@ -42,4 +42,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User u SET u.emailVerified = :verified, u.emailVerificationToken = NULL WHERE u.id = :userId")
     void updateEmailVerificationStatus(@Param("userId") Long userId, @Param("verified") Boolean verified);
+
+    // NEW CODE: add dynamic filter query for user search
+    @Query("SELECT u FROM User u WHERE " +
+           "(:search IS NULL OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) " +
+           "OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) " +
+           "OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) " +
+           "OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
+           "(:roleId IS NULL OR u.role.id = :roleId) AND " +
+           "(:status IS NULL OR u.status = :status)")
+    Page<User> findUsersWithFilters(@Param("search") String search,
+                                    @Param("roleId") Long roleId,
+                                    @Param("status") AccountStatus status,
+                                    Pageable pageable);
 } 

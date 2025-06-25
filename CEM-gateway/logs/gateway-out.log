@@ -8,36 +8,29 @@
 
  :: Spring Boot ::                (v3.5.0)
 
-2025-06-25 01:40:23 - Starting CemGatewayApplication using Java 17.0.11 with PID 20196 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
-2025-06-25 01:40:23 - Running with Spring Boot v3.5.0, Spring v6.2.7
-2025-06-25 01:40:23 - No active profile set, falling back to 1 default profile: "default"
-2025-06-25 01:40:23 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2025-06-25 01:40:23 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2025-06-25 01:40:25 - BeanFactory id=a68f30a2-4464-33ae-957d-8ecada9a3cdc
-2025-06-25 01:40:26 - Tomcat initialized with port 8080 (http)
-2025-06-25 01:40:26 - Starting service [Tomcat]
-2025-06-25 01:40:26 - Starting Servlet engine: [Apache Tomcat/10.1.41]
-2025-06-25 01:40:26 - Initializing Spring embedded WebApplicationContext
-2025-06-25 01:40:26 - Root WebApplicationContext: initialization completed in 2935 ms
-2025-06-25 01:40:27 - LiveReload server is running on port 35729
-2025-06-25 01:40:28 - Exposing 3 endpoints beneath base path '/actuator'
-2025-06-25 01:40:28 - Tomcat started on port 8080 (http) with context path '/api'
-2025-06-25 01:40:29 - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-06-25 01:40:29 - Initializing Servlet 'dispatcherServlet'
-2025-06-25 01:40:29 - Completed initialization in 3 ms
-2025-06-25 01:40:29 - Started CemGatewayApplication in 8.088 seconds (process running for 9.497)
-2025-06-25 01:40:29 - 
+2025-06-25 20:12:34 - Starting CemGatewayApplication using Java 17.0.11 with PID 23128 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 20:12:34 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:12:34 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:12:35 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 20:12:35 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 20:12:37 - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 20:12:37 - Tomcat initialized with port 8080 (http)
+2025-06-25 20:12:37 - Starting service [Tomcat]
+2025-06-25 20:12:37 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:12:37 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:12:37 - Root WebApplicationContext: initialization completed in 2723 ms
+2025-06-25 20:12:38 - LiveReload server is running on port 35729
+2025-06-25 20:12:40 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:12:40 - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 20:12:42 - Started CemGatewayApplication in 10.071 seconds (process running for 11.398)
+2025-06-25 20:12:42 - 
 The use of configuration keys that have been renamed was found in the environment:
 
 Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
 	Key: management.metrics.export.prometheus.enabled
-		Line: 126
+		Line: 133
 		Replacement: management.prometheus.metrics.export.enabled
 
 
 Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
 
-2025-06-25 01:40:29 - Init duration for springdoc-openapi is: 309 ms
-2025-06-25 01:43:35 - Init duration for springdoc-openapi is: 433 ms
-2025-06-25 01:43:41 - Init duration for springdoc-openapi is: 68 ms
-2025-06-25 01:43:42 - Init duration for springdoc-openapi is: 48 ms

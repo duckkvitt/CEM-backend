@@ -8,28 +8,28 @@
 
  :: Spring Boot ::                (v3.5.0)
 
-2025-06-25 01:40:21 - Starting CemAuthenticationApplication using Java 17.0.11 with PID 34136 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
-2025-06-25 01:40:21 - Running with Spring Boot v3.5.0, Spring v6.2.7
-2025-06-25 01:40:21 - No active profile set, falling back to 1 default profile: "default"
-2025-06-25 01:40:21 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2025-06-25 01:40:21 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2025-06-25 01:40:22 - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
-2025-06-25 01:40:23 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-06-25 01:40:23 - Finished Spring Data repository scanning in 85 ms. Found 2 JPA repository interfaces.
-2025-06-25 01:40:25 - Tomcat initialized with port 8081 (http)
-2025-06-25 01:40:25 - Starting service [Tomcat]
-2025-06-25 01:40:25 - Starting Servlet engine: [Apache Tomcat/10.1.41]
-2025-06-25 01:40:25 - Initializing Spring embedded WebApplicationContext
-2025-06-25 01:40:25 - Root WebApplicationContext: initialization completed in 4042 ms
-2025-06-25 01:40:25 - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-06-25 01:40:25 - HHH000412: Hibernate ORM core version 6.6.15.Final
-2025-06-25 01:40:25 - HHH000026: Second-level cache disabled
-2025-06-25 01:40:26 - No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-06-25 01:40:26 - HikariPool-AUTH - Starting...
-2025-06-25 01:40:27 - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@127343a7
-2025-06-25 01:40:27 - HikariPool-AUTH - Start completed.
-2025-06-25 01:40:27 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2025-06-25 01:40:27 - HHH10001005: Database info:
+2025-06-25 20:12:32 - Starting CemAuthenticationApplication using Java 17.0.11 with PID 24456 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 20:12:32 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:12:32 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:12:32 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 20:12:32 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 20:12:33 - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 20:12:34 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 20:12:34 - Finished Spring Data repository scanning in 74 ms. Found 2 JPA repository interfaces.
+2025-06-25 20:12:35 - Tomcat initialized with port 8081 (http)
+2025-06-25 20:12:35 - Starting service [Tomcat]
+2025-06-25 20:12:35 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:12:35 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:12:35 - Root WebApplicationContext: initialization completed in 3759 ms
+2025-06-25 20:12:36 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 20:12:36 - HHH000412: Hibernate ORM core version 6.6.15.Final
+2025-06-25 20:12:36 - HHH000026: Second-level cache disabled
+2025-06-25 20:12:37 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 20:12:37 - HikariPool-AUTH - Starting...
+2025-06-25 20:12:38 - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@b385872
+2025-06-25 20:12:38 - HikariPool-AUTH - Start completed.
+2025-06-25 20:12:38 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 20:12:38 - HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
 	Database driver: undefined/unknown
 	Database version: 16.9
@@ -37,159 +37,35 @@
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2025-06-25 01:40:29 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2025-06-25 01:40:29 - 
-    set client_min_messages = WARNING
-2025-06-25 01:40:29 - 
-    alter table if exists users 
-       drop constraint if exists FKp56c1712k691lhsyewcssf40f
-2025-06-25 01:40:29 - 
-    drop table if exists roles cascade
-2025-06-25 01:40:29 - 
-    drop table if exists users cascade
-2025-06-25 01:40:29 - 
-    create table roles (
-        created_at timestamp(6) not null,
-        id bigint generated by default as identity,
-        updated_at timestamp(6),
-        name varchar(50) not null unique,
-        description varchar(255),
-        primary key (id)
-    )
-2025-06-25 01:40:29 - 
-    create table users (
-        email_verified boolean,
-        login_attempts integer,
-        created_at timestamp(6) not null,
-        id bigint generated by default as identity,
-        last_login_at timestamp(6),
-        locked_until timestamp(6),
-        password_reset_expires_at timestamp(6),
-        role_id bigint not null,
-        updated_at timestamp(6),
-        phone varchar(15),
-        first_name varchar(100) not null,
-        last_name varchar(100) not null,
-        created_by varchar(255),
-        email varchar(255) not null unique,
-        email_verification_token varchar(255),
-        password varchar(255) not null,
-        password_reset_token varchar(255),
-        status varchar(255) not null check (status in ('ACTIVE','INACTIVE','SUSPENDED','PENDING_VERIFICATION','DELETED')),
-        primary key (id)
-    )
-2025-06-25 01:40:29 - 
-    alter table if exists users 
-       add constraint FKp56c1712k691lhsyewcssf40f 
-       foreign key (role_id) 
-       references roles
-2025-06-25 01:40:29 - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-06-25 01:40:30 - Hibernate is in classpath; If applicable, HQL parser will be used.
-2025-06-25 01:40:31 - Filter 'jwtAuthenticationFilter' configured for use
-2025-06-25 01:40:31 - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
-2025-06-25 01:40:31 - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-2025-06-25 01:40:31 - Exposing 3 endpoints beneath base path '/actuator'
-2025-06-25 01:40:32 - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
-2025-06-25 01:40:32 - Unable to start LiveReload server
-2025-06-25 01:40:32 - Tomcat started on port 8081 (http) with context path '/api/auth'
-2025-06-25 01:40:32 - Started CemAuthenticationApplication in 12.514 seconds (process running for 13.792)
-2025-06-25 01:40:32 - Initializing default roles
-2025-06-25 01:40:32 - 
-    /* <criteria> */ select
-        r1_0.id 
+2025-06-25 20:12:39 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 20:12:40 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:12:40 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-25 20:12:44 - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 20:12:44 - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 20:12:44 - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 20:12:45 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:12:45 - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 20:12:46 - Unable to start LiveReload server
+2025-06-25 20:12:46 - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 20:12:46 - Started CemAuthenticationApplication in 15.143 seconds (process running for 15.984)
+2025-06-25 20:12:46 - Initializing default roles (only if table is empty)
+2025-06-25 20:12:46 - 
+    /* select
+        count(*) 
     from
-        roles r1_0 
-    where
-        r1_0.name=? 
-    fetch
-        first ? rows only
-2025-06-25 01:40:33 - 
-    /* insert for
-        com.g47.cem.cemauthentication.entity.Role */insert 
-    into
-        roles (created_at, description, name, updated_at) 
-    values
-        (?, ?, ?, ?)
-2025-06-25 01:40:33 - Created default ADMINISTRATOR role
-2025-06-25 01:40:33 - 
-    /* <criteria> */ select
-        r1_0.id 
-    from
-        roles r1_0 
-    where
-        r1_0.name=? 
-    fetch
-        first ? rows only
-2025-06-25 01:40:33 - 
-    /* insert for
-        com.g47.cem.cemauthentication.entity.Role */insert 
-    into
-        roles (created_at, description, name, updated_at) 
-    values
-        (?, ?, ?, ?)
-2025-06-25 01:40:33 - Created default STAFF role
-2025-06-25 01:40:33 - 
-    /* <criteria> */ select
-        r1_0.id 
-    from
-        roles r1_0 
-    where
-        r1_0.name=? 
-    fetch
-        first ? rows only
-2025-06-25 01:40:33 - 
-    /* insert for
-        com.g47.cem.cemauthentication.entity.Role */insert 
-    into
-        roles (created_at, description, name, updated_at) 
-    values
-        (?, ?, ?, ?)
-2025-06-25 01:40:33 - Created default MANAGER role
-2025-06-25 01:40:33 - 
-    /* <criteria> */ select
-        r1_0.id 
-    from
-        roles r1_0 
-    where
-        r1_0.name=? 
-    fetch
-        first ? rows only
-2025-06-25 01:40:33 - 
-    /* insert for
-        com.g47.cem.cemauthentication.entity.Role */insert 
-    into
-        roles (created_at, description, name, updated_at) 
-    values
-        (?, ?, ?, ?)
-2025-06-25 01:40:33 - Created default CUSTOMER role
-2025-06-25 01:40:33 - 
-    /* <criteria> */ select
-        r1_0.id 
-    from
-        roles r1_0 
-    where
-        r1_0.name=? 
-    fetch
-        first ? rows only
-2025-06-25 01:40:33 - 
-    /* insert for
-        com.g47.cem.cemauthentication.entity.Role */insert 
-    into
-        roles (created_at, description, name, updated_at) 
-    values
-        (?, ?, ?, ?)
-2025-06-25 01:40:33 - Created default SUPPORT_TEAM role
-2025-06-25 01:40:33 - Initializing default administrator account
-2025-06-25 01:40:33 - 
-    /* <criteria> */ select
-        u1_0.id 
-    from
-        users u1_0 
-    where
-        u1_0.email=? 
-    fetch
-        first ? rows only
-2025-06-25 01:40:33 - 
+        Role x */ select
+            count(*) 
+        from
+            roles r1_0
+2025-06-25 20:12:46 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 20:12:46 - Initializing Servlet 'dispatcherServlet'
+2025-06-25 20:12:46 - Completed initialization in 2 ms
+2025-06-25 20:12:46 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:12:46 - Securing OPTIONS /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:12:46 - Roles already present -> seeding skipped
+2025-06-25 20:12:46 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:12:46 - Securing GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:12:46 - 
     /* <criteria> */ select
         r1_0.id,
         r1_0.created_at,
@@ -200,11 +76,2869 @@
         roles r1_0 
     where
         r1_0.name=?
-2025-06-25 01:40:34 - 
+2025-06-25 20:12:46 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:12:46 - Loading user by email: admin@cem.local
+2025-06-25 20:12:46 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:12:46 - Loading user by email: admin@cem.local
+2025-06-25 20:12:46 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:12:46 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:12:46 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:12:46 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:12:46 - Default admin account already exists – leaving role/password unchanged
+2025-06-25 20:12:46 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:12:46 - Secured GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:12:46 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:12:46 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:12:46 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:12:46 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:12:46 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:12:46 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:12:46 - Get all roles request received
+2025-06-25 20:12:46 - Get users request received: search=null, roleId=null, status=null
+2025-06-25 20:12:46 - Fetching all roles
+2025-06-25 20:12:46 - Fetching users with filters search=, roleId=null, status=null page=0 size=20
+2025-06-25 20:12:46 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:12:46 - 
+    /* SELECT
+        u 
+    FROM
+        User u 
+    WHERE
+        (
+            :search IS NULL 
+            OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+        ) 
+        AND (
+            :roleId IS NULL 
+            OR u.role.id = :roleId
+        ) 
+        AND (
+            :status IS NULL 
+            OR u.status = :status
+        ) 
+    order by
+        u.createdAt desc */ select
+            u1_0.id,
+            u1_0.created_at,
+            u1_0.created_by,
+            u1_0.email,
+            u1_0.email_verification_token,
+            u1_0.email_verified,
+            u1_0.first_name,
+            u1_0.last_login_at,
+            u1_0.last_name,
+            u1_0.locked_until,
+            u1_0.login_attempts,
+            u1_0.password,
+            u1_0.password_reset_expires_at,
+            u1_0.password_reset_token,
+            u1_0.phone,
+            u1_0.role_id,
+            u1_0.status,
+            u1_0.updated_at 
+        from
+            users u1_0 
+        where
+            (
+                ? is null 
+                or lower(u1_0.first_name) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.last_name) like lower(('%'||?||'%')) escape '' 
+                or lower((u1_0.first_name||' '||u1_0.last_name)) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.email) like lower(('%'||?||'%')) escape ''
+            ) 
+            and (
+                ? is null 
+                or u1_0.role_id=?
+            ) 
+            and (
+                ? is null 
+                or u1_0.status=?
+            ) 
+        order by
+            u1_0.created_at desc 
+        fetch
+            first ? rows only
+2025-06-25 20:12:46 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:12:48 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:12:48 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:12:49 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:12:49 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:12:49 - Loading user by email: admin@cem.local
+2025-06-25 20:12:49 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:12:49 - Loading user by email: admin@cem.local
+2025-06-25 20:12:49 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:12:49 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:12:49 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:12:49 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:12:49 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:12:49 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:12:49 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:12:49 - Get all roles request received
+2025-06-25 20:12:49 - Fetching all roles
+2025-06-25 20:12:49 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:12:49 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:12:49 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:12:49 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:12:49 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:12:49 - Get all roles request received
+2025-06-25 20:12:49 - Fetching all roles
+2025-06-25 20:12:49 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:13:15 - Securing POST /v1/auth/admin/create-user
+2025-06-25 20:13:15 - Loading user by email: admin@cem.local
+2025-06-25 20:13:15 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:13:15 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:15 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:13:15 - Secured POST /v1/auth/admin/create-user
+2025-06-25 20:13:15 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.createUser(com.g47.cem.cemauthentication.dto.request.CreateUserRequest,org.springframework.security.core.Authentication,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:15 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.createUser(com.g47.cem.cemauthentication.dto.request.CreateUserRequest,org.springframework.security.core.Authentication,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:15 - Create user request received by admin: admin@cem.local for email: longrpk200316@gmail.com
+2025-06-25 20:13:15 - Creating user account by admin: admin@cem.local for email: longrpk200316@gmail.com
+2025-06-25 20:13:15 - 
+    /* <criteria> */ select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2025-06-25 20:13:15 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:16 - 
     /* insert for
         com.g47.cem.cemauthentication.entity.User */insert 
     into
         users (created_at, created_by, email, email_verification_token, email_verified, first_name, last_login_at, last_name, locked_until, login_attempts, password, password_reset_expires_at, password_reset_token, phone, role_id, status, updated_at) 
     values
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-2025-06-25 01:40:34 - Default administrator account created successfully: admin@cem.com
+2025-06-25 20:13:16 - User account created successfully by admin: admin@cem.local for email: longrpk200316@gmail.com
+2025-06-25 20:13:16 - Handling UserCreatedEvent - sending account email to longrpk200316@gmail.com
+2025-06-25 20:13:16 - Sending account creation email to: longrpk200316@gmail.com
+2025-06-25 20:13:17 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:13:17 - Securing OPTIONS /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:13:17 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:13:17 - Securing OPTIONS /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:13:17 - Securing GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:13:17 - Securing GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:13:17 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:13:17 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:13:17 - Loading user by email: admin@cem.local
+2025-06-25 20:13:17 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:13:17 - Loading user by email: admin@cem.local
+2025-06-25 20:13:17 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:13:17 - Loading user by email: admin@cem.local
+2025-06-25 20:13:17 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:13:17 - Loading user by email: admin@cem.local
+2025-06-25 20:13:17 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:13:17 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:17 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:17 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:17 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:18 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:13:18 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:13:18 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:18 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:18 - Get all roles request received
+2025-06-25 20:13:18 - Fetching all roles
+2025-06-25 20:13:18 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:13:18 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:13:18 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:13:18 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:18 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:18 - Get all roles request received
+2025-06-25 20:13:18 - Fetching all roles
+2025-06-25 20:13:18 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:13:18 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:13:18 - Secured GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:13:18 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:18 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:18 - Get users request received: search=null, roleId=null, status=null
+2025-06-25 20:13:18 - Fetching users with filters search=, roleId=null, status=null page=0 size=20
+2025-06-25 20:13:18 - 
+    /* SELECT
+        u 
+    FROM
+        User u 
+    WHERE
+        (
+            :search IS NULL 
+            OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+        ) 
+        AND (
+            :roleId IS NULL 
+            OR u.role.id = :roleId
+        ) 
+        AND (
+            :status IS NULL 
+            OR u.status = :status
+        ) 
+    order by
+        u.createdAt desc */ select
+            u1_0.id,
+            u1_0.created_at,
+            u1_0.created_by,
+            u1_0.email,
+            u1_0.email_verification_token,
+            u1_0.email_verified,
+            u1_0.first_name,
+            u1_0.last_login_at,
+            u1_0.last_name,
+            u1_0.locked_until,
+            u1_0.login_attempts,
+            u1_0.password,
+            u1_0.password_reset_expires_at,
+            u1_0.password_reset_token,
+            u1_0.phone,
+            u1_0.role_id,
+            u1_0.status,
+            u1_0.updated_at 
+        from
+            users u1_0 
+        where
+            (
+                ? is null 
+                or lower(u1_0.first_name) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.last_name) like lower(('%'||?||'%')) escape '' 
+                or lower((u1_0.first_name||' '||u1_0.last_name)) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.email) like lower(('%'||?||'%')) escape ''
+            ) 
+            and (
+                ? is null 
+                or u1_0.role_id=?
+            ) 
+            and (
+                ? is null 
+                or u1_0.status=?
+            ) 
+        order by
+            u1_0.created_at desc 
+        fetch
+            first ? rows only
+2025-06-25 20:13:18 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:13:18 - Secured GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:13:18 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:18 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:13:18 - Get users request received: search=null, roleId=null, status=null
+2025-06-25 20:13:18 - Fetching users with filters search=, roleId=null, status=null page=0 size=20
+2025-06-25 20:13:18 - 
+    /* SELECT
+        u 
+    FROM
+        User u 
+    WHERE
+        (
+            :search IS NULL 
+            OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+        ) 
+        AND (
+            :roleId IS NULL 
+            OR u.role.id = :roleId
+        ) 
+        AND (
+            :status IS NULL 
+            OR u.status = :status
+        ) 
+    order by
+        u.createdAt desc */ select
+            u1_0.id,
+            u1_0.created_at,
+            u1_0.created_by,
+            u1_0.email,
+            u1_0.email_verification_token,
+            u1_0.email_verified,
+            u1_0.first_name,
+            u1_0.last_login_at,
+            u1_0.last_name,
+            u1_0.locked_until,
+            u1_0.login_attempts,
+            u1_0.password,
+            u1_0.password_reset_expires_at,
+            u1_0.password_reset_token,
+            u1_0.phone,
+            u1_0.role_id,
+            u1_0.status,
+            u1_0.updated_at 
+        from
+            users u1_0 
+        where
+            (
+                ? is null 
+                or lower(u1_0.first_name) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.last_name) like lower(('%'||?||'%')) escape '' 
+                or lower((u1_0.first_name||' '||u1_0.last_name)) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.email) like lower(('%'||?||'%')) escape ''
+            ) 
+            and (
+                ? is null 
+                or u1_0.role_id=?
+            ) 
+            and (
+                ? is null 
+                or u1_0.status=?
+            ) 
+        order by
+            u1_0.created_at desc 
+        fetch
+            first ? rows only
+2025-06-25 20:13:18 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:18 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:18 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:18 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:13:19 - Failed to send account creation email to: longrpk200316@gmail.com. Error: Authentication failed
+org.springframework.mail.MailAuthenticationException: Authentication failed
+	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:402)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:317)
+	at org.springframework.mail.MailSender.send(MailSender.java:42)
+	at com.g47.cem.cemauthentication.service.EmailService.sendAccountCreationEmail(EmailService.java:37)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:196)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.interceptor.AsyncExecutionInterceptor.lambda$invoke$0(AsyncExecutionInterceptor.java:114)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: jakarta.mail.AuthenticationFailedException: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d2e1a72fcca58-749c882cdc4sm4483764b3a.84 - gsmtp
+
+	at org.eclipse.angus.mail.smtp.SMTPTransport$Authenticator.authenticate(SMTPTransport.java:954)
+	at org.eclipse.angus.mail.smtp.SMTPTransport.authenticate(SMTPTransport.java:865)
+	at org.eclipse.angus.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:769)
+	at jakarta.mail.Service.connect(Service.java:345)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.connectTransport(JavaMailSenderImpl.java:480)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:399)
+	... 15 common frames omitted
+2025-06-25 20:15:03 - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 20:15:03 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 20:15:04 - Graceful shutdown complete
+2025-06-25 20:15:04 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:15:04 - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 20:15:05 - HikariPool-AUTH - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.0)
+
+2025-06-25 20:15:05 - Starting CemAuthenticationApplication using Java 17.0.11 with PID 24456 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 20:15:05 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:15:05 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:15:05 - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 20:15:05 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 20:15:05 - Finished Spring Data repository scanning in 13 ms. Found 2 JPA repository interfaces.
+2025-06-25 20:15:05 - Tomcat initialized with port 8081 (http)
+2025-06-25 20:15:05 - Starting service [Tomcat]
+2025-06-25 20:15:05 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:15:05 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:15:05 - Root WebApplicationContext: initialization completed in 778 ms
+2025-06-25 20:15:06 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 20:15:06 - HHH000026: Second-level cache disabled
+2025-06-25 20:15:06 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 20:15:06 - HikariPool-AUTH - Starting...
+2025-06-25 20:15:06 - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@40087ed7
+2025-06-25 20:15:06 - HikariPool-AUTH - Start completed.
+2025-06-25 20:15:06 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 20:15:06 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 20:15:06 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 20:15:07 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:15:07 - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 20:15:07 - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 20:15:07 - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 20:15:08 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:15:08 - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 20:15:08 - Unable to start LiveReload server
+2025-06-25 20:15:08 - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 20:15:08 - Started CemAuthenticationApplication in 3.339 seconds (process running for 158.255)
+2025-06-25 20:15:08 - Initializing default roles (only if table is empty)
+2025-06-25 20:15:08 - 
+    /* select
+        count(*) 
+    from
+        Role x */ select
+            count(*) 
+        from
+            roles r1_0
+2025-06-25 20:15:08 - Roles already present -> seeding skipped
+2025-06-25 20:15:08 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:15:08 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:15:08 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:15:08 - Default admin account already exists – leaving role/password unchanged
+2025-06-25 20:15:08 - Condition evaluation unchanged
+2025-06-25 20:15:20 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 20:15:20 - Initializing Servlet 'dispatcherServlet'
+2025-06-25 20:15:20 - Completed initialization in 2 ms
+2025-06-25 20:15:20 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:15:20 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:15:20 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:15:20 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:15:20 - Loading user by email: admin@cem.local
+2025-06-25 20:15:20 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:15:20 - Loading user by email: admin@cem.local
+2025-06-25 20:15:20 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:15:20 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:15:20 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:15:20 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:15:20 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:15:20 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:15:20 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:15:20 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:15:20 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:15:20 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:15:20 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:15:20 - Get all roles request received
+2025-06-25 20:15:20 - Get all roles request received
+2025-06-25 20:15:20 - Fetching all roles
+2025-06-25 20:15:20 - Fetching all roles
+2025-06-25 20:15:20 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:15:20 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:16:20 - Securing POST /v1/auth/admin/create-user
+2025-06-25 20:16:20 - Loading user by email: admin@cem.local
+2025-06-25 20:16:20 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:16:20 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:20 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:16:20 - Secured POST /v1/auth/admin/create-user
+2025-06-25 20:16:20 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.createUser(com.g47.cem.cemauthentication.dto.request.CreateUserRequest,org.springframework.security.core.Authentication,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:20 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.createUser(com.g47.cem.cemauthentication.dto.request.CreateUserRequest,org.springframework.security.core.Authentication,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:20 - Create user request received by admin: admin@cem.local for email: jimoroh409@iridales.com
+2025-06-25 20:16:20 - Creating user account by admin: admin@cem.local for email: jimoroh409@iridales.com
+2025-06-25 20:16:20 - 
+    /* <criteria> */ select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    fetch
+        first ? rows only
+2025-06-25 20:16:20 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:21 - 
+    /* insert for
+        com.g47.cem.cemauthentication.entity.User */insert 
+    into
+        users (created_at, created_by, email, email_verification_token, email_verified, first_name, last_login_at, last_name, locked_until, login_attempts, password, password_reset_expires_at, password_reset_token, phone, role_id, status, updated_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-06-25 20:16:21 - User account created successfully by admin: admin@cem.local for email: jimoroh409@iridales.com
+2025-06-25 20:16:21 - Handling UserCreatedEvent - sending account email to jimoroh409@iridales.com
+2025-06-25 20:16:21 - Sending account creation email to: jimoroh409@iridales.com
+2025-06-25 20:16:22 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:16:22 - Securing OPTIONS /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:16:22 - Securing OPTIONS /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:16:22 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:16:22 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:16:22 - Securing GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:16:22 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:16:22 - Securing GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:16:22 - Loading user by email: admin@cem.local
+2025-06-25 20:16:22 - Loading user by email: admin@cem.local
+2025-06-25 20:16:22 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:16:22 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:16:22 - Loading user by email: admin@cem.local
+2025-06-25 20:16:22 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:16:22 - Loading user by email: admin@cem.local
+2025-06-25 20:16:22 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:16:22 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:22 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:22 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:22 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:22 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:16:22 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:16:22 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:22 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:22 - Get all roles request received
+2025-06-25 20:16:22 - Fetching all roles
+2025-06-25 20:16:22 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:16:22 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:16:22 - Secured GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:16:22 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:22 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:22 - Get users request received: search=null, roleId=null, status=null
+2025-06-25 20:16:22 - Fetching users with filters search=, roleId=null, status=null page=0 size=20
+2025-06-25 20:16:22 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:16:22 - 
+    /* SELECT
+        u 
+    FROM
+        User u 
+    WHERE
+        (
+            :search IS NULL 
+            OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+        ) 
+        AND (
+            :roleId IS NULL 
+            OR u.role.id = :roleId
+        ) 
+        AND (
+            :status IS NULL 
+            OR u.status = :status
+        ) 
+    order by
+        u.createdAt desc */ select
+            u1_0.id,
+            u1_0.created_at,
+            u1_0.created_by,
+            u1_0.email,
+            u1_0.email_verification_token,
+            u1_0.email_verified,
+            u1_0.first_name,
+            u1_0.last_login_at,
+            u1_0.last_name,
+            u1_0.locked_until,
+            u1_0.login_attempts,
+            u1_0.password,
+            u1_0.password_reset_expires_at,
+            u1_0.password_reset_token,
+            u1_0.phone,
+            u1_0.role_id,
+            u1_0.status,
+            u1_0.updated_at 
+        from
+            users u1_0 
+        where
+            (
+                ? is null 
+                or lower(u1_0.first_name) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.last_name) like lower(('%'||?||'%')) escape '' 
+                or lower((u1_0.first_name||' '||u1_0.last_name)) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.email) like lower(('%'||?||'%')) escape ''
+            ) 
+            and (
+                ? is null 
+                or u1_0.role_id=?
+            ) 
+            and (
+                ? is null 
+                or u1_0.status=?
+            ) 
+        order by
+            u1_0.created_at desc 
+        fetch
+            first ? rows only
+2025-06-25 20:16:22 - Secured GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:16:22 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:22 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:22 - Get users request received: search=null, roleId=null, status=null
+2025-06-25 20:16:22 - Fetching users with filters search=, roleId=null, status=null page=0 size=20
+2025-06-25 20:16:22 - 
+    /* SELECT
+        u 
+    FROM
+        User u 
+    WHERE
+        (
+            :search IS NULL 
+            OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+        ) 
+        AND (
+            :roleId IS NULL 
+            OR u.role.id = :roleId
+        ) 
+        AND (
+            :status IS NULL 
+            OR u.status = :status
+        ) 
+    order by
+        u.createdAt desc */ select
+            u1_0.id,
+            u1_0.created_at,
+            u1_0.created_by,
+            u1_0.email,
+            u1_0.email_verification_token,
+            u1_0.email_verified,
+            u1_0.first_name,
+            u1_0.last_login_at,
+            u1_0.last_name,
+            u1_0.locked_until,
+            u1_0.login_attempts,
+            u1_0.password,
+            u1_0.password_reset_expires_at,
+            u1_0.password_reset_token,
+            u1_0.phone,
+            u1_0.role_id,
+            u1_0.status,
+            u1_0.updated_at 
+        from
+            users u1_0 
+        where
+            (
+                ? is null 
+                or lower(u1_0.first_name) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.last_name) like lower(('%'||?||'%')) escape '' 
+                or lower((u1_0.first_name||' '||u1_0.last_name)) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.email) like lower(('%'||?||'%')) escape ''
+            ) 
+            and (
+                ? is null 
+                or u1_0.role_id=?
+            ) 
+            and (
+                ? is null 
+                or u1_0.status=?
+            ) 
+        order by
+            u1_0.created_at desc 
+        fetch
+            first ? rows only
+2025-06-25 20:16:23 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:23 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:23 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:23 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:23 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:23 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:16:23 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:16:23 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:16:23 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:23 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:16:23 - Get all roles request received
+2025-06-25 20:16:23 - Fetching all roles
+2025-06-25 20:16:23 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:16:26 - Account creation email sent successfully to: jimoroh409@iridales.com
+2025-06-25 20:18:02 - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 20:18:02 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 20:18:03 - Graceful shutdown complete
+2025-06-25 20:18:03 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:18:03 - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 20:18:03 - HikariPool-AUTH - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.0)
+
+2025-06-25 20:18:03 - Starting CemAuthenticationApplication using Java 17.0.11 with PID 24456 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 20:18:03 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:18:03 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:18:04 - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 20:18:05 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 20:18:05 - Finished Spring Data repository scanning in 11 ms. Found 2 JPA repository interfaces.
+2025-06-25 20:18:05 - Tomcat initialized with port 8081 (http)
+2025-06-25 20:18:05 - Starting service [Tomcat]
+2025-06-25 20:18:05 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:18:05 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:18:05 - Root WebApplicationContext: initialization completed in 1440 ms
+2025-06-25 20:18:05 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 20:18:05 - HHH000026: Second-level cache disabled
+2025-06-25 20:18:05 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 20:18:05 - HikariPool-AUTH - Starting...
+2025-06-25 20:18:06 - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@54f42fc3
+2025-06-25 20:18:06 - HikariPool-AUTH - Start completed.
+2025-06-25 20:18:06 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 20:18:06 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 20:18:06 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 20:18:07 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:18:07 - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 20:18:07 - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 20:18:07 - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 20:18:07 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:18:07 - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 20:18:08 - Unable to start LiveReload server
+2025-06-25 20:18:08 - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 20:18:08 - Started CemAuthenticationApplication in 4.24 seconds (process running for 337.871)
+2025-06-25 20:18:08 - Initializing default roles (only if table is empty)
+2025-06-25 20:18:08 - 
+    /* select
+        count(*) 
+    from
+        Role x */ select
+            count(*) 
+        from
+            roles r1_0
+2025-06-25 20:18:08 - Roles already present -> seeding skipped
+2025-06-25 20:18:08 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:18:08 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:18:08 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:18:08 - Default admin account already exists – leaving role/password unchanged
+2025-06-25 20:18:08 - Condition evaluation unchanged
+2025-06-25 20:18:09 - Restarting due to 3 class path changes (0 additions, 0 deletions, 3 modifications)
+2025-06-25 20:18:09 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 20:18:10 - Graceful shutdown complete
+2025-06-25 20:18:10 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:18:10 - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 20:18:10 - HikariPool-AUTH - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.0)
+
+2025-06-25 20:18:10 - Starting CemAuthenticationApplication using Java 17.0.11 with PID 24456 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 20:18:10 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:18:10 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:18:11 - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 20:18:11 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 20:18:11 - Finished Spring Data repository scanning in 14 ms. Found 2 JPA repository interfaces.
+2025-06-25 20:18:11 - Tomcat initialized with port 8081 (http)
+2025-06-25 20:18:11 - Starting service [Tomcat]
+2025-06-25 20:18:11 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:18:11 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:18:11 - Root WebApplicationContext: initialization completed in 822 ms
+2025-06-25 20:18:11 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 20:18:11 - HHH000026: Second-level cache disabled
+2025-06-25 20:18:11 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 20:18:11 - HikariPool-AUTH - Starting...
+2025-06-25 20:18:12 - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@3725ea69
+2025-06-25 20:18:12 - HikariPool-AUTH - Start completed.
+2025-06-25 20:18:12 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 20:18:12 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 20:18:12 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 20:18:13 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:18:13 - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 20:18:13 - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 20:18:13 - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 20:18:13 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:18:13 - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 20:18:14 - Unable to start LiveReload server
+2025-06-25 20:18:14 - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 20:18:14 - Started CemAuthenticationApplication in 3.554 seconds (process running for 344.22)
+2025-06-25 20:18:14 - Initializing default roles (only if table is empty)
+2025-06-25 20:18:14 - 
+    /* select
+        count(*) 
+    from
+        Role x */ select
+            count(*) 
+        from
+            roles r1_0
+2025-06-25 20:18:14 - Roles already present -> seeding skipped
+2025-06-25 20:18:14 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:18:14 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:18:14 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:18:14 - Default admin account already exists – leaving role/password unchanged
+2025-06-25 20:18:14 - Condition evaluation unchanged
+2025-06-25 20:18:22 - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 20:18:22 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 20:18:24 - Graceful shutdown complete
+2025-06-25 20:18:24 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:18:24 - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 20:18:24 - HikariPool-AUTH - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.0)
+
+2025-06-25 20:18:24 - Starting CemAuthenticationApplication using Java 17.0.11 with PID 24456 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 20:18:24 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:18:24 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:18:24 - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 20:18:25 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 20:18:25 - Finished Spring Data repository scanning in 14 ms. Found 2 JPA repository interfaces.
+2025-06-25 20:18:25 - Tomcat initialized with port 8081 (http)
+2025-06-25 20:18:25 - Starting service [Tomcat]
+2025-06-25 20:18:25 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:18:25 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:18:25 - Root WebApplicationContext: initialization completed in 602 ms
+2025-06-25 20:18:25 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 20:18:25 - HHH000026: Second-level cache disabled
+2025-06-25 20:18:25 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 20:18:25 - HikariPool-AUTH - Starting...
+2025-06-25 20:18:25 - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@1031cdf1
+2025-06-25 20:18:25 - HikariPool-AUTH - Start completed.
+2025-06-25 20:18:26 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 20:18:26 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 20:18:26 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 20:18:26 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:18:26 - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 20:18:27 - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 20:18:27 - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 20:18:27 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:18:27 - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 20:18:27 - Unable to start LiveReload server
+2025-06-25 20:18:27 - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 20:18:27 - Started CemAuthenticationApplication in 3.121 seconds (process running for 357.499)
+2025-06-25 20:18:27 - Initializing default roles (only if table is empty)
+2025-06-25 20:18:27 - 
+    /* select
+        count(*) 
+    from
+        Role x */ select
+            count(*) 
+        from
+            roles r1_0
+2025-06-25 20:18:27 - Roles already present -> seeding skipped
+2025-06-25 20:18:27 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:18:27 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:18:27 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:18:28 - Default admin account already exists – leaving role/password unchanged
+2025-06-25 20:18:28 - Condition evaluation unchanged
+2025-06-25 20:18:29 - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 20:18:29 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 20:18:30 - Graceful shutdown complete
+2025-06-25 20:18:30 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:18:30 - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 20:18:30 - HikariPool-AUTH - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.0)
+
+2025-06-25 20:18:30 - Starting CemAuthenticationApplication using Java 17.0.11 with PID 24456 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 20:18:30 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:18:30 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:18:30 - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 20:18:31 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 20:18:31 - Finished Spring Data repository scanning in 12 ms. Found 2 JPA repository interfaces.
+2025-06-25 20:18:31 - Tomcat initialized with port 8081 (http)
+2025-06-25 20:18:31 - Starting service [Tomcat]
+2025-06-25 20:18:31 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:18:31 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:18:31 - Root WebApplicationContext: initialization completed in 706 ms
+2025-06-25 20:18:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 20:18:31 - HHH000026: Second-level cache disabled
+2025-06-25 20:18:31 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 20:18:31 - HikariPool-AUTH - Starting...
+2025-06-25 20:18:32 - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@127f0c0a
+2025-06-25 20:18:32 - HikariPool-AUTH - Start completed.
+2025-06-25 20:18:32 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 20:18:32 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 20:18:32 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 20:18:33 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:18:33 - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 20:18:33 - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 20:18:33 - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 20:18:34 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:18:34 - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 20:18:34 - Unable to start LiveReload server
+2025-06-25 20:18:34 - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 20:18:34 - Started CemAuthenticationApplication in 4.335 seconds (process running for 364.81)
+2025-06-25 20:18:35 - Initializing default roles (only if table is empty)
+2025-06-25 20:18:35 - 
+    /* select
+        count(*) 
+    from
+        Role x */ select
+            count(*) 
+        from
+            roles r1_0
+2025-06-25 20:18:35 - Roles already present -> seeding skipped
+2025-06-25 20:18:35 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:18:35 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:18:35 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:18:35 - Default admin account already exists – leaving role/password unchanged
+2025-06-25 20:18:35 - Condition evaluation unchanged
+2025-06-25 20:19:21 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 20:19:21 - Initializing Servlet 'dispatcherServlet'
+2025-06-25 20:19:21 - Completed initialization in 2 ms
+2025-06-25 20:19:21 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:19:21 - Securing OPTIONS /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:21 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:19:21 - Securing GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:21 - Loading user by email: admin@cem.local
+2025-06-25 20:19:21 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:19:21 - Loading user by email: admin@cem.local
+2025-06-25 20:19:21 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:19:21 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:21 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:21 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:19:21 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:19:21 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:21 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:21 - Get all roles request received
+2025-06-25 20:19:21 - Fetching all roles
+2025-06-25 20:19:21 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:19:21 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:19:21 - Secured GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:21 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:21 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:21 - Get users request received: search=null, roleId=null, status=null
+2025-06-25 20:19:21 - Fetching users with filters search=, roleId=null, status=null page=0 size=20
+2025-06-25 20:19:21 - 
+    /* SELECT
+        u 
+    FROM
+        User u 
+    WHERE
+        (
+            :search IS NULL 
+            OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+        ) 
+        AND (
+            :roleId IS NULL 
+            OR u.role.id = :roleId
+        ) 
+        AND (
+            :status IS NULL 
+            OR u.status = :status
+        ) 
+    order by
+        u.createdAt desc */ select
+            u1_0.id,
+            u1_0.created_at,
+            u1_0.created_by,
+            u1_0.email,
+            u1_0.email_verification_token,
+            u1_0.email_verified,
+            u1_0.first_name,
+            u1_0.last_login_at,
+            u1_0.last_name,
+            u1_0.locked_until,
+            u1_0.login_attempts,
+            u1_0.password,
+            u1_0.password_reset_expires_at,
+            u1_0.password_reset_token,
+            u1_0.phone,
+            u1_0.role_id,
+            u1_0.status,
+            u1_0.updated_at 
+        from
+            users u1_0 
+        where
+            (
+                ? is null 
+                or lower(u1_0.first_name) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.last_name) like lower(('%'||?||'%')) escape '' 
+                or lower((u1_0.first_name||' '||u1_0.last_name)) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.email) like lower(('%'||?||'%')) escape ''
+            ) 
+            and (
+                ? is null 
+                or u1_0.role_id=?
+            ) 
+            and (
+                ? is null 
+                or u1_0.status=?
+            ) 
+        order by
+            u1_0.created_at desc 
+        fetch
+            first ? rows only
+2025-06-25 20:19:21 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:21 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:21 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:30 - Securing OPTIONS /v1/auth/admin/users/3/deactivate
+2025-06-25 20:19:30 - Securing PUT /v1/auth/admin/users/3/deactivate
+2025-06-25 20:19:30 - Loading user by email: admin@cem.local
+2025-06-25 20:19:30 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:19:30 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:30 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:19:30 - Secured PUT /v1/auth/admin/users/3/deactivate
+2025-06-25 20:19:30 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.deactivateUser(java.lang.Long,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:30 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.deactivateUser(java.lang.Long,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:30 - Deactivating user with id 3
+2025-06-25 20:19:30 - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    join
+        roles r1_0 
+            on r1_0.id=u1_0.role_id 
+    where
+        u1_0.id=?
+2025-06-25 20:19:30 - 
+    /* update
+        for com.g47.cem.cemauthentication.entity.User */update users 
+    set
+        created_by=?,
+        email=?,
+        email_verification_token=?,
+        email_verified=?,
+        first_name=?,
+        last_login_at=?,
+        last_name=?,
+        locked_until=?,
+        login_attempts=?,
+        password=?,
+        password_reset_expires_at=?,
+        password_reset_token=?,
+        phone=?,
+        role_id=?,
+        status=?,
+        updated_at=? 
+    where
+        id=?
+2025-06-25 20:19:30 - Securing OPTIONS /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:30 - Securing GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:30 - Loading user by email: admin@cem.local
+2025-06-25 20:19:30 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:19:30 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:30 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:19:30 - Secured GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:30 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:30 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:30 - Get users request received: search=null, roleId=null, status=null
+2025-06-25 20:19:30 - Fetching users with filters search=, roleId=null, status=null page=0 size=20
+2025-06-25 20:19:30 - 
+    /* SELECT
+        u 
+    FROM
+        User u 
+    WHERE
+        (
+            :search IS NULL 
+            OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+        ) 
+        AND (
+            :roleId IS NULL 
+            OR u.role.id = :roleId
+        ) 
+        AND (
+            :status IS NULL 
+            OR u.status = :status
+        ) 
+    order by
+        u.createdAt desc */ select
+            u1_0.id,
+            u1_0.created_at,
+            u1_0.created_by,
+            u1_0.email,
+            u1_0.email_verification_token,
+            u1_0.email_verified,
+            u1_0.first_name,
+            u1_0.last_login_at,
+            u1_0.last_name,
+            u1_0.locked_until,
+            u1_0.login_attempts,
+            u1_0.password,
+            u1_0.password_reset_expires_at,
+            u1_0.password_reset_token,
+            u1_0.phone,
+            u1_0.role_id,
+            u1_0.status,
+            u1_0.updated_at 
+        from
+            users u1_0 
+        where
+            (
+                ? is null 
+                or lower(u1_0.first_name) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.last_name) like lower(('%'||?||'%')) escape '' 
+                or lower((u1_0.first_name||' '||u1_0.last_name)) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.email) like lower(('%'||?||'%')) escape ''
+            ) 
+            and (
+                ? is null 
+                or u1_0.role_id=?
+            ) 
+            and (
+                ? is null 
+                or u1_0.status=?
+            ) 
+        order by
+            u1_0.created_at desc 
+        fetch
+            first ? rows only
+2025-06-25 20:19:31 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:31 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:31 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:36 - Securing OPTIONS /v1/auth/admin/users/2/deactivate
+2025-06-25 20:19:36 - Securing PUT /v1/auth/admin/users/2/deactivate
+2025-06-25 20:19:36 - Loading user by email: admin@cem.local
+2025-06-25 20:19:36 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:19:36 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:36 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:19:36 - Secured PUT /v1/auth/admin/users/2/deactivate
+2025-06-25 20:19:36 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.deactivateUser(java.lang.Long,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:36 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.deactivateUser(java.lang.Long,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:36 - Deactivating user with id 2
+2025-06-25 20:19:36 - 
+    select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    join
+        roles r1_0 
+            on r1_0.id=u1_0.role_id 
+    where
+        u1_0.id=?
+2025-06-25 20:19:37 - 
+    /* update
+        for com.g47.cem.cemauthentication.entity.User */update users 
+    set
+        created_by=?,
+        email=?,
+        email_verification_token=?,
+        email_verified=?,
+        first_name=?,
+        last_login_at=?,
+        last_name=?,
+        locked_until=?,
+        login_attempts=?,
+        password=?,
+        password_reset_expires_at=?,
+        password_reset_token=?,
+        phone=?,
+        role_id=?,
+        status=?,
+        updated_at=? 
+    where
+        id=?
+2025-06-25 20:19:37 - Securing OPTIONS /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:37 - Securing GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:37 - Loading user by email: admin@cem.local
+2025-06-25 20:19:37 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:19:37 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:37 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:19:37 - Secured GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:37 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:37 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:37 - Get users request received: search=null, roleId=null, status=null
+2025-06-25 20:19:37 - Fetching users with filters search=, roleId=null, status=null page=0 size=20
+2025-06-25 20:19:37 - 
+    /* SELECT
+        u 
+    FROM
+        User u 
+    WHERE
+        (
+            :search IS NULL 
+            OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+        ) 
+        AND (
+            :roleId IS NULL 
+            OR u.role.id = :roleId
+        ) 
+        AND (
+            :status IS NULL 
+            OR u.status = :status
+        ) 
+    order by
+        u.createdAt desc */ select
+            u1_0.id,
+            u1_0.created_at,
+            u1_0.created_by,
+            u1_0.email,
+            u1_0.email_verification_token,
+            u1_0.email_verified,
+            u1_0.first_name,
+            u1_0.last_login_at,
+            u1_0.last_name,
+            u1_0.locked_until,
+            u1_0.login_attempts,
+            u1_0.password,
+            u1_0.password_reset_expires_at,
+            u1_0.password_reset_token,
+            u1_0.phone,
+            u1_0.role_id,
+            u1_0.status,
+            u1_0.updated_at 
+        from
+            users u1_0 
+        where
+            (
+                ? is null 
+                or lower(u1_0.first_name) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.last_name) like lower(('%'||?||'%')) escape '' 
+                or lower((u1_0.first_name||' '||u1_0.last_name)) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.email) like lower(('%'||?||'%')) escape ''
+            ) 
+            and (
+                ? is null 
+                or u1_0.role_id=?
+            ) 
+            and (
+                ? is null 
+                or u1_0.status=?
+            ) 
+        order by
+            u1_0.created_at desc 
+        fetch
+            first ? rows only
+2025-06-25 20:19:37 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:37 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:37 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:40 - Securing OPTIONS /v1/auth/admin/roles
+2025-06-25 20:19:40 - Securing OPTIONS /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:40 - Securing GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:40 - Securing GET /v1/auth/admin/roles
+2025-06-25 20:19:40 - Loading user by email: admin@cem.local
+2025-06-25 20:19:40 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:19:40 - Loading user by email: admin@cem.local
+2025-06-25 20:19:40 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:19:40 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:40 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:40 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:19:40 - Secured GET /v1/auth/admin/users?page=0&size=20
+2025-06-25 20:19:40 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:40 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getUsers(java.lang.String,java.lang.Long,com.g47.cem.cemauthentication.entity.AccountStatus,int,int,java.lang.String,java.lang.String,jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:40 - Get users request received: search=null, roleId=null, status=null
+2025-06-25 20:19:40 - Fetching users with filters search=, roleId=null, status=null page=0 size=20
+2025-06-25 20:19:40 - 
+    /* SELECT
+        u 
+    FROM
+        User u 
+    WHERE
+        (
+            :search IS NULL 
+            OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :search, '%')) 
+            OR LOWER(u.email) LIKE LOWER(CONCAT('%', :search, '%'))
+        ) 
+        AND (
+            :roleId IS NULL 
+            OR u.role.id = :roleId
+        ) 
+        AND (
+            :status IS NULL 
+            OR u.status = :status
+        ) 
+    order by
+        u.createdAt desc */ select
+            u1_0.id,
+            u1_0.created_at,
+            u1_0.created_by,
+            u1_0.email,
+            u1_0.email_verification_token,
+            u1_0.email_verified,
+            u1_0.first_name,
+            u1_0.last_login_at,
+            u1_0.last_name,
+            u1_0.locked_until,
+            u1_0.login_attempts,
+            u1_0.password,
+            u1_0.password_reset_expires_at,
+            u1_0.password_reset_token,
+            u1_0.phone,
+            u1_0.role_id,
+            u1_0.status,
+            u1_0.updated_at 
+        from
+            users u1_0 
+        where
+            (
+                ? is null 
+                or lower(u1_0.first_name) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.last_name) like lower(('%'||?||'%')) escape '' 
+                or lower((u1_0.first_name||' '||u1_0.last_name)) like lower(('%'||?||'%')) escape '' 
+                or lower(u1_0.email) like lower(('%'||?||'%')) escape ''
+            ) 
+            and (
+                ? is null 
+                or u1_0.role_id=?
+            ) 
+            and (
+                ? is null 
+                or u1_0.status=?
+            ) 
+        order by
+            u1_0.created_at desc 
+        fetch
+            first ? rows only
+2025-06-25 20:19:40 - Successfully authenticated user: admin@cem.local
+2025-06-25 20:19:40 - Secured GET /v1/auth/admin/roles
+2025-06-25 20:19:40 - Authorizing method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:40 - Authorized method invocation ReflectiveMethodInvocation: public org.springframework.http.ResponseEntity com.g47.cem.cemauthentication.controller.AuthController.getAllRoles(jakarta.servlet.http.HttpServletRequest); target is of class [com.g47.cem.cemauthentication.controller.AuthController]
+2025-06-25 20:19:40 - Get all roles request received
+2025-06-25 20:19:40 - Fetching all roles
+2025-06-25 20:19:40 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0
+2025-06-25 20:19:40 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:40 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:19:41 - 
+    select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.id=?
+2025-06-25 20:20:39 - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-06-25 20:20:39 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 20:20:40 - Graceful shutdown complete
+2025-06-25 20:20:40 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:20:40 - HikariPool-AUTH - Shutdown initiated...
+2025-06-25 20:20:40 - HikariPool-AUTH - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.0)
+
+2025-06-25 20:20:40 - Starting CemAuthenticationApplication using Java 17.0.11 with PID 24456 (D:\do-an\Viet\CEM-backend\CEM-authentication\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-authentication)
+2025-06-25 20:20:40 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:20:40 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:20:41 - Overriding bean definition for bean 'passwordEncoder' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=applicationConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/ApplicationConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=securityConfig; factoryMethodName=passwordEncoder; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/g47/cem/cemauthentication/config/SecurityConfig.class]]
+2025-06-25 20:20:41 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-25 20:20:41 - Finished Spring Data repository scanning in 8 ms. Found 2 JPA repository interfaces.
+2025-06-25 20:20:41 - Tomcat initialized with port 8081 (http)
+2025-06-25 20:20:41 - Starting service [Tomcat]
+2025-06-25 20:20:41 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:20:41 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:20:41 - Root WebApplicationContext: initialization completed in 416 ms
+2025-06-25 20:20:41 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-25 20:20:41 - HHH000026: Second-level cache disabled
+2025-06-25 20:20:41 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-25 20:20:41 - HikariPool-AUTH - Starting...
+2025-06-25 20:20:42 - HikariPool-AUTH - Added connection org.postgresql.jdbc.PgConnection@223dce83
+2025-06-25 20:20:42 - HikariPool-AUTH - Start completed.
+2025-06-25 20:20:42 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-06-25 20:20:42 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-AUTH)']
+	Database driver: undefined/unknown
+	Database version: 16.9
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-25 20:20:42 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-25 20:20:42 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-25 20:20:43 - Filter 'jwtAuthenticationFilter' configured for use
+2025-06-25 20:20:43 - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-06-25 20:20:43 - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-06-25 20:20:43 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:20:43 - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-06-25 20:20:43 - Unable to start LiveReload server
+2025-06-25 20:20:43 - Tomcat started on port 8081 (http) with context path '/api/auth'
+2025-06-25 20:20:43 - Started CemAuthenticationApplication in 2.728 seconds (process running for 493.513)
+2025-06-25 20:20:44 - Initializing default roles (only if table is empty)
+2025-06-25 20:20:44 - 
+    /* select
+        count(*) 
+    from
+        Role x */ select
+            count(*) 
+        from
+            roles r1_0
+2025-06-25 20:20:44 - Roles already present -> seeding skipped
+2025-06-25 20:20:44 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:20:44 - 
+    /* <criteria> */ select
+        r1_0.id,
+        r1_0.created_at,
+        r1_0.description,
+        r1_0.name,
+        r1_0.updated_at 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2025-06-25 20:20:44 - 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.email_verification_token,
+        u1_0.email_verified,
+        u1_0.first_name,
+        u1_0.last_login_at,
+        u1_0.last_name,
+        u1_0.locked_until,
+        u1_0.login_attempts,
+        u1_0.password,
+        u1_0.password_reset_expires_at,
+        u1_0.password_reset_token,
+        u1_0.phone,
+        u1_0.role_id,
+        u1_0.status,
+        u1_0.updated_at 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-06-25 20:20:44 - Default admin account already exists – leaving role/password unchanged
+2025-06-25 20:20:44 - Condition evaluation unchanged

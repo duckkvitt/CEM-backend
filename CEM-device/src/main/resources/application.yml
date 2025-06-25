@@ -113,7 +113,7 @@ logging:
 # Custom Application Properties
 app:
   cors:
-    allowedOrigins: "http://localhost:3000,http://localhost:3001,https://yourdomain.com"
+    allowedOrigins: "http://localhost:8080,http://localhost:3000,http://localhost:3001,https://yourdomain.com"
   security:
     permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/actuator/health"
   auth-service:
