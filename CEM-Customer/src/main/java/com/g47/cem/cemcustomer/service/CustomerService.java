@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.g47.cem.cemcustomer.dto.request.CreateCustomerRequest;
+import com.g47.cem.cemcustomer.dto.request.UpdateCustomerRequest;
 import com.g47.cem.cemcustomer.dto.response.CustomerResponse;
 import com.g47.cem.cemcustomer.entity.Customer;
 import com.g47.cem.cemcustomer.exception.BusinessException;
@@ -186,9 +187,46 @@ public class CustomerService {
     }
     
     /**
-     * Map Customer entity to CustomerResponse DTO
+     * Update customer
+     */
+    @Transactional
+    public CustomerResponse updateCustomer(Long id, UpdateCustomerRequest request) {
+        log.info("Updating customer with ID: {}", id);
+
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", id));
+
+        if (request.getName() != null) {
+            customer.setName(request.getName());
+        }
+        if (request.getEmail() != null && !request.getEmail().equalsIgnoreCase(customer.getEmail())) {
+            if (customerRepository.existsByEmail(request.getEmail())) {
+                throw new BusinessException("Customer with email " + request.getEmail() + " already exists", HttpStatus.CONFLICT);
+            }
+            customer.setEmail(request.getEmail());
+        }
+        if (request.getPhone() != null) {
+            customer.setPhone(request.getPhone());
+        }
+        if (request.getAddress() != null) {
+            customer.setAddress(request.getAddress());
+        }
+        if (request.getTags() != null) {
+            customer.setTags(request.getTags());
+        }
+        if (request.getIsHidden() != null) {
+            customer.setIsHidden(request.getIsHidden());
+        }
+
+        Customer saved = customerRepository.save(customer);
+        log.info("Customer with ID: {} updated successfully", id);
+        return mapToCustomerResponse(saved);
+    }
+
+    /**
+     * Convert Customer entity to response DTO
      */
     private CustomerResponse mapToCustomerResponse(Customer customer) {
         return modelMapper.map(customer, CustomerResponse.class);
     }
-} 
+}

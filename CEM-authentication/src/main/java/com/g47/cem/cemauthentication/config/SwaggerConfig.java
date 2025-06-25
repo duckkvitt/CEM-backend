@@ -30,8 +30,11 @@ public class SwaggerConfig {
                 .info(apiInfo())
                 .servers(List.of(
                     new Server()
+                        .url(contextPath)
+                        .description("Same origin / Gateway proxy"),
+                    new Server()
                         .url("http://localhost:" + serverPort + contextPath)
-                        .description("Development server"),
+                        .description("Direct to microservice"),
                     new Server()
                         .url("https://your-production-domain.com" + contextPath)
                         .description("Production server")

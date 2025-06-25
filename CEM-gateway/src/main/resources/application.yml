@@ -1,54 +1,14 @@
 server:
   port: 8080
   servlet:
-    context-path: /api
+    context-path: /
 
 spring:
   application:
-    name: cem-gateway-service
-  
+    name: cem-gateway
+
   cloud:
     gateway:
-      routes:
-        # Authentication Service Routes
-        - id: auth-service
-          uri: http://localhost:8081/api/auth
-          predicates:
-            - Path=/auth/**
-          filters:
-            - StripPrefix=1
-        
-        # ---------------------------------------------
-        # Added routes to proxy Customer and Device APIs
-        # ---------------------------------------------
-        
-        # Customer Service Routes
-        - id: customer-service
-          uri: http://localhost:8082/api/customer
-          predicates:
-            - Path=/customer/**
-          filters:
-            - StripPrefix=1
-        
-        # Device Service Routes
-        - id: device-service
-          uri: http://localhost:8083/api/device
-          predicates:
-            - Path=/device/**
-          filters:
-            - StripPrefix=1
-        
-        # Future service routes can be added here
-        # - id: user-service
-        #   uri: http://localhost:8082
-        #   predicates:
-        #     - Path=/api/users/**
-        #   filters:
-        #     - StripPrefix=1
-      
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-      
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -62,92 +22,43 @@ spring:
               - OPTIONS
             allowedHeaders: "*"
             allowCredentials: true
-            maxAge: 3600
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
+      routes:
+        - id: auth-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/auth/**
+        - id: customer-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/customer/**
+        - id: device-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/device/**
 
-# Circuit Breaker Configuration
-resilience4j:
-  circuitbreaker:
-    instances:
-      auth-service:
-        registerHealthIndicator: true
-        slidingWindowSize: 10
-        minimumNumberOfCalls: 5
-        permittedNumberOfCallsInHalfOpenState: 3
-        automaticTransitionFromOpenToHalfOpenEnabled: true
-        waitDurationInOpenState: 5s
-        failureRateThreshold: 50
-        eventConsumerBufferSize: 10
-        recordExceptions:
-          - org.springframework.web.client.HttpServerErrorException
-          - java.util.concurrent.TimeoutException
-          - java.io.IOException
-  
-  retry:
-    instances:
-      auth-service:
-        maxAttempts: 3
-        waitDuration: 1000ms
-        enableExponentialBackoff: true
-        exponentialBackoffMultiplier: 2
-  
-  timelimiter:
-    instances:
-      auth-service:
-        timeoutDuration: 3s
-
-# API Documentation
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui/index.html
-    enabled: true
-    operationsSorter: method
-    tagsSorter: alpha
-    urls:
-      - name: "Authentication Service"
-        url: "http://localhost:8081/api/auth/api-docs"
-      - name: "Customer Service"
-        url: "http://localhost:8082/api/customer/api-docs"
-      - name: "Device Service"
-        url: "http://localhost:8083/api/device/api-docs"
-  show-actuator: false
-
-# Management endpoints
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,prometheus,gateway
+        include: health,info,prometheus
   endpoint:
     health:
       show-details: when-authorized
-    gateway:
-      enabled: true
-  health:
-    circuitbreakers:
-      enabled: true
-  metrics:
-    export:
-      prometheus:
-        enabled: true
 
-# Logging
-logging:
-  level:
-    com.g47.cem: DEBUG
-    org.springframework.cloud.gateway: DEBUG
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file:
-    name: logs/gateway-service.log
-
-# Gateway specific configuration
-gateway:
-  security:
-    cors:
-      allowedOrigins: "http://localhost:3000,http://localhost:3001,https://yourdomain.com"
-    rateLimit:
-      enabled: true
-      requestsPerSecond: 100 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - url: /v3/api-docs
+        name: Gateway
+      - url: /api/auth/api-docs
+        name: Authentication Service
+      - url: /api/customer/api-docs
+        name: Customer Service
+      - url: /api/device/api-docs
+        name: Device Service 
