@@ -8,25 +8,59 @@
 
  :: Spring Boot ::                (v3.5.0)
 
-2025-06-25 01:40:23 - Starting CemGatewayApplication using Java 17.0.11 with PID 20196 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
-2025-06-25 01:40:23 - Running with Spring Boot v3.5.0, Spring v6.2.7
-2025-06-25 01:40:23 - No active profile set, falling back to 1 default profile: "default"
-2025-06-25 01:40:23 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2025-06-25 01:40:23 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2025-06-25 01:40:25 - BeanFactory id=a68f30a2-4464-33ae-957d-8ecada9a3cdc
-2025-06-25 01:40:26 - Tomcat initialized with port 8080 (http)
-2025-06-25 01:40:26 - Starting service [Tomcat]
-2025-06-25 01:40:26 - Starting Servlet engine: [Apache Tomcat/10.1.41]
-2025-06-25 01:40:26 - Initializing Spring embedded WebApplicationContext
-2025-06-25 01:40:26 - Root WebApplicationContext: initialization completed in 2935 ms
-2025-06-25 01:40:27 - LiveReload server is running on port 35729
-2025-06-25 01:40:28 - Exposing 3 endpoints beneath base path '/actuator'
-2025-06-25 01:40:28 - Tomcat started on port 8080 (http) with context path '/api'
-2025-06-25 01:40:29 - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2025-06-25 01:40:29 - Initializing Servlet 'dispatcherServlet'
-2025-06-25 01:40:29 - Completed initialization in 3 ms
-2025-06-25 01:40:29 - Started CemGatewayApplication in 8.088 seconds (process running for 9.497)
-2025-06-25 01:40:29 - 
+2025-06-25 20:12:34 - Starting CemGatewayApplication using Java 17.0.11 with PID 23128 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 20:12:34 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:12:34 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:12:35 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-06-25 20:12:35 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-06-25 20:12:37 - BeanFactory id=1333afcc-01f8-3761-b2cc-0a3aeb756e3a
+2025-06-25 20:12:37 - Tomcat initialized with port 8080 (http)
+2025-06-25 20:12:37 - Starting service [Tomcat]
+2025-06-25 20:12:37 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:12:37 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:12:37 - Root WebApplicationContext: initialization completed in 2723 ms
+2025-06-25 20:12:38 - LiveReload server is running on port 35729
+2025-06-25 20:12:40 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:12:40 - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 20:12:42 - Started CemGatewayApplication in 10.071 seconds (process running for 11.398)
+2025-06-25 20:12:42 - 
+The use of configuration keys that have been renamed was found in the environment:
+
+Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
+	Key: management.metrics.export.prometheus.enabled
+		Line: 133
+		Replacement: management.prometheus.metrics.export.enabled
+
+
+Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
+
+2025-06-25 20:22:20 - Restarting due to 4 class path changes (0 additions, 0 deletions, 4 modifications)
+2025-06-25 20:22:20 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-25 20:22:22 - Graceful shutdown complete
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.0)
+
+2025-06-25 20:22:23 - Starting CemGatewayApplication using Java 17.0.11 with PID 23128 (D:\do-an\Viet\CEM-backend\CEM-gateway\target\classes started by Lom in D:\do-an\Viet\CEM-backend\CEM-gateway)
+2025-06-25 20:22:23 - Running with Spring Boot v3.5.0, Spring v6.2.7
+2025-06-25 20:22:23 - No active profile set, falling back to 1 default profile: "default"
+2025-06-25 20:22:24 - BeanFactory id=a68f30a2-4464-33ae-957d-8ecada9a3cdc
+2025-06-25 20:22:24 - Tomcat initialized with port 8080 (http)
+2025-06-25 20:22:24 - Starting service [Tomcat]
+2025-06-25 20:22:24 - Starting Servlet engine: [Apache Tomcat/10.1.41]
+2025-06-25 20:22:24 - Initializing Spring embedded WebApplicationContext
+2025-06-25 20:22:24 - Root WebApplicationContext: initialization completed in 499 ms
+2025-06-25 20:22:24 - LiveReload server is running on port 35729
+2025-06-25 20:22:26 - Exposing 3 endpoints beneath base path '/actuator'
+2025-06-25 20:22:26 - Tomcat started on port 8080 (http) with context path '/api'
+2025-06-25 20:22:27 - Started CemGatewayApplication in 4.971 seconds (process running for 596.762)
+2025-06-25 20:22:27 - 
 The use of configuration keys that have been renamed was found in the environment:
 
 Property source 'Config resource 'class path resource [application.yml]' via location 'optional:classpath:/'':
@@ -37,7 +71,47 @@ Property source 'Config resource 'class path resource [application.yml]' via loc
 
 Each configuration key has been temporarily mapped to its replacement for your convenience. To silence this warning, please update your configuration to use the new keys.
 
-2025-06-25 01:40:29 - Init duration for springdoc-openapi is: 309 ms
-2025-06-25 01:43:35 - Init duration for springdoc-openapi is: 433 ms
-2025-06-25 01:43:41 - Init duration for springdoc-openapi is: 68 ms
-2025-06-25 01:43:42 - Init duration for springdoc-openapi is: 48 ms
+2025-06-25 20:22:27 - Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+   MultipleOpenApiSupportConfiguration matched:
+      - found 'session' scope (OnWebApplicationCondition)
+      - @ConditionalOnProperty (springdoc.api-docs.enabled) matched (OnPropertyCondition)
+      - AnyNestedCondition 1 matched 1 did not; NestedCondition on MultipleOpenApiSupportCondition.OnActuatorDifferentPort found non-matching nested conditions Management Port actual port type (SAME) did not match required type (DIFFERENT), @ConditionalOnProperty (springdoc.show-actuator) found different value in property 'springdoc.show-actuator'; NestedCondition on MultipleOpenApiSupportCondition.OnMultipleOpenApiSupportCondition AnyNestedCondition 2 matched 1 did not; NestedCondition on MultipleOpenApiGroupsCondition.OnListGroupedOpenApiBean @ConditionalOnBean (types: org.springdoc.core.models.GroupedOpenApi; SearchStrategy: all) found beans 'gatewayApi', 'authApi', 'deviceApi', 'customerApi'; NestedCondition on MultipleOpenApiGroupsCondition.OnGroupConfigProperty @ConditionalOnProperty (springdoc.group-configs[0].group) did not find property 'springdoc.group-configs[0].group'; NestedCondition on MultipleOpenApiGroupsCondition.OnGroupedOpenApiBean @ConditionalOnBean (types: org.springdoc.core.models.GroupedOpenApi; SearchStrategy: all) found beans 'gatewayApi', 'authApi', 'deviceApi', 'customerApi' (MultipleOpenApiSupportCondition)
+
+   MultipleOpenApiSupportConfiguration#multipleOpenApiResource matched:
+      - @ConditionalOnProperty (springdoc.use-management-port=false) matched (OnPropertyCondition)
+      - @ConditionalOnMissingBean (types: org.springdoc.webmvc.api.MultipleOpenApiWebMvcResource; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   SpringDocConfiguration#springdocBeanFactoryPostProcessor matched:
+      - @ConditionalOnClass found required class 'org.springframework.boot.context.properties.bind.BindResult' (OnClassCondition)
+      - AnyNestedCondition 1 matched 1 did not; NestedCondition on CacheOrGroupedOpenApiCondition.OnCacheDisabled found non-matching nested conditions @ConditionalOnProperty (springdoc.cache.disabled) did not find property 'springdoc.cache.disabled', @ConditionalOnMissingBean (types: org.springdoc.core.models.GroupedOpenApi; SearchStrategy: all) found beans of type 'org.springdoc.core.models.GroupedOpenApi' gatewayApi, authApi, customerApi, deviceApi; NestedCondition on CacheOrGroupedOpenApiCondition.OnMultipleOpenApiSupportCondition AnyNestedCondition 1 matched 1 did not; NestedCondition on MultipleOpenApiSupportCondition.OnActuatorDifferentPort found non-matching nested conditions Management Port actual port type (SAME) did not match required type (DIFFERENT), @ConditionalOnProperty (springdoc.show-actuator) found different value in property 'springdoc.show-actuator'; NestedCondition on MultipleOpenApiSupportCondition.OnMultipleOpenApiSupportCondition AnyNestedCondition 2 matched 1 did not; NestedCondition on MultipleOpenApiGroupsCondition.OnListGroupedOpenApiBean @ConditionalOnBean (types: org.springdoc.core.models.GroupedOpenApi; SearchStrategy: all) found beans 'gatewayApi', 'authApi', 'deviceApi', 'customerApi'; NestedCondition on MultipleOpenApiGroupsCondition.OnGroupConfigProperty @ConditionalOnProperty (springdoc.group-configs[0].group) did not find property 'springdoc.group-configs[0].group'; NestedCondition on MultipleOpenApiGroupsCondition.OnGroupedOpenApiBean @ConditionalOnBean (types: org.springdoc.core.models.GroupedOpenApi; SearchStrategy: all) found beans 'gatewayApi', 'authApi', 'deviceApi', 'customerApi' (CacheOrGroupedOpenApiCondition)
+
+
+Negative matches:
+-----------------
+
+    None
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
