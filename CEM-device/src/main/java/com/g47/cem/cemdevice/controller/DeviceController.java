@@ -85,21 +85,17 @@ public class DeviceController {
     @PreAuthorize("hasRole('STAFF') or hasRole('MANAGER') or hasRole('SUPPORT_TEAM') or hasRole('TECH_LEAD') or hasRole('TECHNICIAN')")
     @Operation(summary = "Get all devices", description = "Retrieves paginated list of devices with optional filtering")
     public ResponseEntity<ApiResponse<Page<DeviceResponse>>> getAllDevices(
-            @Parameter(description = "Device name filter") @RequestParam(required = false) String name,
-            @Parameter(description = "Device model filter") @RequestParam(required = false) String model,
-            @Parameter(description = "Serial number filter") @RequestParam(required = false) String serialNumber,
+            @Parameter(description = "Search keyword (matches name, model, serial number)") @RequestParam(required = false) String keyword,
             @Parameter(description = "Customer ID filter") @RequestParam(required = false) Long customerId,
             @Parameter(description = "Device status filter") @RequestParam(required = false) DeviceStatus status,
             @PageableDefault(size = 20) Pageable pageable) {
         
-        log.debug("Fetching devices with filters - name: {}, model: {}, serialNumber: {}, customerId: {}, status: {}", 
-                name, model, serialNumber, customerId, status);
+        log.debug("Fetching devices with filters - keyword: {}, customerId: {}, status: {}", keyword, customerId, status);
         
         Page<DeviceResponse> devices;
         
-        // If any filter is provided, use search; otherwise get all
-        if (name != null || model != null || serialNumber != null || customerId != null || status != null) {
-            devices = deviceService.searchDevices(name, model, serialNumber, customerId, status, pageable);
+        if (keyword != null || customerId != null || status != null) {
+            devices = deviceService.searchDevicesByKeyword(keyword, customerId, status, pageable);
         } else {
             devices = deviceService.getAllDevices(pageable);
         }
