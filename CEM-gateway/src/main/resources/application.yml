@@ -100,10 +100,17 @@ springdoc:
   api-docs:
     path: /api-docs
   swagger-ui:
-    path: /swagger-ui.html
+    path: /swagger-ui/index.html
     enabled: true
     operationsSorter: method
     tagsSorter: alpha
+    urls:
+      - name: "Authentication Service"
+        url: "http://localhost:8081/api/auth/api-docs"
+      - name: "Customer Service"
+        url: "http://localhost:8082/api/customer/api-docs"
+      - name: "Device Service"
+        url: "http://localhost:8083/api/device/api-docs"
   show-actuator: false
 
 # Management endpoints

@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import com.g47.cem.cemauthentication.dto.response.UserResponse;
 import com.g47.cem.cemauthentication.entity.AccountStatus;
 import com.g47.cem.cemauthentication.entity.Role;
 import com.g47.cem.cemauthentication.entity.User;
+import com.g47.cem.cemauthentication.event.UserCreatedEvent;
 import com.g47.cem.cemauthentication.exception.BusinessException;
 import com.g47.cem.cemauthentication.exception.ResourceNotFoundException;
 import com.g47.cem.cemauthentication.repository.RoleRepository;
@@ -34,6 +39,19 @@ public class UserManagementService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
+
+    @Value("${app.admin.email:admin@cem.local}")
+    private String defaultAdminEmail;
+
+    @Value("${app.admin.firstName:System}")
+    private String defaultAdminFirstName;
+
+    @Value("${app.admin.lastName:Administrator}")
+    private String defaultAdminLastName;
+
+    @Value("${app.admin.password:}")
+    private String defaultAdminPassword;
 
     @Transactional
     public UserResponse createUser(CreateUserRequest request, String adminEmail) {
@@ -68,13 +86,12 @@ public class UserManagementService {
 
         user = userRepository.save(user);
 
-        // Send account creation email asynchronously
-        emailService.sendAccountCreationEmail(
+        // Publish event to send account email AFTER transaction commits
+        eventPublisher.publishEvent(new UserCreatedEvent(
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                temporaryPassword
-        );
+                temporaryPassword));
 
         // Create user response
         UserResponse userResponse = mapToUserResponse(user);
@@ -95,68 +112,63 @@ public class UserManagementService {
 
     @Transactional
     public void initializeDefaultRoles() {
-        log.info("Initializing default roles");
+        log.info("Initializing default roles (only if table is empty)");
 
-        if (!roleRepository.existsByName("ADMINISTRATOR")) {
-            Role adminRole = new Role("ADMINISTRATOR", "System Administrator with full access to all features and settings");
-            roleRepository.save(adminRole);
-            log.info("Created default ADMINISTRATOR role");
+        if (roleRepository.count() > 0) {
+            log.info("Roles already present -> seeding skipped");
+            return;
         }
 
-        if (!roleRepository.existsByName("STAFF")) {
-            Role staffRole = new Role("STAFF", "Staff member with access to daily operations and customer management");
-            roleRepository.save(staffRole);
-            log.info("Created default STAFF role");
-        }
+        Role userRole = new Role("USER", "Standard user with basic access");
+        Role adminRole = new Role("ADMIN", "Administrator with full access");
+        Role staffRole = new Role("STAFF", "Staff member who works directly with customers");
+        Role managerRole = new Role("MANAGER", "Manager with permission to oversee operations and make strategic decisions");
+        Role supportRole = new Role("SUPPORT_TEAM", "Support team responsible for handling customer support requests");
+        Role techRole = new Role("TECHNICIAN", "Technician handling maintenance and repairs");
+        Role leadTechRole = new Role("LEAD_TECH", "Lead technician supervising technicians and liaising with support team");
 
-        if (!roleRepository.existsByName("MANAGER")) {
-            Role managerRole = new Role("MANAGER", "Manager with access to staff management and advanced operations");
-            roleRepository.save(managerRole);
-            log.info("Created default MANAGER role");
-        }
-
-        if (!roleRepository.existsByName("CUSTOMER")) {
-            Role customerRole = new Role("CUSTOMER", "Customer with access to their own account and services");
-            roleRepository.save(customerRole);
-            log.info("Created default CUSTOMER role");
-        }
-
-        if (!roleRepository.existsByName("SUPPORT_TEAM")) {
-            Role supportRole = new Role("SUPPORT_TEAM", "Support team member with access to customer service functions");
-            roleRepository.save(supportRole);
-            log.info("Created default SUPPORT_TEAM role");
-        }
+        roleRepository.saveAll(List.of(userRole, adminRole, staffRole, managerRole, supportRole, techRole, leadTechRole));
+        log.info("Seeded default roles list");
     }
 
+    /**
+     * Create a default administrator account on startup if it does not already exist.
+     * A strong random password is generated using the EmailService utility method and
+     * logged to the console. Make sure to store this password securely (e.g., in a
+     * secret manager) after first launch.
+     */
     @Transactional
     public void initializeDefaultAdmin() {
-        log.info("Initializing default administrator account");
-        
-        // Check if admin account already exists
-        if (!userRepository.existsByEmail("admin@cem.com")) {
-            // Find ADMINISTRATOR role
-            Role adminRole = roleRepository.findByName("ADMINISTRATOR")
-                    .orElseThrow(() -> new BusinessException("ADMINISTRATOR role not found", HttpStatus.INTERNAL_SERVER_ERROR));
-            
-            // Create default admin user
+        // Determine the password to use – prefer configured value, otherwise generate a random one
+        String resolvedPassword = (defaultAdminPassword != null && !defaultAdminPassword.isBlank())
+                ? defaultAdminPassword
+                : emailService.generateTemporaryPassword();
+
+        // Ensure roles have been seeded
+        Role adminRole = roleRepository.findByName("SUPER_ADMIN")
+                .orElseGet(() -> roleRepository.findByName("ADMIN")
+                        .orElseThrow(() -> new ResourceNotFoundException("Admin role not found")));
+
+        userRepository.findByEmail(defaultAdminEmail).ifPresentOrElse(existing -> {
+            // Admin exists – do NOT override role or password to avoid unintended changes
+            log.info("Default admin account already exists – leaving role/password unchanged");
+        }, () -> {
+            // Create new admin user
             User admin = User.builder()
-                    .email("admin@cem.com")
-                    .password(passwordEncoder.encode("Admin@CEM2025"))
-                    .firstName("System")
-                    .lastName("Administrator")
-                    .phone("+84901234567")
+                    .email(defaultAdminEmail)
+                    .password(passwordEncoder.encode(resolvedPassword))
+                    .firstName(defaultAdminFirstName)
+                    .lastName(defaultAdminLastName)
                     .role(adminRole)
                     .status(AccountStatus.ACTIVE)
                     .emailVerified(true)
                     .loginAttempts(0)
                     .createdBy("SYSTEM")
                     .build();
-            
+
             userRepository.save(admin);
-            log.info("Default administrator account created successfully: admin@cem.com");
-        } else {
-            log.info("Default administrator account already exists");
-        }
+            log.warn("Default admin account created -> email: {} , password: {}", defaultAdminEmail, resolvedPassword);
+        });
     }
 
     private UserResponse mapToUserResponse(User user) {
@@ -170,32 +182,27 @@ public class UserManagementService {
         return modelMapper.map(role, RoleResponse.class);
     }
 
-    @Transactional
-    public void assignRole(Long userId, Long roleId) {
-        log.info("Assigning role {} to user {}", roleId, userId);
+    // NEW CODE: Retrieve users with dynamic filters and pagination
+    @Transactional(readOnly = true)
+    public Page<UserResponse> getUsersWithFilters(String search, Long roleId, AccountStatus status, Pageable pageable) {
+        // Ensure search parameter is non-null to avoid PostgreSQL lower(bytea) issue
+        String safeSearch = (search == null || search.trim().isEmpty()) ? "" : search.trim();
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+        log.info("Fetching users with filters search={}, roleId={}, status={} page={} size={}", safeSearch, roleId, status, pageable.getPageNumber(), pageable.getPageSize());
 
-        Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Role not found with ID: " + roleId));
-
-        user.setRole(role);
-        userRepository.save(user);
-
-        log.info("Role {} assigned to user {} successfully", role.getName(), user.getEmail());
+        Page<User> page = userRepository.findUsersWithFilters(safeSearch, roleId, status, pageable);
+        return page.map(this::mapToUserResponse);
     }
 
     @Transactional
-    public void deactivateUser(Long userId) {
-        log.info("Deactivating user {}", userId);
-
+    public UserResponse deactivateUser(Long userId) {
+        log.info("Deactivating user with id {}", userId);
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
 
         user.setStatus(AccountStatus.INACTIVE);
         userRepository.save(user);
 
-        log.info("User {} deactivated successfully", user.getEmail());
+        return mapToUserResponse(user);
     }
 } 

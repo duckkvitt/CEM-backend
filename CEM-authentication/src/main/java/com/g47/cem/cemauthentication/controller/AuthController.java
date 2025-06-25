@@ -2,11 +2,16 @@ package com.g47.cem.cemauthentication.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,10 +30,12 @@ import com.g47.cem.cemauthentication.dto.response.ApiResponse;
 import com.g47.cem.cemauthentication.dto.response.AuthResponse;
 import com.g47.cem.cemauthentication.dto.response.RoleResponse;
 import com.g47.cem.cemauthentication.dto.response.UserResponse;
+import com.g47.cem.cemauthentication.entity.AccountStatus;
 import com.g47.cem.cemauthentication.service.AuthService;
 import com.g47.cem.cemauthentication.service.UserManagementService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -139,7 +146,7 @@ public class AuthController {
     @PostMapping("/admin/create-user")
     @Operation(summary = "Create user account", description = "Create a new user account (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
             @Valid @RequestBody CreateUserRequest request,
             Authentication authentication,
@@ -163,7 +170,7 @@ public class AuthController {
     @GetMapping("/admin/roles")
     @Operation(summary = "Get all roles", description = "Retrieve all available roles (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     public ResponseEntity<ApiResponse<List<RoleResponse>>> getAllRoles(
             HttpServletRequest httpRequest) {
         
@@ -194,47 +201,6 @@ public class AuthController {
         
         ApiResponse<Void> response = ApiResponse.success(
             "Password changed successfully"
-        );
-        response.setPath(httpRequest.getRequestURI());
-        
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/admin/assign-role")
-    @Operation(summary = "Assign role to user", description = "Assign system rights by role (Admin only)")
-    @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<ApiResponse<Void>> assignRole(
-            @RequestParam Long userId,
-            @RequestParam Long roleId,
-            HttpServletRequest httpRequest) {
-        
-        log.info("Assigning role {} to user {} by admin", roleId, userId);
-        
-        userManagementService.assignRole(userId, roleId);
-        
-        ApiResponse<Void> response = ApiResponse.success(
-            "Role assigned successfully"
-        );
-        response.setPath(httpRequest.getRequestURI());
-        
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/admin/deactivate-user")
-    @Operation(summary = "Deactivate user", description = "Deactivate unused user accounts (Admin only)")
-    @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<ApiResponse<Void>> deactivateUser(
-            @RequestParam Long userId,
-            HttpServletRequest httpRequest) {
-        
-        log.info("Deactivating user {} by admin", userId);
-        
-        userManagementService.deactivateUser(userId);
-        
-        ApiResponse<Void> response = ApiResponse.success(
-            "User deactivated successfully"
         );
         response.setPath(httpRequest.getRequestURI());
         
@@ -279,6 +245,56 @@ public class AuthController {
         );
         response.setPath(httpRequest.getRequestURI());
         
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/admin/users")
+    @Operation(summary = "Get users with filters", description = "Retrieve paginated list of users with optional filters (Admin only)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    public ResponseEntity<ApiResponse<Page<UserResponse>>> getUsers(
+            @Parameter(description = "Search keyword (first name, last name or email)")
+            @RequestParam(required = false) String search,
+            @Parameter(description = "Filter by role ID")
+            @RequestParam(required = false) Long roleId,
+            @Parameter(description = "Filter by account status")
+            @RequestParam(required = false) AccountStatus status,
+            @Parameter(description = "Page number (0-based)")
+            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Page size")
+            @RequestParam(defaultValue = "20") int size,
+            @Parameter(description = "Sort by field")
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @Parameter(description = "Sort direction (asc/desc)")
+            @RequestParam(defaultValue = "desc") String sortDir,
+            HttpServletRequest httpRequest) {
+
+        log.info("Get users request received: search={}, roleId={}, status={}", search, roleId, status);
+
+        Sort.Direction direction = sortDir.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<UserResponse> usersPage = userManagementService.getUsersWithFilters(search, roleId, status, pageable);
+
+        ApiResponse<Page<UserResponse>> response = ApiResponse.success(usersPage, "Users retrieved successfully");
+        response.setPath(httpRequest.getRequestURI());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/admin/users/{id}/deactivate")
+    @Operation(summary = "Deactivate user", description = "Set user's status to INACTIVE (Admin only)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    public ResponseEntity<ApiResponse<UserResponse>> deactivateUser(
+            @PathVariable Long id,
+            HttpServletRequest httpRequest) {
+
+        UserResponse userResponse = userManagementService.deactivateUser(id);
+
+        ApiResponse<UserResponse> response = ApiResponse.success(userResponse, "User deactivated successfully");
+        response.setPath(httpRequest.getRequestURI());
+
         return ResponseEntity.ok(response);
     }
 }
