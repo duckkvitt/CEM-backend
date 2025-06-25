@@ -67,6 +67,7 @@ public class DeviceNoteController {
      * Get device note by ID
      */
     @GetMapping("/{noteId}")
+    @PreAuthorize("hasRole('STAFF') or hasRole('MANAGER') or hasRole('SUPPORT_TEAM') or hasRole('TECH_LEAD') or hasRole('TECHNICIAN')")
     @Operation(summary = "Get device note by ID", description = "Retrieves a specific device note")
     public ResponseEntity<ApiResponse<DeviceNoteResponse>> getDeviceNoteById(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
@@ -83,6 +84,7 @@ public class DeviceNoteController {
      * Get all notes for a device
      */
     @GetMapping
+    @PreAuthorize("hasRole('STAFF') or hasRole('MANAGER') or hasRole('SUPPORT_TEAM') or hasRole('TECH_LEAD') or hasRole('TECHNICIAN')")
     @Operation(summary = "Get device notes", description = "Retrieves all notes for a device")
     public ResponseEntity<ApiResponse<Object>> getDeviceNotes(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
