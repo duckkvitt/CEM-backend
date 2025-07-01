@@ -1,0 +1,155 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /api/contract
+
+spring:
+  application:
+    name: cem-contract-service
+  main:
+    allow-bean-definition-overriding: true
+  
+  cloud:
+    discovery:
+      enabled: false
+    config:
+      enabled: false
+    service-registry:
+      auto-registration:
+        enabled: false
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: UTC
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+
+  datasource:
+    url: jdbc:postgresql://ep-royal-bird-a1m9xsdr.ap-southeast-1.aws.neon.tech:5432/CEM_DB?sslmode=require
+    username: default
+    password: USIBWX1Y4Lui
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 60000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      pool-name: HikariPool-CONTRACT
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+    open-in-view: false
+  
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 1
+    validate-on-migrate: false
+    clean-disabled: false
+  
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/api/auth
+
+  # Mail configuration for customer notifications
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          timeout: 20000
+          connectiontimeout: 20000
+          writetimeout: 20000
+
+eureka:
+  client:
+    enabled: false
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:404E635266546A576E5A7234753778214125442A472D4B6150645367566B5970}
+  expiration: 86400000 # 24 hours in milliseconds
+  refresh-expiration: 604800000 # 7 days in milliseconds
+
+# API Documentation
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operationsSorter: method
+    tagsSorter: alpha
+  show-actuator: false
+
+# Management endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+# Logging
+logging:
+  level:
+    com.g47.cem: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/contract-service.log
+
+# Custom Application Properties
+app:
+  cors:
+    allowedOrigins: "http://localhost:8080,http://localhost:3000,http://localhost:3001,https://yourdomain.com"
+  security:
+    permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/actuator/health"
+  services:
+    auth-service:
+      url: "http://localhost:8081/api/auth"
+    customer-service:
+      url: "http://localhost:8082/api/customer"
+    device-service:
+      url: "http://localhost:8083/api/device"
+  
+  # File upload configuration
+  file:
+    upload-dir: ${FILE_UPLOAD_DIR:./uploads/contracts}
+    max-file-size: 10MB
+    allowed-extensions: pdf,doc,docx,jpg,jpeg,png
+  
+  # Email templates
+  email:
+    templates:
+      contract-signed: "contract-signed"
+      customer-account: "customer-account-created"
+    from-address: ${MAIL_FROM:noreply@cem-system.com}
+    from-name: "CEM System" 

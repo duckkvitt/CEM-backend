@@ -37,6 +37,10 @@ spring:
           uri: http://localhost:8083
           predicates:
             - Path=/api/device/**
+        - id: contract-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/contract/**
 
 management:
   endpoints:
@@ -61,4 +65,6 @@ springdoc:
       - url: /api/customer/api-docs
         name: Customer Service
       - url: /api/device/api-docs
-        name: Device Service 
+        name: Device Service
+      - url: /api/contract/api-docs
+        name: Contract Service 
