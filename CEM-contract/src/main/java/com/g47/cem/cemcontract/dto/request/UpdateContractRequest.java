@@ -42,4 +42,9 @@ public class UpdateContractRequest {
      * If provided, this will replace all existing contract details
      */
     private List<CreateContractRequest.CreateContractDetailRequest> contractDetails;
+    
+    /**
+     * Updated file path for the contract document (Cloudinary public_id or local filename).
+     */
+    private String filePath;
 } 

@@ -129,7 +129,7 @@ logging:
 # Custom Application Properties
 app:
   cors:
-    allowedOrigins: "http://localhost:8080,http://localhost:3000,http://localhost:3001,https://yourdomain.com"
+    allowedOrigins: "http://localhost:3000,http://localhost:3001,http://localhost:8080,https://localhost:8080,https://localhost:8081,https://localhost:8082,https://localhost:8083,https://localhost:8084,https://cem.vercel.app,https://api-cem.azurewebsites.net"
   security:
     permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/actuator/health"
   services:
@@ -152,4 +152,10 @@ app:
       contract-signed: "contract-signed"
       customer-account: "customer-account-created"
     from-address: ${MAIL_FROM:noreply@cem-system.com}
-    from-name: "CEM System" 
+    from-name: "CEM System"
+
+# Google Drive configuration (used for file attachments stored remotely)
+google-drive:
+  credentials-path: ${GOOGLE_DRIVE_CREDENTIALS_PATH:classpath:slms-458916-02299aa46fea.json}
+  folder-id: ${GOOGLE_DRIVE_FOLDER_ID:contracts}
+  application-name: ${GOOGLE_DRIVE_APP_NAME:CEM Contract Service} 

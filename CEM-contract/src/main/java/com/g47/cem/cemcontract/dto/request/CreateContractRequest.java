@@ -47,6 +47,11 @@ public class CreateContractRequest {
      */
     private List<CreateContractDetailRequest> contractDetails;
     
+    /**
+     * Đường dẫn (public_id) file hợp đồng đã upload lên Cloudinary hoặc tên file lưu local.
+     */
+    private String filePath;
+    
     @Data
     @Builder
     @NoArgsConstructor
