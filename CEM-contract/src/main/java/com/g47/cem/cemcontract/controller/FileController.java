@@ -1,11 +1,16 @@
 package com.g47.cem.cemcontract.controller;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.g47.cem.cemcontract.dto.response.ApiResponse;
 import com.g47.cem.cemcontract.exception.BusinessException;
 import com.g47.cem.cemcontract.service.FileStorageService;
+import com.g47.cem.cemcontract.service.GoogleDriveService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +34,13 @@ import lombok.extern.slf4j.Slf4j;
  * REST Controller for File Management
  */
 @RestController
-@RequestMapping("/api/files")
+@RequestMapping("/files")
 @RequiredArgsConstructor
 @Slf4j
 public class FileController {
     
     private final FileStorageService fileStorageService;
+    private final GoogleDriveService googleDriveService;
     
     /**
      * Upload contract file
@@ -60,7 +67,10 @@ public class FileController {
         }
         
         try {
-            String fileName = fileStorageService.storeFile(file, contractNumber);
+            String prefix = (contractNumber != null && !contractNumber.isBlank()) ? contractNumber + "_" : "";
+            String fileId = googleDriveService.upload(file, prefix + file.getOriginalFilename());
+            // We return the Google Drive fileId so frontend can store it as filePath
+            String fileName = fileId;
             
             log.info("File uploaded successfully: {}", fileName);
             
@@ -73,19 +83,29 @@ public class FileController {
     }
     
     /**
-     * Download contract file
+     * Download contract file – supports nested paths like contracts/file_xxx
+     * Using /** pattern to capture the full path
      */
-    @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(
-            @PathVariable String fileName,
-            HttpServletRequest request) {
+    @GetMapping("/download/**")
+    public ResponseEntity<?> downloadFile(HttpServletRequest request) {
+
+        // Extract the portion after "/download/"
+        String requestUri = request.getRequestURI(); // e.g. /api/contract/files/download/contracts/file_vqxowa
+        String prefix = request.getContextPath() + "/files/download/"; // contextPath = /api/contract
+        if (!requestUri.startsWith(prefix)) {
+            throw new BusinessException("Invalid download URL");
+        }
         
+        String fileName = requestUri.substring(prefix.length());
         log.info("Downloading file: {}", fileName);
         
         try {
-            // Validate file exists
+            // Nếu file không tồn tại trong local storage → redirect tới Google Drive URL
             if (!fileStorageService.fileExists(fileName)) {
-                throw new BusinessException("File not found: " + fileName);
+                String redirectUrl = googleDriveService.getDownloadUrl(fileName);
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .location(URI.create(redirectUrl))
+                        .build();
             }
             
             Path filePath = fileStorageService.getFilePath(fileName);
@@ -177,5 +197,21 @@ public class FileController {
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         
         return String.format("%.1f %s", size / Math.pow(1024, digitGroups), units[digitGroups]);
+    }
+    
+    /**
+     * Direct download with redirect to Google Drive URL (no signature needed for public files)
+     */
+    @GetMapping("/download-direct/{fileId:.+}")
+    public ResponseEntity<Void> downloadFileDirect(@PathVariable("fileId") String fileId) {
+        try {
+            String directUrl = googleDriveService.getDownloadUrl(fileId);
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .location(URI.create(directUrl))
+                    .build();
+                    
+        } catch (Exception e) {
+            throw new BusinessException("Error generating download URL: " + e.getMessage());
+        }
     }
 } 

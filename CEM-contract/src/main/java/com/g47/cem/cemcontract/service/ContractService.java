@@ -49,9 +49,35 @@ public class ContractService {
     public ContractResponse createContract(CreateContractRequest request, String jwt) {
         // Remove "Bearer " prefix if present
         String token = jwt != null && jwt.startsWith("Bearer ") ? jwt.substring(7) : jwt;
-
+        
+        log.debug("Processing contract creation with JWT token");
+        
+        // Validate JWT token
+        if (token == null || token.trim().isEmpty()) {
+            throw new BusinessException("Authorization token is required");
+        }
+        
+        // Validate JWT token format and extract user information
+        if (!jwtUtil.validateToken(token)) {
+            throw new BusinessException("Invalid or expired authorization token");
+        }
+        
         Long staffId = jwtUtil.getUserIdFromToken(token);
         String username = jwtUtil.extractUsername(token);
+        
+        // Validate extracted user information
+        if (staffId == null) {
+            log.error("Failed to extract user ID from JWT token. Token: {}", token.substring(0, Math.min(token.length(), 20)) + "...");
+            throw new BusinessException("Invalid token: user ID not found");
+        }
+        
+        if (username == null || username.trim().isEmpty()) {
+            log.error("Failed to extract username from JWT token. Token: {}", token.substring(0, Math.min(token.length(), 20)) + "...");
+            throw new BusinessException("Invalid token: username not found");
+        }
+        
+        log.info("Creating contract for staffId: {}, username: {}", staffId, username);
+        
         String contractNumber = generateContractNumber();
 
         Contract contract = Contract.builder()
@@ -60,6 +86,7 @@ public class ContractService {
                 .staffId(staffId)
                 .title(request.getTitle())
                 .description(request.getDescription())
+                .filePath(request.getFilePath())
                 .totalValue(request.getTotalValue())
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
@@ -71,19 +98,28 @@ public class ContractService {
         // Map details if any
         if (request.getContractDetails() != null) {
             List<ContractDetail> details = request.getContractDetails().stream()
-                    .map(d -> ContractDetail.builder()
-                            .contract(contract)
-                            .workCode(d.getWorkCode())
-                            .deviceId(d.getDeviceId())
-                            .serviceName(d.getServiceName())
-                            .description(d.getDescription())
-                            .quantity(d.getQuantity())
-                            .unitPrice(d.getUnitPrice())
-                            .warrantyMonths(d.getWarrantyMonths())
-                            .notes(d.getNotes())
-                            .build())
+                    .map(d -> {
+                        ContractDetail detail = ContractDetail.builder()
+                                .contract(contract)
+                                .workCode(d.getWorkCode())
+                                .deviceId(d.getDeviceId())
+                                .serviceName(d.getServiceName())
+                                .description(d.getDescription())
+                                .quantity(d.getQuantity())
+                                .unitPrice(d.getUnitPrice())
+                                .warrantyMonths(d.getWarrantyMonths())
+                                .notes(d.getNotes())
+                                .build();
+                        detail.calculateTotalPrice();
+                        return detail;
+                    })
                     .collect(Collectors.toList());
             contract.setContractDetails(details);
+            contract.updateTotalValue();
+        }
+
+        // Ensure total value is set even if no details provided
+        if (contract.getTotalValue() == null) {
             contract.updateTotalValue();
         }
 
@@ -101,7 +137,45 @@ public class ContractService {
         contract.setDescription(request.getDescription());
         contract.setStartDate(request.getStartDate());
         contract.setEndDate(request.getEndDate());
-        contract.setTotalValue(request.getTotalValue());
+        if (request.getFilePath() != null) {
+            contract.setFilePath(request.getFilePath());
+        }
+
+        // If contract details are provided, replace existing ones
+        if (request.getContractDetails() != null) {
+            // Remove old details
+            if (contract.getContractDetails() != null) {
+                contract.getContractDetails().clear();
+            }
+
+            List<ContractDetail> newDetails = request.getContractDetails().stream()
+                    .map(d -> {
+                        ContractDetail detail = ContractDetail.builder()
+                                .contract(contract)
+                                .workCode(d.getWorkCode())
+                                .deviceId(d.getDeviceId())
+                                .serviceName(d.getServiceName())
+                                .description(d.getDescription())
+                                .quantity(d.getQuantity())
+                                .unitPrice(d.getUnitPrice())
+                                .warrantyMonths(d.getWarrantyMonths())
+                                .notes(d.getNotes())
+                                .build();
+                        detail.calculateTotalPrice();
+                        return detail;
+                    })
+                    .collect(Collectors.toList());
+            contract.setContractDetails(newDetails);
+        }
+
+        // Recalculate total value
+        contract.updateTotalValue();
+
+        // Allow manual override of total value if provided and different
+        if (request.getTotalValue() != null) {
+            contract.setTotalValue(request.getTotalValue());
+        }
+
         contractRepository.save(contract);
         return map(contract);
     }

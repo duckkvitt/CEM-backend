@@ -42,6 +42,11 @@ public class JwtUtil {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList());
+        
+        // Add userId to claims if userDetails is a User entity
+        if (userDetails instanceof com.g47.cem.cemauthentication.entity.User user) {
+            claims.put("userId", user.getId());
+        }
 
         return createToken(claims, userDetails.getUsername(), jwtExpiration);
     }
@@ -53,6 +58,12 @@ public class JwtUtil {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList());
+        
+        // Add userId to claims if userDetails is a User entity
+        if (userDetails instanceof com.g47.cem.cemauthentication.entity.User user) {
+            claims.put("userId", user.getId());
+        }
+        
         return createToken(claims, userDetails.getUsername(), refreshExpiration);
     }
 

@@ -69,7 +69,24 @@ public class JwtUtil {
 
     public Long extractUserId(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.get("userId", Long.class);
+        Object userIdObj = claims.get("userId");
+        
+        if (userIdObj == null) {
+            return null;
+        }
+        
+        // Handle different number types that might be in the JWT
+        if (userIdObj instanceof Number) {
+            return ((Number) userIdObj).longValue();
+        } else if (userIdObj instanceof String) {
+            try {
+                return Long.parseLong((String) userIdObj);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        
+        return null;
     }
 
     public List<SimpleGrantedAuthority> extractAuthorities(String token) {
