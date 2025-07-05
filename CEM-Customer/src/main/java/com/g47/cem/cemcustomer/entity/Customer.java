@@ -1,5 +1,6 @@
 package com.g47.cem.cemcustomer.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,11 +47,38 @@ public class Customer {
     @Column(unique = true, nullable = false, length = 255)
     private String email;
     
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String phone;
     
     @Column(columnDefinition = "TEXT")
     private String address;
+
+    @Column(name = "company_name", length = 255)
+    private String companyName;
+
+    @Column(name = "company_tax_code", length = 50)
+    private String companyTaxCode;
+
+    @Column(name = "company_address", columnDefinition = "TEXT")
+    private String companyAddress;
+
+    @Column(name = "legal_representative", nullable = false, length = 255)
+    private String legalRepresentative;
+
+    @Column(nullable = false, length = 255)
+    private String title;
+
+    @Column(name = "identity_number", nullable = false, length = 50)
+    private String identityNumber;
+
+    @Column(name = "identity_issue_date", nullable = false)
+    private LocalDate identityIssueDate;
+
+    @Column(name = "identity_issue_place", nullable = false, length = 255)
+    private String identityIssuePlace;
+
+    @Column(length = 20)
+    private String fax;
     
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")

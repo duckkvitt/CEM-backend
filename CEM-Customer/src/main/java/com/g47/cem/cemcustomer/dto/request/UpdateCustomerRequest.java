@@ -1,5 +1,6 @@
 package com.g47.cem.cemcustomer.dto.request;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.validation.constraints.Email;
@@ -32,6 +33,32 @@ public class UpdateCustomerRequest {
 
     @Size(max = 1000, message = "Address must not exceed 1000 characters")
     private String address;
+
+    @Size(max = 255, message = "Company name must not exceed 255 characters")
+    private String companyName;
+
+    @Size(max = 50, message = "Company tax code must not exceed 50 characters")
+    private String companyTaxCode;
+
+    @Size(max = 1000, message = "Company address must not exceed 1000 characters")
+    private String companyAddress;
+
+    @Size(max = 255, message = "Legal representative must not exceed 255 characters")
+    private String legalRepresentative;
+
+    @Size(max = 255, message = "Title must not exceed 255 characters")
+    private String title;
+
+    @Size(max = 50, message = "Identity number must not exceed 50 characters")
+    private String identityNumber;
+
+    private LocalDate identityIssueDate;
+
+    @Size(max = 255, message = "Identity issue place must not exceed 255 characters")
+    private String identityIssuePlace;
+
+    @Size(max = 20, message = "Fax must not exceed 20 characters")
+    private String fax;
 
     private List<String> tags;
 

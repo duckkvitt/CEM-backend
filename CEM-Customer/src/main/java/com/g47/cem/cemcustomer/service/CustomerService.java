@@ -46,16 +46,24 @@ public class CustomerService {
                                       HttpStatus.CONFLICT);
         }
         
-        // Create customer entity
-        Customer customer = Customer.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .phone(request.getPhone())
-                .address(request.getAddress())
-                .tags(request.getTags() != null ? request.getTags() : new ArrayList<>())
-                .isHidden(request.getIsHidden() != null ? request.getIsHidden() : false)
-                .createdBy(createdBy)
-                .build();
+        // Create customer entity by setting fields manually
+        Customer customer = new Customer();
+        customer.setName(request.getName());
+        customer.setEmail(request.getEmail());
+        customer.setPhone(request.getPhone());
+        customer.setAddress(request.getAddress());
+        customer.setCompanyName(request.getCompanyName());
+        customer.setCompanyTaxCode(request.getCompanyTaxCode());
+        customer.setCompanyAddress(request.getCompanyAddress());
+        customer.setLegalRepresentative(request.getLegalRepresentative());
+        customer.setTitle(request.getTitle());
+        customer.setIdentityNumber(request.getIdentityNumber());
+        customer.setIdentityIssueDate(request.getIdentityIssueDate());
+        customer.setIdentityIssuePlace(request.getIdentityIssuePlace());
+        customer.setFax(request.getFax());
+        customer.setTags(request.getTags() != null ? request.getTags() : new ArrayList<>());
+        customer.setIsHidden(request.getIsHidden() != null ? request.getIsHidden() : false);
+        customer.setCreatedBy(createdBy);
         
         // Save customer
         Customer savedCustomer = customerRepository.save(customer);
@@ -210,6 +218,33 @@ public class CustomerService {
         }
         if (request.getAddress() != null) {
             customer.setAddress(request.getAddress());
+        }
+        if (request.getCompanyName() != null) {
+            customer.setCompanyName(request.getCompanyName());
+        }
+        if (request.getCompanyTaxCode() != null) {
+            customer.setCompanyTaxCode(request.getCompanyTaxCode());
+        }
+        if (request.getCompanyAddress() != null) {
+            customer.setCompanyAddress(request.getCompanyAddress());
+        }
+        if (request.getLegalRepresentative() != null) {
+            customer.setLegalRepresentative(request.getLegalRepresentative());
+        }
+        if (request.getTitle() != null) {
+            customer.setTitle(request.getTitle());
+        }
+        if (request.getIdentityNumber() != null) {
+            customer.setIdentityNumber(request.getIdentityNumber());
+        }
+        if (request.getIdentityIssueDate() != null) {
+            customer.setIdentityIssueDate(request.getIdentityIssueDate());
+        }
+        if (request.getIdentityIssuePlace() != null) {
+            customer.setIdentityIssuePlace(request.getIdentityIssuePlace());
+        }
+        if (request.getFax() != null) {
+            customer.setFax(request.getFax());
         }
         if (request.getTags() != null) {
             customer.setTags(request.getTags());
