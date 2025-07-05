@@ -26,7 +26,6 @@ public class DeviceResponse {
     private String name;
     private String model;
     private String serialNumber;
-    private Long customerId;
     private LocalDate warrantyExpiry;
     private DeviceStatus status;
     private String createdBy;
@@ -34,4 +33,5 @@ public class DeviceResponse {
     private LocalDateTime updatedAt;
     private List<DeviceNoteResponse> notes;
     private List<CustomerDeviceResponse> customerDevices;
+    private Integer quantity;
 } 

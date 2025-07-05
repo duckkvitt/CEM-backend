@@ -1,23 +1,21 @@
 package com.g47.cem.cemdevice.enums;
 
+import lombok.Getter;
+
 /**
  * Enum for customer device status
  */
+@Getter
 public enum CustomerDeviceStatus {
     ACTIVE("Active"),
+    INACTIVE("Inactive"),
     ERROR("Error"),
-    WARRANTY("Under Warranty"),
-    EXPIRED("Expired"),
-    RETURNED("Returned"),
-    REPLACED("Replaced");
-    
+    WARRANTY("Warranty"),
+    EXPIRED("Expired");
+
     private final String displayName;
-    
+
     CustomerDeviceStatus(String displayName) {
         this.displayName = displayName;
-    }
-    
-    public String getDisplayName() {
-        return displayName;
     }
 } 
