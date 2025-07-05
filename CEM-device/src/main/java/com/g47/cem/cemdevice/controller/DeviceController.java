@@ -86,19 +86,16 @@ public class DeviceController {
     @Operation(summary = "Get all devices", description = "Retrieves paginated list of devices with optional filtering")
     public ResponseEntity<ApiResponse<Page<DeviceResponse>>> getAllDevices(
             @Parameter(description = "Search keyword (matches name, model, serial number)") @RequestParam(required = false) String keyword,
-            @Parameter(description = "Customer ID filter") @RequestParam(required = false) Long customerId,
+            @Parameter(description = "Set to true to only get devices in stock (not assigned to any customer)") @RequestParam(required = false) Boolean inStock,
             @Parameter(description = "Device status filter") @RequestParam(required = false) DeviceStatus status,
             @PageableDefault(size = 20) Pageable pageable) {
         
-        log.debug("Fetching devices with filters - keyword: {}, customerId: {}, status: {}", keyword, customerId, status);
+        log.debug("Fetching devices with filters - keyword: {}, inStock: {}, status: {}", keyword, inStock, status);
         
         Page<DeviceResponse> devices;
         
-        if (keyword != null || customerId != null || status != null) {
-            devices = deviceService.searchDevicesByKeyword(keyword, customerId, status, pageable);
-        } else {
-            devices = deviceService.getAllDevices(pageable);
-        }
+        // Luôn sử dụng hàm search để có thể kết hợp các bộ lọc
+        devices = deviceService.searchDevices(keyword, inStock, status, pageable);
         
         return ResponseEntity.ok(ApiResponse.success(devices, "Devices retrieved successfully"));
     }

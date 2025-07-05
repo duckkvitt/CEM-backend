@@ -30,9 +30,9 @@ public class UpdateDeviceRequest {
     @Size(max = 255, message = "Serial number must not exceed 255 characters")
     private String serialNumber;
     
-    private Long customerId;
-    
     private LocalDate warrantyExpiry;
     
     private DeviceStatus status;
+
+    private Integer quantity;
 } 

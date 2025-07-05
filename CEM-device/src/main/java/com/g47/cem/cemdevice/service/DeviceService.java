@@ -1,7 +1,5 @@
 package com.g47.cem.cemdevice.service;
 
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +47,8 @@ public class DeviceService {
                 .name(request.getName())
                 .model(request.getModel())
                 .serialNumber(request.getSerialNumber())
-                .customerId(request.getCustomerId())
+                // customerId đã bị xóa
+                .quantity(request.getQuantity() != null ? request.getQuantity() : 1)
                 .warrantyExpiry(request.getWarrantyExpiry())
                 .status(request.getStatus() != null ? request.getStatus() : DeviceStatus.ACTIVE)
                 .createdBy(createdBy)
@@ -99,16 +98,19 @@ public class DeviceService {
     }
     
     /**
-     * Search devices with filters
+     * Search devices with filters.
+     * This method combines keyword search, stock status, and device status.
      */
     @Transactional(readOnly = true)
-    public Page<DeviceResponse> searchDevices(String name, String model, String serialNumber, 
-                                            Long customerId, DeviceStatus status, Pageable pageable) {
-        log.debug("Searching devices with filters - name: {}, model: {}, serialNumber: {}, customerId: {}, status: {}", 
-                name, model, serialNumber, customerId, status);
+    public Page<DeviceResponse> searchDevices(String keyword, Boolean inStock, DeviceStatus status, Pageable pageable) {
+        log.debug("Searching devices with filters - keyword: {}, inStock: {}, status: {}", keyword, inStock, status);
         
-        Page<Device> devices = deviceRepository.findDevicesWithFilters(
-                name, model, serialNumber, customerId, status, pageable);
+        String pattern = null;
+        if (keyword != null && !keyword.isBlank()) {
+            pattern = "%" + keyword.trim() + "%";
+        }
+        
+        Page<Device> devices = deviceRepository.searchDevices(pattern, inStock, status, pageable);
         return devices.map(this::mapToDeviceResponse);
     }
     
@@ -123,18 +125,7 @@ public class DeviceService {
         return devices.map(this::mapToDeviceResponse);
     }
     
-    /**
-     * Get devices by customer ID
-     */
-    @Transactional(readOnly = true)
-    public List<DeviceResponse> getDevicesByCustomerId(Long customerId) {
-        log.debug("Fetching devices for customer ID: {}", customerId);
-        
-        List<Device> devices = deviceRepository.findByCustomerId(customerId);
-        return devices.stream()
-                .map(this::mapToDeviceResponse)
-                .toList();
-    }
+    // Xóa getDevicesByCustomerId
     
     /**
      * Update device
@@ -157,7 +148,10 @@ public class DeviceService {
         device.setName(request.getName());
         device.setModel(request.getModel());
         device.setSerialNumber(request.getSerialNumber());
-        device.setCustomerId(request.getCustomerId());
+        // customerId đã bị xóa
+        if (request.getQuantity() != null) {
+            device.setQuantity(request.getQuantity());
+        }
         device.setWarrantyExpiry(request.getWarrantyExpiry());
         if (request.getStatus() != null) {
             device.setStatus(request.getStatus());
@@ -220,14 +214,7 @@ public class DeviceService {
         return deviceRepository.countByStatus(status);
     }
     
-    /**
-     * Search devices by generic keyword across name, model, serial number
-     */
-    @Transactional(readOnly = true)
-    public Page<DeviceResponse> searchDevicesByKeyword(String keyword, Long customerId, DeviceStatus status, Pageable pageable) {
-        Page<Device> devices = deviceRepository.searchByKeyword(keyword, customerId, status, pageable);
-        return devices.map(this::mapToDeviceResponse);
-    }
+    // Xóa searchDevicesByKeyword và searchDevices cũ
     
     private DeviceResponse mapToDeviceResponse(Device device) {
         return modelMapper.map(device, DeviceResponse.class);

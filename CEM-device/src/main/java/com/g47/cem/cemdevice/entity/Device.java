@@ -66,6 +66,10 @@ public class Device {
     @Builder.Default
     private DeviceStatus status = DeviceStatus.ACTIVE;
     
+    @Column(name = "quantity")
+    @Builder.Default
+    private Integer quantity = 1;
+    
     @Column(name = "created_by")
     private String createdBy;
     

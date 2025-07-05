@@ -1,6 +1,5 @@
 package com.g47.cem.cemdevice.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -23,23 +22,7 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     
     boolean existsBySerialNumber(String serialNumber);
     
-    List<Device> findByCustomerId(Long customerId);
-    
     Page<Device> findByStatus(DeviceStatus status, Pageable pageable);
-    
-    @Query("SELECT d FROM Device d WHERE " +
-           "(:name IS NULL OR LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-           "(:model IS NULL OR LOWER(d.model) LIKE LOWER(CONCAT('%', :model, '%'))) AND " +
-           "(:serialNumber IS NULL OR d.serialNumber LIKE CONCAT('%', :serialNumber, '%')) AND " +
-           "(:customerId IS NULL OR d.customerId = :customerId) AND " +
-           "(:status IS NULL OR d.status = :status)")
-    Page<Device> findDevicesWithFilters(
-            @Param("name") String name,
-            @Param("model") String model,
-            @Param("serialNumber") String serialNumber,
-            @Param("customerId") Long customerId,
-            @Param("status") DeviceStatus status,
-            Pageable pageable);
     
     @Query("SELECT COUNT(d) FROM Device d WHERE d.status = :status")
     long countByStatus(@Param("status") DeviceStatus status);
@@ -48,16 +31,18 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     Page<Device> findExpiredWarrantyDevices(Pageable pageable);
 
     /**
-     * Search devices by a generic keyword that matches name, model or serial number (case-insensitive)
+     * Search devices with flexible filters for keyword, stock status, and device status.
      */
     @Query("SELECT d FROM Device d WHERE " +
-           "(:keyword IS NULL OR LOWER(d.name) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-           "OR LOWER(d.model) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-           "OR d.serialNumber LIKE CONCAT('%', :keyword, '%')) " +
-           "AND (:customerId IS NULL OR d.customerId = :customerId) " +
-           "AND (:status IS NULL OR d.status = :status)")
-    Page<Device> searchByKeyword(@Param("keyword") String keyword,
-                                 @Param("customerId") Long customerId,
-                                 @Param("status") DeviceStatus status,
-                                 Pageable pageable);
+           "(:keyword IS NULL OR d.serialNumber LIKE :keyword OR d.name LIKE :keyword OR d.model LIKE :keyword) " +
+           "AND (:status IS NULL OR d.status = :status) " +
+           // Nếu inStock là true, chỉ lấy device không có trong bảng customer_devices
+           "AND (:inStock IS NULL OR " +
+           "     (:inStock = true AND NOT EXISTS (SELECT 1 FROM CustomerDevice cd WHERE cd.device = d)) OR " +
+           "     (:inStock = false AND EXISTS (SELECT 1 FROM CustomerDevice cd WHERE cd.device = d))" +
+           ")")
+    Page<Device> searchDevices(@Param("keyword") String keyword,
+                               @Param("inStock") Boolean inStock,
+                               @Param("status") DeviceStatus status,
+                               Pageable pageable);
 } 
