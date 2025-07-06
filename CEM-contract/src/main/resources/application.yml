@@ -129,7 +129,7 @@ logging:
 # Custom Application Properties
 app:
   cors:
-    allowedOrigins: "http://localhost:3000,http://localhost:3001,http://localhost:8080,https://localhost:8080,https://localhost:8081,https://localhost:8082,https://localhost:8083,https://localhost:8084,https://cem.vercel.app,https://api-cem.azurewebsites.net"
+    allowedOrigins: "*"
   security:
     permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/actuator/health"
   services:

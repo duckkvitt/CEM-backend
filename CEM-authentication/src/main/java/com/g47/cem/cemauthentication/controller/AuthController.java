@@ -146,7 +146,7 @@ public class AuthController {
     @PostMapping("/admin/create-user")
     @Operation(summary = "Create user account", description = "Create a new user account (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
             @Valid @RequestBody CreateUserRequest request,
             Authentication authentication,
@@ -170,7 +170,7 @@ public class AuthController {
     @GetMapping("/admin/roles")
     @Operation(summary = "Get all roles", description = "Retrieve all available roles (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     public ResponseEntity<ApiResponse<List<RoleResponse>>> getAllRoles(
             HttpServletRequest httpRequest) {
         
@@ -251,7 +251,7 @@ public class AuthController {
     @GetMapping("/admin/users")
     @Operation(summary = "Get users with filters", description = "Retrieve paginated list of users with optional filters (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     public ResponseEntity<ApiResponse<Page<UserResponse>>> getUsers(
             @Parameter(description = "Search keyword (first name, last name or email)")
             @RequestParam(required = false) String search,
@@ -285,7 +285,7 @@ public class AuthController {
     @PutMapping("/admin/users/{id}/deactivate")
     @Operation(summary = "Deactivate user", description = "Set user's status to INACTIVE (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
     public ResponseEntity<ApiResponse<UserResponse>> deactivateUser(
             @PathVariable Long id,
             HttpServletRequest httpRequest) {

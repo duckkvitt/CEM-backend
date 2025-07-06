@@ -51,9 +51,6 @@ public class ContractDetail {
     @Column(name = "device_id")
     private Long deviceId; // Reference to device (optional)
     
-    @Column(name = "service_name", nullable = false, length = 255)
-    private String serviceName;
-    
     @Column(columnDefinition = "TEXT")
     private String description;
     

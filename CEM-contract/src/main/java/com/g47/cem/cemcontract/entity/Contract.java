@@ -65,7 +65,7 @@ public class Contract {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
     @Builder.Default
-    private ContractStatus status = ContractStatus.UNSIGNED;
+    private ContractStatus status = ContractStatus.DRAFT;
     
     @Column(name = "file_path", length = 500)
     private String filePath; // Path to contract document
@@ -93,6 +93,25 @@ public class Contract {
     @Column(name = "end_date")
     private LocalDate endDate; // Contract end date
     
+    // Điều 2: Thanh toán
+    @Column(name = "payment_method", length = 255)
+    private String paymentMethod; // Hình thức thanh toán
+    
+    @Column(name = "payment_term", length = 500)
+    private String paymentTerm; // Thời hạn thanh toán
+    
+    @Column(name = "bank_account", length = 500)
+    private String bankAccount; // Tài khoản ngân hàng
+    
+    // Điều 3: Thời gian, địa điểm, phương thức giao hàng (now managed by ContractDeliverySchedule table)
+    
+    // Điều 5: Bảo hành và hướng dẫn sử dụng hàng hóa
+    @Column(name = "warranty_product", length = 500)
+    private String warrantyProduct; // Loại hàng bảo hành
+    
+    @Column(name = "warranty_period_months")
+    private Integer warrantyPeriodMonths; // Thời gian bảo hành (tháng)
+
     @Column(name = "is_hidden", nullable = false)
     @Builder.Default
     private Boolean isHidden = false;
@@ -124,6 +143,11 @@ public class Contract {
     @EqualsAndHashCode.Exclude
     private List<ContractHistory> history;
     
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<ContractDeliverySchedule> deliverySchedules;
+    
     // Helper methods
     public boolean isVisible() {
         return !isHidden;
@@ -137,25 +161,27 @@ public class Contract {
         this.isHidden = false;
     }
     
-    public boolean isSigned() {
-        return status.isSigned();
+    public boolean isFullySigned() {
+        return status == ContractStatus.ACTIVE;
     }
     
     public boolean isActive() {
-        return status.isActive();
+        return status == ContractStatus.ACTIVE;
     }
     
+    /* This method is too simplistic for the new workflow.
+     * Signing logic will be handled in the service layer by creating
+     * ContractSignature entities and updating status based on business rules.
     public void sign(String signerName, ContractStatus newStatus) {
         this.status = newStatus;
         this.signedAt = LocalDateTime.now();
         this.signedBy = signerName;
         
-        if (newStatus == ContractStatus.DIGITALLY_SIGNED) {
+        if (newStatus == ContractStatus.ACTIVE) {
             this.digitalSigned = true;
-        } else if (newStatus == ContractStatus.PAPER_SIGNED) {
-            this.paperConfirmed = true;
         }
     }
+    */
     
     /**
      * Calculate total value from contract details if not set manually

@@ -1,14 +1,19 @@
 package com.g47.cem.cemcustomer.util;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +32,7 @@ public class JwtUtil {
     private long jwtExpiration;
     
     private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
     
     public String extractUsername(String token) {
@@ -44,29 +49,68 @@ public class JwtUtil {
     }
     
     private Claims extractAllClaims(String token) {
-        try {
-            return Jwts.parser()
-                    .verifyWith(getSigningKey())
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
-        } catch (Exception e) {
-            log.error("Error extracting claims from token: {}", e.getMessage());
-            throw e;
-        }
+        JwtParser parser = Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build();
+        
+        return parser.parseSignedClaims(token).getPayload();
     }
     
-    public Boolean isTokenExpired(String token) {
-        try {
-            return extractExpiration(token).before(new Date());
-        } catch (Exception e) {
-            log.error("Error checking token expiration: {}", e.getMessage());
-            return true;
-        }
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
     }
-    
-    public Boolean validateToken(String token) {
+
+    public Boolean validateToken(String token, String username) {
+        final String tokenUsername = extractUsername(token);
+        return (tokenUsername.equals(username) && !isTokenExpired(token));
+    }
+
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        // This will now handle a list of strings and take the first one.
+        // For proper role handling, this might need adjustment if users can have multiple roles evaluated simultaneously.
+        List<String> roles = claims.get("roles", List.class);
+        if (roles == null || roles.isEmpty()) {
+            // Fallback for older tokens or different claim structures
+            return claims.get("role", String.class);
+        }
+        return roles.get(0);
+    }
+
+    public Long extractUserId(String token) {
+        Claims claims = extractAllClaims(token);
+        Object userIdObj = claims.get("userId");
+        
+        if (userIdObj == null) {
+            return null;
+        }
+        
+        if (userIdObj instanceof Number) {
+            return ((Number) userIdObj).longValue();
+        } else if (userIdObj instanceof String) {
+            try {
+                return Long.parseLong((String) userIdObj);
+            } catch (NumberFormatException e) {
+                log.error("Cannot parse userId from String: {}", userIdObj, e);
+                return null;
+            }
+        }
+        
+        return null;
+    }
+
+    public List<SimpleGrantedAuthority> extractAuthorities(String token) {
+        Claims claims = extractAllClaims(token);
+        List<String> roles = claims.get("roles", List.class);
+        if (roles == null || roles.isEmpty()) {
+             return Collections.emptyList();
+        }
+        return roles.stream().map(SimpleGrantedAuthority::new).toList();
+    }
+
+    public boolean validateToken(String token) {
         try {
+            extractAllClaims(token);
             return !isTokenExpired(token);
         } catch (Exception e) {
             log.error("Token validation failed: {}", e.getMessage());

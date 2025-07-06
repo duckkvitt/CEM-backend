@@ -31,9 +31,9 @@ public interface ContractDetailRepository extends JpaRepository<ContractDetail, 
     List<ContractDetail> findByWorkCodeContaining(String workCode);
     
     /**
-     * Find contract details by service name
+     * Find contract details by description
      */
-    List<ContractDetail> findByServiceNameContaining(String serviceName);
+    List<ContractDetail> findByDescriptionContaining(String description);
     
     /**
      * Calculate total value for a contract

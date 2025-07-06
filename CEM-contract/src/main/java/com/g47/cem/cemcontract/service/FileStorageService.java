@@ -96,6 +96,15 @@ public class FileStorageService {
         return fileStorageLocation.resolve(fileName).normalize();
     }
     
+    public Path loadFileAsPath(String fileName) {
+        Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+        if (Files.exists(filePath)) {
+            return filePath;
+        } else {
+            throw new BusinessException("File not found " + fileName);
+        }
+    }
+
     /**
      * Delete a file
      */

@@ -1,111 +1,83 @@
 package com.g47.cem.cemcontract.controller;
 
-import org.springframework.data.domain.Page;
+import com.g47.cem.cemcontract.dto.request.CreateContractRequest;
+import com.g47.cem.cemcontract.dto.request.UpdateContractRequest;
+import com.g47.cem.cemcontract.dto.request.UpdateContractStatusRequest;
+import com.g47.cem.cemcontract.dto.response.ContractResponseDto;
+import com.g47.cem.cemcontract.service.ContractService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.g47.cem.cemcontract.dto.request.CreateContractRequest;
-import com.g47.cem.cemcontract.dto.request.SignContractRequest;
-import com.g47.cem.cemcontract.dto.request.UpdateContractRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import com.g47.cem.cemcontract.dto.response.ApiResponse;
-import com.g47.cem.cemcontract.dto.response.ContractResponse;
-import com.g47.cem.cemcontract.service.ContractService;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import jakarta.validation.Valid;
-
-/**
- * REST controller for contract management operations
- */
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
-@Slf4j
 @Tag(name = "Contract Management", description = "APIs for managing contracts")
 public class ContractController {
-    
+
+    private static final Logger logger = LoggerFactory.getLogger(ContractController.class);
     private final ContractService contractService;
-    
-    // Create contract
+
     @PostMapping
-    @Operation(summary = "Create contract")
-    public ResponseEntity<ApiResponse<ContractResponse>> create(
-            @Valid @RequestBody CreateContractRequest req,
-            @RequestHeader("Authorization") String jwt) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(contractService.createContract(req, jwt)));
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    public ResponseEntity<ApiResponse<ContractResponseDto>> createContract(@Valid @RequestBody CreateContractRequest requestDto, Authentication authentication) {
+        ContractResponseDto createdContract = contractService.createContract(requestDto, authentication);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(createdContract));
     }
 
-    // Update contract
-    @PutMapping("/{id}")
-    @Operation(summary = "Update contract (only unsigned)")
-    public ResponseEntity<ApiResponse<ContractResponse>> update(
-            @PathVariable Long id,
-            @RequestBody UpdateContractRequest req) {
-        return ResponseEntity.ok(ApiResponse.success(contractService.updateContract(id, req)));
+    @GetMapping
+    // Allow additional internal roles such as SUPPORT_TEAM, TECH_LEAD and TECHNICIAN to access the contract list as read-only
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN')")
+    public ResponseEntity<ApiResponse<List<ContractResponseDto>>> getContractsForUser(Authentication authentication) {
+        List<ContractResponseDto> contracts = contractService.getContractsForUser(authentication);
+        return ResponseEntity.ok(ApiResponse.success(contracts));
     }
 
-    // Detail
     @GetMapping("/{id}")
-    @Operation(summary = "Contract detail")
-    public ResponseEntity<ApiResponse<ContractResponse>> detail(@PathVariable Long id) {
-        return ResponseEntity.ok(ApiResponse.success(contractService.getDetail(id)));
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER')")
+    public ResponseEntity<ApiResponse<ContractResponseDto>> getContractById(@PathVariable Long id) {
+        ContractResponseDto dto = contractService.getContractById(id);
+        return ResponseEntity.ok(ApiResponse.success(dto));
+    }
+    
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    public ResponseEntity<ApiResponse<ContractResponseDto>> updateContract(@PathVariable Long id, @Valid @RequestBody UpdateContractRequest requestDto) {
+        ContractResponseDto dto = contractService.updateContract(id, requestDto);
+        return ResponseEntity.ok(ApiResponse.success(dto));
     }
 
-    // List unsigned
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    public ResponseEntity<ApiResponse<ContractResponseDto>> updateContractStatus(@PathVariable Long id, @RequestBody UpdateContractStatusRequest requestDto, Principal principal) {
+         ContractResponseDto dto = contractService.updateContractStatus(id, requestDto.getStatus(), principal.getName());
+         return ResponseEntity.ok(ApiResponse.success(dto));
+    }
+
     @GetMapping("/unsigned")
-    public ResponseEntity<ApiResponse<Page<ContractResponse>>> unsignedList(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(ApiResponse.success(contractService.listUnsigned(page, size)));
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    public ResponseEntity<ApiResponse<Page<ContractResponseDto>>> getUnsignedContracts(@PageableDefault(size = 10) Pageable pageable) {
+        Page<ContractResponseDto> page = contractService.getUnsignedContracts(pageable);
+        return ResponseEntity.ok(ApiResponse.success(page));
     }
 
-    // List signed
-    @GetMapping("/signed")
-    public ResponseEntity<ApiResponse<Page<ContractResponse>>> signedList(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(ApiResponse.success(contractService.listSigned(page, size)));
-    }
-
-    // List hidden
-    @GetMapping("/hidden")
-    public ResponseEntity<ApiResponse<Page<ContractResponse>>> hiddenList(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(ApiResponse.success(contractService.listHidden(page, size)));
-    }
-
-    // Sign with e-signature
-    @PostMapping("/{id}/sign")
-    public ResponseEntity<ApiResponse<ContractResponse>> signE(@PathVariable Long id,
-            @RequestBody SignContractRequest req) {
-        return ResponseEntity.ok(ApiResponse.success(contractService.signEContract(id, req)));
-    }
-
-    // Hide contract
-    @PostMapping("/{id}/hide")
-    public ResponseEntity<ApiResponse<String>> hide(@PathVariable Long id) {
-        contractService.hide(id);
-        return ResponseEntity.ok(ApiResponse.success("Hidden"));
-    }
-
-    // Restore contract
-    @PostMapping("/{id}/restore")
-    public ResponseEntity<ApiResponse<String>> restore(@PathVariable Long id) {
-        contractService.restore(id);
-        return ResponseEntity.ok(ApiResponse.success("Restored"));
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('MANAGER')")
+    public ResponseEntity<ApiResponse<Object>> deleteContract(@PathVariable Long id) {
+        contractService.deleteContract(id);
+        return ResponseEntity.ok(ApiResponse.success("Contract deleted"));
     }
 } 

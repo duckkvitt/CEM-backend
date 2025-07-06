@@ -2,8 +2,10 @@ package com.g47.cem.cemauthentication.util;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
@@ -38,10 +40,11 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", userDetails.getAuthorities()
-                .stream()
+        // Extract all authorities as roles list
+        List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .toList());
+                .collect(Collectors.toList());
+        claims.put("roles", roles);
         
         // Add userId to claims if userDetails is a User entity
         if (userDetails instanceof com.g47.cem.cemauthentication.entity.User user) {
@@ -54,10 +57,11 @@ public class JwtUtil {
     public String generateRefreshToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("type", "refresh");
-        claims.put("roles", userDetails.getAuthorities()
-                .stream()
+        // Extract all authorities as roles list
+        List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .toList());
+                .collect(Collectors.toList());
+        claims.put("roles", roles);
         
         // Add userId to claims if userDetails is a User entity
         if (userDetails instanceof com.g47.cem.cemauthentication.entity.User user) {

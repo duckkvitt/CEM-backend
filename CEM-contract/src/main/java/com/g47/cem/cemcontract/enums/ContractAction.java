@@ -13,6 +13,11 @@ public enum ContractAction {
      * Contract information was updated
      */
     UPDATED("Cập nhật"),
+
+    /**
+     * Contract status was changed manually
+     */
+    STATUS_CHANGED("Thay đổi trạng thái"),
     
     /**
      * Contract was signed

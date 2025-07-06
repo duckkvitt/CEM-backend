@@ -44,6 +44,11 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSp
     Page<Contract> findByStatusAndIsHiddenFalse(ContractStatus status, Pageable pageable);
     
     /**
+     * Find contracts by a list of statuses
+     */
+    Page<Contract> findByStatusInAndIsHiddenFalse(List<ContractStatus> statuses, Pageable pageable);
+    
+    /**
      * Find signed contracts (both paper and digital)
      */
     @Query("SELECT c FROM Contract c WHERE c.status IN ('PAPER_SIGNED', 'DIGITALLY_SIGNED') AND c.isHidden = false")
@@ -153,4 +158,6 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSp
      * Count all visible contracts
      */
     long countByIsHiddenFalse();
+
+    List<Contract> findByCustomerId(Long customerId);
 } 
