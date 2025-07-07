@@ -26,8 +26,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.g47.cem.cemcontract.dto.request.ContractCreationRequestDto;
 import com.g47.cem.cemcontract.dto.request.CreateContractRequest;
@@ -48,7 +46,6 @@ import com.g47.cem.cemcontract.repository.ContractDetailRepository;
 import com.g47.cem.cemcontract.repository.ContractHistoryRepository;
 import com.g47.cem.cemcontract.repository.ContractRepository;
 import com.g47.cem.cemcontract.repository.ContractSignatureRepository;
-import com.g47.cem.cemcontract.util.JwtUtil;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
@@ -75,23 +72,32 @@ public class ContractService {
     private final EmailService emailService;
     private final ContractNumberGenerator contractNumberGenerator;
     private final FileStorageService fileStorageService; // Injected via @RequiredArgsConstructor
+    private final GoogleDriveService googleDriveService; // For cloud storage
     private final Path fileStorageLocation; // Assuming this is configured
     private final ApplicationEventPublisher eventPublisher;
-    private final JwtUtil jwtUtil; // Add JwtUtil injection
 
     @Transactional
-    public ContractResponseDto createContract(CreateContractRequest requestDto, Authentication authentication) {
-        String username = authentication.getName();
+    public ContractResponseDto createContract(CreateContractRequest requestDto, String username, HttpServletRequest request) {
+        // Generate contract number
+        String contractNumber = contractNumberGenerator.generate();
         
-        // Auto-set staffId from multiple sources if not provided
+        // Determine staffId - use from request if provided, otherwise get from JWT token
         Long staffId = requestDto.getStaffId();
         if (staffId == null) {
-            staffId = extractStaffIdFromAuthentication(authentication);
+            // Get userId from request attributes (set by JwtAuthenticationFilter)
+            Object userIdObj = request.getAttribute("userId");
+            if (userIdObj instanceof Long) {
+                staffId = (Long) userIdObj;
+            } else if (userIdObj instanceof Integer) {
+                staffId = ((Integer) userIdObj).longValue();
+            }
         }
-
-        // Generate contract number first
-        String contractNumber = contractNumberGenerator.generate();
-
+        
+        // Validate that we have a staffId
+        if (staffId == null) {
+            throw new BusinessException("Unable to determine staff ID for contract creation");
+        }
+        
         Contract contract = Contract.builder()
                 .contractNumber(contractNumber)
                 .title(requestDto.getTitle())
@@ -159,12 +165,18 @@ public class ContractService {
         
         // Generate PDF từ Word template
         try {
-            generateContractPdf(savedContract, username);
+            log.info("Starting PDF generation for contract ID: {}", savedContract.getId());
+            String googleDriveFileId = generateContractPdf(savedContract, username);
+            savedContract.setFilePath(googleDriveFileId); // Store Google Drive file ID
             savedContract.setStatus(ContractStatus.PENDING_SELLER_SIGNATURE);
             savedContract = contractRepository.save(savedContract);
+            log.info("Contract PDF generated successfully. Google Drive ID: {}", googleDriveFileId);
         } catch (Exception e) {
-            log.error("Failed to generate contract PDF for contract ID: {}", savedContract.getId(), e);
-            // Không throw exception để contract vẫn được tạo, chỉ log error
+            log.error("Failed to generate contract PDF for contract ID: {} - Error: {}", savedContract.getId(), e.getMessage(), e);
+            log.error("Full stack trace:", e);
+            // Để contract trong status DRAFT và không có filePath, nhưng log chi tiết để debug
+            // Trong tương lai có thể retry hoặc fallback
+            throw new BusinessException("Failed to generate contract PDF: " + e.getMessage());
         }
         
         addHistory(savedContract, ContractAction.CREATED, "Contract created by " + username, username, null, null);
@@ -198,14 +210,13 @@ public class ContractService {
             contract.setContractDetails(details);
             contract.updateTotalValue();
 
-        String filePath = "uploads/contracts/" + contractNumber + ".pdf";
         try {
-            generateContractPdf(contract, requestDto.getSeller().getLegalRepresentative());
+            String googleDriveFileId = generateContractPdf(contract, requestDto.getSeller().getLegalRepresentative());
+            contract.setFilePath(googleDriveFileId); // Store Google Drive file ID
         } catch (Exception e) {
             log.error("Failed to generate PDF for contract {}", contractNumber, e);
             throw new BusinessException("Failed to generate PDF from template.");
         }
-        contract.setFilePath(filePath);
         contract.setStatus(ContractStatus.PENDING_SELLER_SIGNATURE);
 
         Contract savedContract = contractRepository.save(contract);
@@ -216,28 +227,38 @@ public class ContractService {
 
     /**
      * Tạo PDF từ Word template với thông tin contract đầy đủ
+     * @return Google Drive file ID
      */
-    private void generateContractPdf(Contract contract, String username) throws Exception {
-        // Contract number should already be set
-        String contractNumber = contract.getContractNumber();
-        if (contractNumber == null) {
-            throw new BusinessException("Contract number is required for PDF generation");
+    private String generateContractPdf(Contract contract, String username) throws Exception {
+        log.info("generateContractPdf called for contract ID: {}", contract.getId());
+        
+        // Generate contract number nếu chưa có
+        if (contract.getContractNumber() == null) {
+            contract.setContractNumber(contractNumberGenerator.generate());
         }
         
+        String contractNumber = contract.getContractNumber();
         String filePath = "uploads/contracts/" + contractNumber + ".pdf";
+        log.info("Contract number: {}, Local file path: {}", contractNumber, filePath);
         
         // Load Word template
+        log.info("Loading Word template from: templates/HD-mua-ban-hang-hoa2025.docx");
         java.io.InputStream templateInputStream = this.getClass().getClassLoader()
                 .getResourceAsStream("templates/HD-mua-ban-hang-hoa2025.docx");
         if (templateInputStream == null) {
-            throw new ResourceNotFoundException("Contract template not found.");
+            log.error("Template file not found at templates/HD-mua-ban-hang-hoa2025.docx");
+            throw new ResourceNotFoundException("Contract template not found at templates/HD-mua-ban-hang-hoa2025.docx");
         }
+        log.info("Template loaded successfully");
 
+        log.info("Loading DOCX package...");
         org.docx4j.openpackaging.packages.WordprocessingMLPackage wordMLPackage = 
                 org.docx4j.openpackaging.packages.WordprocessingMLPackage.load(templateInputStream);
         org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart mainDocumentPart = 
                 wordMLPackage.getMainDocumentPart();
+        log.info("DOCX package loaded successfully");
 
+        log.info("Preparing variable mappings...");
         HashMap<String, String> mappings = new HashMap<>();
         
         // Thông tin chung
@@ -326,25 +347,52 @@ public class ContractService {
                 contract.getWarrantyPeriodMonths().toString() : "");
 
         // Replace variables in template
+        log.info("Replacing variables in template with {} mappings", mappings.size());
+        log.debug("Variable mappings: {}", mappings);
         try {
             mainDocumentPart.variableReplace(mappings);
+            log.info("Variable replacement completed successfully");
         } catch (JAXBException e) {
             log.error("JAXBException during variable replacement", e);
-            throw new BusinessException("Error processing contract template placeholders.");
+            throw new BusinessException("Error processing contract template placeholders: " + e.getMessage());
         }
 
-        // Save as PDF
+        // Save as PDF to local temp file first
+        log.info("Converting DOCX to PDF...");
         File outputFile = new File(filePath);
         outputFile.getParentFile().mkdirs();
-        FileOutputStream os = new FileOutputStream(outputFile);
-        org.docx4j.Docx4J.toPDF(wordMLPackage, os);
-        os.flush();
-        os.close();
         
-        // Update contract with file path
-        contract.setFilePath(filePath);
+        try {
+            FileOutputStream os = new FileOutputStream(outputFile);
+            org.docx4j.Docx4J.toPDF(wordMLPackage, os);
+            os.flush();
+            os.close();
+            log.info("PDF conversion completed. Local file size: {} bytes", outputFile.length());
+        } catch (Exception e) {
+            log.error("Error during PDF conversion", e);
+            throw new BusinessException("Failed to convert DOCX to PDF: " + e.getMessage());
+        }
         
-        log.info("Generated contract PDF: {}", filePath);
+        // Upload to Google Drive
+        log.info("Uploading PDF to Google Drive...");
+        try {
+            String googleDriveFileId = googleDriveService.uploadFile(outputFile, contractNumber + ".pdf");
+            log.info("Google Drive upload successful. File ID: {}", googleDriveFileId);
+            
+            // Delete local temp file
+            boolean deleted = outputFile.delete();
+            log.info("Local temp file deleted: {}", deleted);
+            
+            log.info("Generated and uploaded contract PDF to Google Drive: {}", googleDriveFileId);
+            return googleDriveFileId;
+            
+        } catch (Exception e) {
+            // If Google Drive upload fails, keep local file
+            log.error("Failed to upload to Google Drive", e);
+            contract.setFilePath(filePath);
+            log.warn("Keeping local file as fallback: {}", filePath);
+            return filePath; // Return local path as fallback
+        }
     }
 
     private void generatePdfFromTemplate(String pdfPath, ContractCreationRequestDto dto, String contractNumber) throws Exception {
@@ -411,6 +459,34 @@ public class ContractService {
         log.info("Contract deleted with ID: {}", id);
     }
 
+    @Transactional
+    public ContractResponseDto hideContract(Long id, String changedBy) {
+        Contract contract = contractRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
+        
+        contract.hide();
+        Contract savedContract = contractRepository.save(contract);
+        
+        addHistory(savedContract, ContractAction.HIDDEN, "Contract hidden", changedBy, null, null);
+        log.info("Contract hidden with ID: {} by user: {}", id, changedBy);
+        
+        return mapToDto(savedContract);
+    }
+
+    @Transactional
+    public ContractResponseDto restoreContract(Long id, String changedBy) {
+        Contract contract = contractRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
+        
+        contract.show();
+        Contract savedContract = contractRepository.save(contract);
+        
+        addHistory(savedContract, ContractAction.RESTORED, "Contract restored", changedBy, null, null);
+        log.info("Contract restored with ID: {} by user: {}", id, changedBy);
+        
+        return mapToDto(savedContract);
+    }
+
     public ContractResponseDto getContractById(Long id) {
         Contract contract = contractRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
@@ -424,6 +500,18 @@ public class ContractService {
                 ContractStatus.PENDING_CUSTOMER_SIGNATURE
         );
         Page<Contract> contractPage = contractRepository.findByStatusInAndIsHiddenFalse(unsignedStatuses, pageable);
+        return contractPage.map(this::mapToDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ContractResponseDto> getHiddenContracts(Pageable pageable) {
+        Page<Contract> contractPage = contractRepository.findByIsHiddenTrue(pageable);
+        return contractPage.map(this::mapToDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ContractResponseDto> getSignedContracts(Pageable pageable) {
+        Page<Contract> contractPage = contractRepository.findByStatusAndIsHiddenFalse(ContractStatus.ACTIVE, pageable);
         return contractPage.map(this::mapToDto);
     }
 
@@ -571,81 +659,5 @@ public class ContractService {
         contractHistoryRepository.save(history);
 
         contractRepository.save(contract);
-    }
-
-    /**
-     * Extract staff ID from authentication using multiple fallback strategies
-     */
-    private Long extractStaffIdFromAuthentication(Authentication authentication) {
-        Long staffId = null;
-        
-        // Strategy 1: Try to get from JWT if principal is JWT object
-        if (authentication.getPrincipal() instanceof Jwt jwt) {
-            log.debug("JWT Claims: {}", jwt.getClaims());
-            
-            // Try different possible claim names for user ID
-            staffId = jwt.getClaim("userId");
-            if (staffId == null) {
-                staffId = jwt.getClaim("user_id");
-            }
-            if (staffId == null) {
-                staffId = jwt.getClaim("id");
-            }
-            if (staffId == null) {
-                // Try to get from "sub" claim and parse as Long
-                String subClaim = jwt.getClaim("sub");
-                if (subClaim != null) {
-                    try {
-                        staffId = Long.parseLong(subClaim);
-                    } catch (NumberFormatException e) {
-                        log.warn("Cannot parse 'sub' claim as Long: {}", subClaim);
-                    }
-                }
-            }
-            
-            log.debug("Extracted staffId from JWT: {}", staffId);
-            if (staffId != null) {
-                return staffId;
-            }
-        }
-        
-        // Strategy 2: Try to get from request attributes (set by JwtAuthenticationFilter)
-        try {
-            ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            HttpServletRequest request = attrs.getRequest();
-            Object userIdAttr = request.getAttribute("userId");
-            if (userIdAttr instanceof Long) {
-                staffId = (Long) userIdAttr;
-                log.debug("Extracted staffId from request attributes: {}", staffId);
-                if (staffId != null) {
-                    return staffId;
-                }
-            }
-        } catch (Exception e) {
-            log.debug("Could not get request attributes: {}", e.getMessage());
-        }
-        
-        // Strategy 3: Try to extract from Authorization header using JwtUtil
-        try {
-            ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            HttpServletRequest request = attrs.getRequest();
-            String authHeader = request.getHeader("Authorization");
-            
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                String jwt = authHeader.substring(7);
-                staffId = jwtUtil.extractUserId(jwt);
-                log.debug("Extracted staffId using JwtUtil: {}", staffId);
-                if (staffId != null) {
-                    return staffId;
-                }
-            }
-        } catch (Exception e) {
-            log.debug("Could not extract userId using JwtUtil: {}", e.getMessage());
-        }
-        
-        log.warn("Authentication principal is not a JWT: {}. Could not extract staffId from any source.", 
-                 authentication.getPrincipal().getClass());
-        
-        throw new BusinessException("Staff ID could not be determined from authentication. Please provide staffId in request or ensure JWT contains user ID claims.");
     }
 } 

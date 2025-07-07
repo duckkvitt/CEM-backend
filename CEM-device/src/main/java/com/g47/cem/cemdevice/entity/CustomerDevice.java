@@ -54,7 +54,6 @@ public class CustomerDevice {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    @Builder.Default
     private CustomerDeviceStatus status = CustomerDeviceStatus.ACTIVE;
 
     @CreatedDate

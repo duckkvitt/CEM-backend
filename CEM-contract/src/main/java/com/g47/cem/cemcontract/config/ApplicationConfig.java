@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.Collections;
+
 /**
  * Application configuration for Contract Service
  */
@@ -50,7 +52,9 @@ public class ApplicationConfig {
 
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setInterceptors(Collections.singletonList(new RestTemplateInterceptor()));
+        return restTemplate;
     }
 
     @Bean

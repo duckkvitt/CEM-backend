@@ -24,6 +24,7 @@ public class ContractResponseDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDateTime createdAt;
+    private Boolean isHidden; // Add this field to track hidden status
     
     // Điều 2: Thanh toán
     private String paymentMethod; // Hình thức thanh toán

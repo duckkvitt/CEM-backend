@@ -102,9 +102,67 @@ public class GoogleDriveService {
     }
 
     /**
+     * Upload a File (not MultipartFile) to Google Drive
+     */
+    public String uploadFile(java.io.File file, String desiredName) {
+        try {
+            String fileName = desiredName != null ? desiredName : file.getName();
+
+            com.google.api.client.http.AbstractInputStreamContent mediaContent = 
+                new com.google.api.client.http.FileContent("application/pdf", file);
+
+            File fileMetadata = new File();
+            fileMetadata.setName(fileName);
+            if (folderId != null && folderId.length() > 20 && !folderId.contains(" ")) {
+                fileMetadata.setParents(Collections.singletonList(folderId));
+            }
+
+            File uploadedFile = drive.files().create(fileMetadata, mediaContent)
+                    .setFields("id, webViewLink, webContentLink")
+                    .execute();
+
+            // Make file readable for anyone with link
+            Permission permission = new Permission();
+            permission.setType("anyone");
+            permission.setRole("reader");
+            drive.permissions().create(uploadedFile.getId(), permission).execute();
+
+            log.info("Uploaded file to Google Drive. id={}, name={}", uploadedFile.getId(), fileName);
+            return uploadedFile.getId();
+        } catch (Exception e) {
+            throw new BusinessException("Failed to upload file to Google Drive", e);
+        }
+    }
+
+    /**
      * Generate a public download URL (direct download) for the given Google Drive file ID.
      */
     public String getDownloadUrl(String fileId) {
         return "https://drive.google.com/uc?export=download&id=" + fileId;
+    }
+
+    /**
+     * Download file content from Google Drive as byte array
+     */
+    public byte[] downloadFileContent(String fileId) {
+        try {
+            InputStream inputStream = drive.files().get(fileId).executeMediaAsInputStream();
+            return inputStream.readAllBytes();
+        } catch (Exception e) {
+            log.error("Failed to download file content from Google Drive for fileId: {}", fileId, e);
+            throw new BusinessException("Failed to download file from Google Drive", e);
+        }
+    }
+
+    /**
+     * Get file metadata from Google Drive
+     */
+    public File getFileMetadata(String fileId) {
+        try {
+            return drive.files().get(fileId).setFields("id, name, mimeType, size").execute();
+        } catch (Exception e) {
+            log.error("Failed to get file metadata from Google Drive for fileId: {}", fileId, e);
+            throw new BusinessException("Failed to get file metadata from Google Drive", e);
+        }
     }
 } 

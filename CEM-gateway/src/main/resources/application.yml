@@ -32,18 +32,26 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/api/auth/**
+          filters:
+            - StripPrefix=2
         - id: customer-service
           uri: http://localhost:8082
           predicates:
             - Path=/api/customer/**
+          filters:
+            - StripPrefix=2
         - id: device-service
           uri: http://localhost:8083
           predicates:
             - Path=/api/device/**
+          filters:
+            - StripPrefix=2
         - id: contract-service
           uri: http://localhost:8084
           predicates:
             - Path=/api/contract/**
+          filters:
+            - StripPrefix=2
 
 management:
   endpoints:

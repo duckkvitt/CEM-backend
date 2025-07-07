@@ -1,7 +1,5 @@
 server:
   port: 8084
-  servlet:
-    context-path: /api/contract
 
 spring:
   application:
@@ -124,7 +122,7 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file:
-    name: logs/contract-service.log
+    name: logs/contract-out.log
 
 # Custom Application Properties
 app:
