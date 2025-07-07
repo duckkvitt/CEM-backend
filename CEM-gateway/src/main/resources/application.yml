@@ -52,6 +52,12 @@ spring:
             - Path=/api/contract/**
           filters:
             - StripPrefix=2
+        - id: spareparts-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/spare-parts/**
+          filters:
+            - StripPrefix=1
 
 management:
   endpoints:
@@ -78,4 +84,6 @@ springdoc:
       - url: /api/device/api-docs
         name: Device Service
       - url: /api/contract/api-docs
-        name: Contract Service 
+        name: Contract Service
+      - url: /api/spare-parts/api-docs
+        name: Spare Parts Service 
