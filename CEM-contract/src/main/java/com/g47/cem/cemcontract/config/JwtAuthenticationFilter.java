@@ -57,7 +57,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 if (jwtUtil.validateToken(jwt)) {
                     List<SimpleGrantedAuthority> authorities = jwtUtil.extractAuthorities(jwt);
-                    
+                    log.info("Authenticating user '{}' with authorities: {}", username, authorities);
+
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             username, null, authorities);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -73,7 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            // Log warning if needed
+            log.warn("Cannot set user authentication", e);
         }
         
         filterChain.doFilter(request, response);

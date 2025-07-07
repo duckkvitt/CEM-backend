@@ -1,9 +1,11 @@
 package com.g47.cem.cemcontract.util;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
@@ -62,9 +64,24 @@ public class JwtUtil {
         return (tokenUsername.equals(username) && !isTokenExpired(token));
     }
 
+    public List<SimpleGrantedAuthority> extractAuthorities(String token) {
+        Claims claims = extractAllClaims(token);
+        List<String> roles = claims.get("roles", List.class);
+        if (roles == null || roles.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
     public String extractRole(String token) {
         Claims claims = extractAllClaims(token);
-        return claims.get("role", String.class);
+        List<String> roles = claims.get("roles", List.class);
+        if (roles == null || roles.isEmpty()) {
+            return claims.get("role", String.class); // Fallback
+        }
+        return roles.get(0);
     }
 
     public Long extractUserId(String token) {
@@ -87,11 +104,6 @@ public class JwtUtil {
         }
         
         return null;
-    }
-
-    public List<SimpleGrantedAuthority> extractAuthorities(String token) {
-        String role = extractRole(token);
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     public boolean validateToken(String token) {

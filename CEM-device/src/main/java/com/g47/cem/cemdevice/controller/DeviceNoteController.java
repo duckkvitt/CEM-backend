@@ -48,7 +48,7 @@ public class DeviceNoteController {
      * Add a note to a device (Staff only)
      */
     @PostMapping
-    @PreAuthorize("hasRole('STAFF')")
+    @PreAuthorize("hasAuthority('STAFF')")
     @Operation(summary = "Add device note", description = "Adds a note to a device (Staff access required)")
     public ResponseEntity<ApiResponse<DeviceNoteResponse>> addDeviceNote(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
@@ -67,7 +67,7 @@ public class DeviceNoteController {
      * Get device note by ID
      */
     @GetMapping("/{noteId}")
-    @PreAuthorize("hasRole('STAFF') or hasRole('MANAGER') or hasRole('SUPPORT_TEAM') or hasRole('TECH_LEAD') or hasRole('TECHNICIAN')")
+    @PreAuthorize("hasAuthority('STAFF') or hasAuthority('MANAGER') or hasAuthority('SUPPORT_TEAM') or hasAuthority('TECH_LEAD') or hasAuthority('TECHNICIAN')")
     @Operation(summary = "Get device note by ID", description = "Retrieves a specific device note")
     public ResponseEntity<ApiResponse<DeviceNoteResponse>> getDeviceNoteById(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
@@ -84,7 +84,7 @@ public class DeviceNoteController {
      * Get all notes for a device
      */
     @GetMapping
-    @PreAuthorize("hasRole('STAFF') or hasRole('MANAGER') or hasRole('SUPPORT_TEAM') or hasRole('TECH_LEAD') or hasRole('TECHNICIAN')")
+    @PreAuthorize("hasAuthority('STAFF') or hasAuthority('MANAGER') or hasAuthority('SUPPORT_TEAM') or hasAuthority('TECH_LEAD') or hasAuthority('TECHNICIAN')")
     @Operation(summary = "Get device notes", description = "Retrieves all notes for a device")
     public ResponseEntity<ApiResponse<Object>> getDeviceNotes(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
@@ -113,7 +113,7 @@ public class DeviceNoteController {
      * Update device note (Staff only)
      */
     @PutMapping("/{noteId}")
-    @PreAuthorize("hasRole('STAFF')")
+    @PreAuthorize("hasAuthority('STAFF')")
     @Operation(summary = "Update device note", description = "Updates a device note (Staff access required)")
     public ResponseEntity<ApiResponse<DeviceNoteResponse>> updateDeviceNote(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
@@ -132,7 +132,7 @@ public class DeviceNoteController {
      * Delete device note (Staff only)
      */
     @DeleteMapping("/{noteId}")
-    @PreAuthorize("hasRole('STAFF')")
+    @PreAuthorize("hasAuthority('STAFF')")
     @Operation(summary = "Delete device note", description = "Deletes a device note (Staff access required)")
     public ResponseEntity<ApiResponse<String>> deleteDeviceNote(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,

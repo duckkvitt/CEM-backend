@@ -1,7 +1,5 @@
 server:
   port: 8084
-  servlet:
-    context-path: /api/contract
 
 spring:
   application:
@@ -124,12 +122,12 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file:
-    name: logs/contract-service.log
+    name: logs/contract-out.log
 
 # Custom Application Properties
 app:
   cors:
-    allowedOrigins: "http://localhost:3000,http://localhost:3001,http://localhost:8080,https://localhost:8080,https://localhost:8081,https://localhost:8082,https://localhost:8083,https://localhost:8084,https://cem.vercel.app,https://api-cem.azurewebsites.net"
+    allowedOrigins: "*"
   security:
     permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/actuator/health"
   services:

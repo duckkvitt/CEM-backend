@@ -5,51 +5,63 @@ package com.g47.cem.cemcontract.enums;
  */
 public enum ContractStatus {
     /**
-     * Contract has been created but not yet signed
+     * Contract is being created or edited, not yet submitted for signing.
      */
-    UNSIGNED("Chưa ký"),
-    
+    DRAFT("Bản nháp"),
+
     /**
-     * Contract has been signed on paper but not digitally confirmed
+     * Contract has been generated and is waiting for the seller's (e.g., Manager) signature.
      */
-    PAPER_SIGNED("Đã ký giấy"),
-    
+    PENDING_SELLER_SIGNATURE("Chờ bên bán ký"),
+
     /**
-     * Contract has been digitally signed and confirmed
+     * Contract has been signed by the seller and is waiting for the customer's signature.
      */
-    DIGITALLY_SIGNED("Đã ký điện tử"),
-    
+    PENDING_CUSTOMER_SIGNATURE("Chờ khách hàng ký"),
+
     /**
-     * Contract has been cancelled or voided
+     * Contract has been fully signed by all parties and is now legally active.
+     */
+    ACTIVE("Đã ký, có hiệu lực"),
+
+    /**
+     * The customer or an internal party has rejected the contract.
+     */
+    REJECTED("Đã từ chối"),
+
+    /**
+     * Contract has been administratively cancelled.
      */
     CANCELLED("Đã hủy"),
-    
+
     /**
-     * Contract is expired
+     * Contract has passed its end date and is no longer active.
      */
     EXPIRED("Đã hết hạn");
-    
+
     private final String vietnameseName;
-    
+
     ContractStatus(String vietnameseName) {
         this.vietnameseName = vietnameseName;
     }
-    
+
     public String getVietnameseName() {
         return vietnameseName;
     }
-    
+
     /**
-     * Check if the contract is in a signed state
+     * Check if the contract is in a state where it is considered signed and active.
+     * @return true if the contract is active.
      */
-    public boolean isSigned() {
-        return this == PAPER_SIGNED || this == DIGITALLY_SIGNED;
+    public boolean isSignedAndActive() {
+        return this == ACTIVE;
     }
     
     /**
-     * Check if the contract is active (signed and not cancelled/expired)
+     * Checks if the contract is in a terminal state (cannot be changed further).
+     * @return true if the contract status is final.
      */
-    public boolean isActive() {
-        return isSigned() && this != CANCELLED && this != EXPIRED;
+    public boolean isTerminal() {
+        return this == ACTIVE || this == REJECTED || this == CANCELLED || this == EXPIRED;
     }
 } 
