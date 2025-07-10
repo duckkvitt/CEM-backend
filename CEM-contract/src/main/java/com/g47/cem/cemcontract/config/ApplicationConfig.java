@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -13,16 +14,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Collections;
-
 /**
  * Application configuration for Contract Service
  */
 @Configuration
 public class ApplicationConfig {
+
+    private final RestTemplateInterceptor restTemplateInterceptor;
     
     @Value("${app.file.upload-dir}")
     private String uploadDir;
+
+    public ApplicationConfig(RestTemplateInterceptor restTemplateInterceptor) {
+        this.restTemplateInterceptor = restTemplateInterceptor;
+    }
     
     /**
      * ModelMapper bean for DTO conversions
@@ -53,7 +58,7 @@ public class ApplicationConfig {
     @Bean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setInterceptors(Collections.singletonList(new RestTemplateInterceptor()));
+        restTemplate.setInterceptors(Collections.singletonList(restTemplateInterceptor));
         return restTemplate;
     }
 

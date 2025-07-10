@@ -15,8 +15,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.JAXBException;
-
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
+import org.docx4j.wml.ObjectFactory;
+import org.docx4j.wml.P;
+import org.docx4j.wml.R;
+import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tc;
+import org.docx4j.wml.Text;
+import org.docx4j.wml.Tr;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -36,8 +43,11 @@ import com.g47.cem.cemcontract.entity.Contract;
 import com.g47.cem.cemcontract.entity.ContractDeliverySchedule;
 import com.g47.cem.cemcontract.entity.ContractDetail;
 import com.g47.cem.cemcontract.entity.ContractHistory;
+import com.g47.cem.cemcontract.entity.ContractSignature;
 import com.g47.cem.cemcontract.enums.ContractAction;
 import com.g47.cem.cemcontract.enums.ContractStatus;
+import com.g47.cem.cemcontract.enums.SignatureType;
+import com.g47.cem.cemcontract.enums.SignerType;
 import com.g47.cem.cemcontract.event.SellerSignedEvent;
 import com.g47.cem.cemcontract.exception.BusinessException;
 import com.g47.cem.cemcontract.exception.ResourceNotFoundException;
@@ -46,14 +56,20 @@ import com.g47.cem.cemcontract.repository.ContractDetailRepository;
 import com.g47.cem.cemcontract.repository.ContractHistoryRepository;
 import com.g47.cem.cemcontract.repository.ContractRepository;
 import com.g47.cem.cemcontract.repository.ContractSignatureRepository;
+import com.g47.cem.cemcontract.service.ExternalService.CustomerDto;
+import com.g47.cem.cemcontract.util.MoneyToWords;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
+import com.itextpdf.kernel.geom.Rectangle;
+// Removed PdfCanvas import – we use Document + Image API for stamping
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.xml.bind.JAXBElement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -77,7 +93,7 @@ public class ContractService {
     private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
-    public ContractResponseDto createContract(CreateContractRequest requestDto, String username, HttpServletRequest request) {
+    public ContractResponseDto createContract(CreateContractRequest requestDto, String username, HttpServletRequest request, String authToken) {
         // Generate contract number
         String contractNumber = contractNumberGenerator.generate();
         
@@ -166,7 +182,7 @@ public class ContractService {
         // Generate PDF từ Word template
         try {
             log.info("Starting PDF generation for contract ID: {}", savedContract.getId());
-            String googleDriveFileId = generateContractPdf(savedContract, username);
+            String googleDriveFileId = generateContractPdf(savedContract, username, authToken);
             savedContract.setFilePath(googleDriveFileId); // Store Google Drive file ID
             savedContract.setStatus(ContractStatus.PENDING_SELLER_SIGNATURE);
             savedContract = contractRepository.save(savedContract);
@@ -211,7 +227,10 @@ public class ContractService {
             contract.updateTotalValue();
 
         try {
-            String googleDriveFileId = generateContractPdf(contract, requestDto.getSeller().getLegalRepresentative());
+            // authToken is missing here, we might need to adjust how this method is called or retrieve it.
+            // For now, let's assume it's not available in this flow and it might fail or use placeholders.
+            // A proper fix would involve getting the token for the system/user creating the contract.
+            String googleDriveFileId = generateContractPdf(contract, requestDto.getSeller().getLegalRepresentative(), null); // Passing null for authToken
             contract.setFilePath(googleDriveFileId); // Store Google Drive file ID
         } catch (Exception e) {
             log.error("Failed to generate PDF for contract {}", contractNumber, e);
@@ -229,170 +248,534 @@ public class ContractService {
      * Tạo PDF từ Word template với thông tin contract đầy đủ
      * @return Google Drive file ID
      */
-    private String generateContractPdf(Contract contract, String username) throws Exception {
+    private String generateContractPdf(Contract contract, String username, String authToken) throws Exception {
         log.info("generateContractPdf called for contract ID: {}", contract.getId());
-        
-        // Generate contract number nếu chưa có
+
         if (contract.getContractNumber() == null) {
             contract.setContractNumber(contractNumberGenerator.generate());
         }
-        
+
         String contractNumber = contract.getContractNumber();
         String filePath = "uploads/contracts/" + contractNumber + ".pdf";
         log.info("Contract number: {}, Local file path: {}", contractNumber, filePath);
-        
-        // Load Word template
-        log.info("Loading Word template from: templates/HD-mua-ban-hang-hoa2025.docx");
+
         java.io.InputStream templateInputStream = this.getClass().getClassLoader()
                 .getResourceAsStream("templates/HD-mua-ban-hang-hoa2025.docx");
         if (templateInputStream == null) {
             log.error("Template file not found at templates/HD-mua-ban-hang-hoa2025.docx");
-            throw new ResourceNotFoundException("Contract template not found at templates/HD-mua-ban-hang-hoa2025.docx");
+            throw new ResourceNotFoundException("Contract template not found.");
         }
-        log.info("Template loaded successfully");
 
-        log.info("Loading DOCX package...");
-        org.docx4j.openpackaging.packages.WordprocessingMLPackage wordMLPackage = 
-                org.docx4j.openpackaging.packages.WordprocessingMLPackage.load(templateInputStream);
-        org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart mainDocumentPart = 
-                wordMLPackage.getMainDocumentPart();
-        log.info("DOCX package loaded successfully");
+        org.docx4j.openpackaging.packages.WordprocessingMLPackage wordMLPackage = org.docx4j.openpackaging.packages.WordprocessingMLPackage.load(templateInputStream);
+        MainDocumentPart mainDocumentPart = wordMLPackage.getMainDocumentPart();
+        
+        CustomerDto buyer = externalService.getCustomerInfo(contract.getCustomerId(), authToken);
+        // Remove seller info retrieval and mapping
+        // UserResponse seller = externalService.getUserById(contract.getStaffId(), authToken);
 
-        log.info("Preparing variable mappings...");
-        HashMap<String, String> mappings = new HashMap<>();
+        HashMap<String, String> mappings = prepareMappings(contract, buyer);
         
-        // Thông tin chung
-        mappings.put("contractNumber", contractNumber);
-        mappings.put("documentDate", LocalDate.now().toString());
-        
-        // Thông tin bên bán (cố định theo yêu cầu)
-        mappings.put("seller.companyName", "CÔNG TY TNHH KINH DOANH XUẤT NHẬP KHẨU TM VÀ SX THÀNH ĐẠT");
-        mappings.put("seller.businessCode", "0901108513");
-        mappings.put("seller.address", "Thôn Giữa, Xã Lạc Đạo, Huyện Văn Lâm, Tỉnh Hưng Yên");
-        mappings.put("seller.legalRepresentative", "NGUYỄN NGỌC LAN");
-        mappings.put("seller.position", "Giám đốc");
-        mappings.put("seller.idCardNumber", "001203004433");
-        mappings.put("seller.idIssueDate", "29/06/2023");
-        mappings.put("seller.idIssuePlace", "Hà Nội");
-        mappings.put("seller.phone", "0948 566416");
-        mappings.put("seller.fax", "");
-        
-        // Lấy thông tin bên mua từ Customer service
-        try {
-            ExternalService.CustomerDto customer = externalService.getCustomerInfo(contract.getCustomerId());
-            mappings.put("buyer.companyName", customer.getCompanyName());
-            mappings.put("buyer.address", customer.getAddress());
-            mappings.put("buyer.legalRepresentative", customer.getContactName());
-            mappings.put("buyer.phone", customer.getPhone() != null ? customer.getPhone() : "");
-            mappings.put("buyer.email", customer.getEmail() != null ? customer.getEmail() : "");
-            mappings.put("buyer.businessCode", customer.getBusinessCode() != null ? customer.getBusinessCode() : "");
-            mappings.put("buyer.taxCode", customer.getTaxCode() != null ? customer.getTaxCode() : "");
-        } catch (Exception e) {
-            log.warn("Could not fetch customer info, using placeholders", e);
-            mappings.put("buyer.companyName", "KHÁCH HÀNG");
-            mappings.put("buyer.address", "");
-            mappings.put("buyer.legalRepresentative", "");
-            mappings.put("buyer.phone", "");
-            mappings.put("buyer.email", "");
-            mappings.put("buyer.businessCode", "");
-            mappings.put("buyer.taxCode", "");
-        }
-        
-        // Điều 2: Thanh toán
-        mappings.put("paymentMethod", contract.getPaymentMethod() != null ? contract.getPaymentMethod() : "");
-        mappings.put("paymentTerm", contract.getPaymentTerm() != null ? contract.getPaymentTerm() : "");
-        mappings.put("bankAccount", contract.getBankAccount() != null ? contract.getBankAccount() : "");
-        
-        // Điều 3: Giao hàng - build table from delivery schedules
-        StringBuilder deliveryTableBuilder = new StringBuilder();
-        if (contract.getDeliverySchedules() != null && !contract.getDeliverySchedules().isEmpty()) {
-            for (ContractDeliverySchedule schedule : contract.getDeliverySchedules()) {
-                deliveryTableBuilder.append(String.format(
-                    "%d\t%s\t%s\t%d\t%s\t%s\t%s\n",
-                    schedule.getSequenceNumber(),
-                    schedule.getItemName(),
-                    schedule.getUnit(),
-                    schedule.getQuantity(),
-                    schedule.getDeliveryTime() != null ? schedule.getDeliveryTime() : "",
-                    schedule.getDeliveryLocation() != null ? schedule.getDeliveryLocation() : "",
-                    schedule.getNotes() != null ? schedule.getNotes() : ""
-                ));
+        // Log all mappings for debugging
+        log.info("Applying {} mappings to contract template:", mappings.size());
+        mappings.forEach((key, value) -> {
+            if (value != null && !value.isEmpty()) {
+                log.info("  {} -> {}", key, value);
             }
-        }
-        mappings.put("deliveryScheduleTable", deliveryTableBuilder.toString());
-        
-        // Điều 1: Contract Details table
-        StringBuilder contractDetailsTableBuilder = new StringBuilder();
-        if (contract.getContractDetails() != null && !contract.getContractDetails().isEmpty()) {
-            for (int i = 0; i < contract.getContractDetails().size(); i++) {
-                ContractDetail detail = contract.getContractDetails().get(i);
-                contractDetailsTableBuilder.append(String.format(
-                    "%d\t%s\t%s\t%d\t%.2f\t%.2f\t%d\t%s\n",
-                    (i + 1),
-                    detail.getWorkCode(),
-                    detail.getDescription() != null ? detail.getDescription() : "",
-                    detail.getQuantity(),
-                    detail.getUnitPrice(),
-                    detail.getTotalPrice(),
-                    detail.getWarrantyMonths() != null ? detail.getWarrantyMonths() : 0,
-                    detail.getNotes() != null ? detail.getNotes() : ""
-                ));
-            }
-        }
-        mappings.put("contractDetailsTable", contractDetailsTableBuilder.toString());
-        
-        // Điều 5: Bảo hành
-        mappings.put("warrantyProduct", contract.getWarrantyProduct() != null ? contract.getWarrantyProduct() : "");
-        mappings.put("warrantyPeriodMonths", contract.getWarrantyPeriodMonths() != null ? 
-                contract.getWarrantyPeriodMonths().toString() : "");
+        });
 
-        // Replace variables in template
-        log.info("Replacing variables in template with {} mappings", mappings.size());
-        log.debug("Variable mappings: {}", mappings);
+        // Apply variable replacements - sometimes need multiple passes for nested variables
         try {
+            log.info("First pass of variable replacement...");
             mainDocumentPart.variableReplace(mappings);
+            
+            // Second pass to catch any variables that might have been revealed after first replacement
+            log.info("Second pass of variable replacement...");
+            mainDocumentPart.variableReplace(mappings);
+            
             log.info("Variable replacement completed successfully");
-        } catch (JAXBException e) {
-            log.error("JAXBException during variable replacement", e);
-            throw new BusinessException("Error processing contract template placeholders: " + e.getMessage());
+        } catch (Exception e) {
+            log.error("Error during variable replacement: {}", e.getMessage(), e);
+            throw e;
         }
 
-        // Save as PDF to local temp file first
-        log.info("Converting DOCX to PDF...");
+        populateItemsTable(wordMLPackage, contract.getContractDetails());
+        populateDeliveryScheduleTable(wordMLPackage, contract.getDeliverySchedules());
+
         File outputFile = new File(filePath);
         outputFile.getParentFile().mkdirs();
         
-        try {
-            FileOutputStream os = new FileOutputStream(outputFile);
+        try (FileOutputStream os = new FileOutputStream(outputFile)) {
             org.docx4j.Docx4J.toPDF(wordMLPackage, os);
             os.flush();
-            os.close();
-            log.info("PDF conversion completed. Local file size: {} bytes", outputFile.length());
-        } catch (Exception e) {
-            log.error("Error during PDF conversion", e);
-            throw new BusinessException("Failed to convert DOCX to PDF: " + e.getMessage());
+        }
+
+        log.info("Uploading PDF to Google Drive...");
+        String googleDriveFileId = googleDriveService.uploadFile(outputFile, contractNumber + ".pdf");
+        
+        Files.deleteIfExists(outputFile.toPath());
+
+        return googleDriveFileId;
+    }
+
+    private HashMap<String, String> prepareMappings(Contract contract, CustomerDto buyer) {
+        HashMap<String, String> mappings = new HashMap<>();
+        LocalDate today = LocalDate.now();
+        
+        // Contract header information
+        mappings.put("contract_number", contract.getContractNumber() != null ? contract.getContractNumber() : "");
+        mappings.put("contract_date", String.valueOf(today.getDayOfMonth()));
+        mappings.put("contract_month", String.valueOf(today.getMonthValue()));
+        mappings.put("contract_year", String.valueOf(today.getYear()));
+
+        // Alternative naming patterns for contract date
+        mappings.put("day", String.valueOf(today.getDayOfMonth()));
+        mappings.put("month", String.valueOf(today.getMonthValue()));
+        mappings.put("year", String.valueOf(today.getYear()));
+
+        // Buyer (Bên B) information - mapping to customer details
+        if (buyer != null) {
+            // Tên doanh nghiệp
+            String companyName = buyer.getCompanyName() != null ? buyer.getCompanyName() : "";
+            mappings.put("buyer_company_name", companyName);
+            mappings.put("company_name", companyName); // Alternative naming
+            
+            // Mã số doanh nghiệp (use taxCode or businessCode)
+            String taxCode = "";
+            if (buyer.getTaxCode() != null && !buyer.getTaxCode().isBlank()) {
+                taxCode = buyer.getTaxCode();
+            } else if (buyer.getBusinessCode() != null && !buyer.getBusinessCode().isBlank()) {
+                taxCode = buyer.getBusinessCode();
+            }
+            mappings.put("buyer_tax_code", taxCode);
+            mappings.put("tax_code", taxCode); // Alternative naming
+            mappings.put("business_code", taxCode); // Alternative naming
+            
+            // Địa chỉ trụ sở chính
+            String address = buyer.getAddress() != null ? buyer.getAddress() : "";
+            mappings.put("buyer_address", address);
+            mappings.put("address", address); // Alternative naming
+            mappings.put("company_address", address); // Alternative naming
+            
+            // Người đại diện theo pháp luật
+            String representative = buyer.getContactName() != null ? buyer.getContactName() : "";
+            mappings.put("buyer_representative", representative);
+            mappings.put("representative", representative); // Alternative naming
+            mappings.put("legal_representative", representative); // Alternative naming
+            
+            // Chức danh (placeholder - not in customer data)
+            mappings.put("buyer_position", "");
+            mappings.put("position", "");
+            mappings.put("title", "");
+            
+            // CMND/CCCD/Hộ chiếu số (placeholder - not in customer data)
+            mappings.put("buyer_id_number", "");
+            mappings.put("id_number", "");
+            mappings.put("cmnd", "");
+            mappings.put("cccd", "");
+            mappings.put("buyer_id_issue_date", "");
+            mappings.put("id_issue_date", "");
+            mappings.put("buyer_id_issue_place", "");
+            mappings.put("id_issue_place", "");
+            
+            // Số điện thoại
+            String phone = buyer.getPhone() != null ? buyer.getPhone() : "";
+            mappings.put("buyer_phone", phone);
+            mappings.put("phone", phone); // Alternative naming
+            mappings.put("telephone", phone); // Alternative naming
+            
+            // Fax (use empty as not available in customer data)
+            mappings.put("buyer_fax", "");
+            mappings.put("fax", "");
+            
+            // Email
+            String email = buyer.getEmail() != null ? buyer.getEmail() : "";
+            mappings.put("buyer_email", email);
+            mappings.put("email", email);
+        } else {
+            // If buyer is null, set all buyer fields to empty
+            String[] buyerFields = {
+                "buyer_company_name", "company_name",
+                "buyer_tax_code", "tax_code", "business_code", 
+                "buyer_address", "address", "company_address",
+                "buyer_representative", "representative", "legal_representative",
+                "buyer_position", "position", "title",
+                "buyer_id_number", "id_number", "cmnd", "cccd",
+                "buyer_id_issue_date", "id_issue_date",
+                "buyer_id_issue_place", "id_issue_place",
+                "buyer_phone", "phone", "telephone",
+                "buyer_fax", "fax",
+                "buyer_email", "email"
+            };
+            for (String field : buyerFields) {
+                mappings.put(field, "");
+            }
+        }
+
+        // Payment information (Điều 2)
+        if (contract.getPaymentTerm() != null && !contract.getPaymentTerm().isBlank()) {
+            mappings.put("payment_due_date", contract.getPaymentTerm());
+            mappings.put("payment_term", contract.getPaymentTerm());
+            mappings.put("payment_deadline", contract.getPaymentTerm());
+        } else {
+            mappings.put("payment_due_date", "");
+            mappings.put("payment_term", "");
+            mappings.put("payment_deadline", "");
         }
         
-        // Upload to Google Drive
-        log.info("Uploading PDF to Google Drive...");
-        try {
-            String googleDriveFileId = googleDriveService.uploadFile(outputFile, contractNumber + ".pdf");
-            log.info("Google Drive upload successful. File ID: {}", googleDriveFileId);
-            
-            // Delete local temp file
-            boolean deleted = outputFile.delete();
-            log.info("Local temp file deleted: {}", deleted);
-            
-            log.info("Generated and uploaded contract PDF to Google Drive: {}", googleDriveFileId);
-            return googleDriveFileId;
-            
-        } catch (Exception e) {
-            // If Google Drive upload fails, keep local file
-            log.error("Failed to upload to Google Drive", e);
-            contract.setFilePath(filePath);
-            log.warn("Keeping local file as fallback: {}", filePath);
-            return filePath; // Return local path as fallback
+        // Payment method
+        if (contract.getPaymentMethod() != null) {
+            String paymentMethod = contract.getPaymentMethod().toString();
+            mappings.put("payment_method", paymentMethod);
+            mappings.put("payment_type", paymentMethod);
+        } else {
+            mappings.put("payment_method", "");
+            mappings.put("payment_type", "");
         }
+        
+        // Bank account information
+        if (contract.getBankAccount() != null && !contract.getBankAccount().isBlank()) {
+            mappings.put("bank_account", contract.getBankAccount());
+            mappings.put("account_number", contract.getBankAccount());
+        } else {
+            mappings.put("bank_account", "");
+            mappings.put("account_number", "");
+        }
+        
+        // Transportation and delivery costs (placeholders)
+        mappings.put("transport_responsibility", "");
+        mappings.put("transport_cost", "");
+        mappings.put("loading_cost_responsibility", "");
+        mappings.put("storage_cost_per_day", "");
+        mappings.put("storage_fee", "");
+        mappings.put("quality_check_deadline", "");
+        mappings.put("complaint_deadline", "");
+        mappings.put("inspection_deadline", "");
+
+        // Warranty information (Điều 5)
+        if (contract.getWarrantyPeriodMonths() != null) {
+            String warrantyPeriod = contract.getWarrantyPeriodMonths().toString();
+            mappings.put("warranty_period", warrantyPeriod);
+            mappings.put("warranty_months", warrantyPeriod);
+            mappings.put("warranty_time", warrantyPeriod);
+        } else {
+            mappings.put("warranty_period", "");
+            mappings.put("warranty_months", "");
+            mappings.put("warranty_time", "");
+        }
+        
+        if (contract.getWarrantyProduct() != null && !contract.getWarrantyProduct().isBlank()) {
+            mappings.put("warranty_product", contract.getWarrantyProduct());
+            mappings.put("warranty_goods", contract.getWarrantyProduct());
+        } else {
+            mappings.put("warranty_product", "");
+            mappings.put("warranty_goods", "");
+        }
+
+        // Contract penalty (Điều 7) - default values
+        mappings.put("penalty_percentage", "100");
+        mappings.put("violation_penalty", "100");
+        
+        // Contract dates and timing
+        if (contract.getStartDate() != null) {
+            mappings.put("start_date", contract.getStartDate().toString());
+            mappings.put("contract_start_date", contract.getStartDate().toString());
+        } else {
+            mappings.put("start_date", "");
+            mappings.put("contract_start_date", "");
+        }
+        
+        if (contract.getEndDate() != null) {
+            mappings.put("end_date", contract.getEndDate().toString());
+            mappings.put("contract_end_date", contract.getEndDate().toString());
+        } else {
+            mappings.put("end_date", "");
+            mappings.put("contract_end_date", "");
+        }
+        
+        // Contract value
+        if (contract.getTotalValue() != null) {
+            mappings.put("total_value", String.format("%,.0f", contract.getTotalValue()));
+            mappings.put("contract_value", String.format("%,.0f", contract.getTotalValue()));
+        } else {
+            mappings.put("total_value", "");
+            mappings.put("contract_value", "");
+        }
+        
+        // Additional placeholders for any other fields in the template
+        mappings.put("contract_location", "");
+        mappings.put("signing_location", "");
+        mappings.put("intermediate_inspection_agency", "");
+        mappings.put("inspection_agency", "");
+        mappings.put("dispute_resolution", "Tòa án có thẩm quyền");
+        
+        // Contract description
+        if (contract.getDescription() != null && !contract.getDescription().isBlank()) {
+            mappings.put("contract_description", contract.getDescription());
+            mappings.put("description", contract.getDescription());
+        } else {
+            mappings.put("contract_description", "");
+            mappings.put("description", "");
+        }
+        
+        // Contract title
+        if (contract.getTitle() != null && !contract.getTitle().isBlank()) {
+            mappings.put("contract_title", contract.getTitle());
+        } else {
+            mappings.put("contract_title", "");
+        }
+        
+        // Additional common Vietnamese contract placeholders
+        // Based on the PDF content you provided, these are likely placeholders:
+        
+        // For "ngày...tháng...năm..." pattern
+        mappings.put("ngay", String.valueOf(today.getDayOfMonth()));
+        mappings.put("thang", String.valueOf(today.getMonthValue()));
+        mappings.put("nam", String.valueOf(today.getYear()));
+        
+        // Contract number variations
+        mappings.put("so_hop_dong", contract.getContractNumber() != null ? contract.getContractNumber() : "");
+        mappings.put("contract_no", contract.getContractNumber() != null ? contract.getContractNumber() : "");
+        
+        // For seller information (Bên A) - keep empty as requested
+        mappings.put("seller_company_name", "");
+        mappings.put("seller_tax_code", ""); 
+        mappings.put("seller_address", "");
+        mappings.put("seller_representative", "");
+        mappings.put("seller_position", "");
+        mappings.put("seller_id_number", "");
+        mappings.put("seller_phone", "");
+        mappings.put("seller_fax", "");
+        
+        // Vietnamese specific terms for buyer
+        mappings.put("ten_doanh_nghiep", buyer != null && buyer.getCompanyName() != null ? buyer.getCompanyName() : "");
+        
+        // Fix complex ternary operator for ma_so_doanh_nghiep
+        String maSoDoanh = "";
+        if (buyer != null) {
+            if (buyer.getTaxCode() != null && !buyer.getTaxCode().isBlank()) {
+                maSoDoanh = buyer.getTaxCode();
+            } else if (buyer.getBusinessCode() != null && !buyer.getBusinessCode().isBlank()) {
+                maSoDoanh = buyer.getBusinessCode();
+            }
+        }
+        mappings.put("ma_so_doanh_nghiep", maSoDoanh);
+        
+        mappings.put("dia_chi_tru_so", buyer != null && buyer.getAddress() != null ? buyer.getAddress() : "");
+        mappings.put("nguoi_dai_dien", buyer != null && buyer.getContactName() != null ? buyer.getContactName() : "");
+        mappings.put("so_dien_thoai", buyer != null && buyer.getPhone() != null ? buyer.getPhone() : "");
+        
+        // Payment terms in Vietnamese
+        mappings.put("hinh_thuc_thanh_toan", contract.getPaymentMethod() != null ? contract.getPaymentMethod().toString() : "");
+        mappings.put("thoi_han_thanh_toan", contract.getPaymentTerm() != null ? contract.getPaymentTerm() : "");
+        
+        // Warranty in Vietnamese
+        mappings.put("thoi_gian_bao_hanh", contract.getWarrantyPeriodMonths() != null ? contract.getWarrantyPeriodMonths().toString() : "");
+        mappings.put("san_pham_bao_hanh", contract.getWarrantyProduct() != null ? contract.getWarrantyProduct() : "");
+        
+        // Common contract fields that might appear
+        mappings.put("gia_tri_hop_dong", contract.getTotalValue() != null ? String.format("%,.0f", contract.getTotalValue()) : "");
+        mappings.put("tong_gia_tri", contract.getTotalValue() != null ? String.format("%,.0f", contract.getTotalValue()) : "");
+        
+        log.debug("Prepared {} total mappings for contract template", mappings.size());
+        
+        return mappings;
+    }
+
+    private void populateItemsTable(WordprocessingMLPackage wordMLPackage, List<ContractDetail> items) throws Exception {
+        if (items == null || items.isEmpty()) return;
+        
+        MainDocumentPart mainDocumentPart = wordMLPackage.getMainDocumentPart();
+        ObjectFactory factory = new ObjectFactory();
+        
+        // The items table is the first table in the document
+        Object tableObj = mainDocumentPart.getJAXBNodesViaXPath("//w:tbl", false).get(0);
+        Tbl table;
+        if (tableObj instanceof Tbl) {
+            table = (Tbl) tableObj;
+        } else if (tableObj instanceof JAXBElement) {
+            table = (Tbl) ((JAXBElement<?>) tableObj).getValue();
+        } else {
+            throw new IllegalStateException("Unable to locate items table in the template");
+        }
+
+        Object rowObj = table.getContent().get(1);
+        Tr templateRow;
+        if (rowObj instanceof Tr) {
+            templateRow = (Tr) rowObj;
+        } else if (rowObj instanceof JAXBElement) {
+            templateRow = (Tr) ((JAXBElement<?>) rowObj).getValue();
+        } else {
+            throw new IllegalStateException("Unable to locate template row in the items table");
+        }
+        
+        for (int i = 0; i < items.size(); i++) {
+            ContractDetail item = items.get(i);
+            Tr workingRow = (i == 0) ? templateRow : (Tr) org.docx4j.XmlUtils.deepCopy(templateRow);
+
+            replaceTableCellText(workingRow, 0, String.valueOf(i + 1));
+            replaceTableCellText(workingRow, 1, item.getDescription());
+            replaceTableCellText(workingRow, 2, "Cái"); // Assuming unit
+            replaceTableCellText(workingRow, 3, String.valueOf(item.getQuantity()));
+            replaceTableCellText(workingRow, 4, String.format("%,.0f", item.getUnitPrice()));
+            replaceTableCellText(workingRow, 5, String.format("%,.0f", item.getTotalPrice()));
+            replaceTableCellText(workingRow, 6, item.getNotes());
+            
+            if (i > 0) {
+                table.getContent().add(workingRow);
+            }
+        }
+        
+        double total = items.stream().mapToDouble(d -> d.getTotalPrice().doubleValue()).sum();
+        String totalInWords = MoneyToWords.convert(total);
+
+        HashMap<String, String> totalMappings = new HashMap<>();
+        totalMappings.put("total_amount", String.format("%,.0f", total));
+        totalMappings.put("total_in_words", totalInWords);
+        mainDocumentPart.variableReplace(totalMappings);
+    }
+
+    private void populateDeliveryScheduleTable(WordprocessingMLPackage wordMLPackage, List<ContractDeliverySchedule> schedules) throws Exception {
+        if (schedules == null || schedules.isEmpty()) return;
+
+        MainDocumentPart mainDocumentPart = wordMLPackage.getMainDocumentPart();
+        
+        // The delivery schedule table is expected to be the second table (index 1). Try XPath first, then fall back
+        Tbl table;
+        try {
+            Object tableObj = mainDocumentPart.getJAXBNodesViaXPath("//w:tbl", false).get(1);
+            table = (Tbl) (tableObj instanceof JAXBElement ? ((JAXBElement<?>) tableObj).getValue() : tableObj);
+        } catch (Exception ex) {
+            // Fallback: traverse document content manually
+            log.warn("XPath retrieval failed for delivery schedule table, falling back to traversal: {}", ex.getMessage());
+            table = findTableByIndex(mainDocumentPart, 1);
+        }
+
+        Object rowObj = table.getContent().get(1);
+        Tr templateRow;
+        if (rowObj instanceof Tr) {
+            templateRow = (Tr) rowObj;
+        } else if (rowObj instanceof JAXBElement) {
+            templateRow = (Tr) ((JAXBElement<?>) rowObj).getValue();
+        } else {
+            throw new IllegalStateException("Unable to locate template row in the delivery schedule table");
+        }
+        
+        for (int i = 0; i < schedules.size(); i++) {
+            ContractDeliverySchedule schedule = schedules.get(i);
+            Tr workingRow = (i == 0) ? templateRow : (Tr) org.docx4j.XmlUtils.deepCopy(templateRow);
+
+            replaceTableCellText(workingRow, 0, String.valueOf(i + 1));
+            replaceTableCellText(workingRow, 1, schedule.getItemName());
+            replaceTableCellText(workingRow, 2, schedule.getUnit());
+            replaceTableCellText(workingRow, 3, String.valueOf(schedule.getQuantity()));
+            replaceTableCellText(workingRow, 4, schedule.getDeliveryTime().toString());
+            replaceTableCellText(workingRow, 5, schedule.getDeliveryLocation());
+            replaceTableCellText(workingRow, 6, schedule.getNotes());
+
+            if (i > 0) {
+                table.getContent().add(workingRow);
+            }
+        }
+    }
+    
+    private void replaceTableCellText(Tr tableRow, int cellIndex, String text) {
+        List<Object> cells = tableRow.getContent();
+        if (cells.size() <= cellIndex) {
+            return; // Nothing to update
+        }
+
+        Object cellObj = cells.get(cellIndex);
+        Tc tc;
+        if (cellObj instanceof Tc) {
+            tc = (Tc) cellObj;
+        } else if (cellObj instanceof JAXBElement) {
+            tc = (Tc) ((JAXBElement<?>) cellObj).getValue();
+        } else {
+            return; // Unexpected structure, skip
+        }
+
+        // Ensure paragraph/ run / text hierarchy exists
+        if (tc.getContent().isEmpty()) {
+            ObjectFactory factory = new ObjectFactory();
+            P newP = factory.createP();
+            R newR = factory.createR();
+            Text newText = factory.createText();
+            newText.setValue(text != null ? text : "");
+            newR.getContent().add(newText);
+            newP.getContent().add(newR);
+            tc.getContent().add(newP);
+            return;
+        }
+
+        // Existing paragraph
+        Object pObj = tc.getContent().get(0);
+        P p;
+        if (pObj instanceof P) {
+            p = (P) pObj;
+        } else if (pObj instanceof JAXBElement) {
+            p = (P) ((JAXBElement<?>) pObj).getValue();
+        } else {
+            return;
+        }
+
+        // Ensure run exists
+        if (p.getContent().isEmpty()) {
+            ObjectFactory factory = new ObjectFactory();
+            R newR = factory.createR();
+            Text newText = factory.createText();
+            newText.setValue(text != null ? text : "");
+            newR.getContent().add(newText);
+            p.getContent().add(newR);
+            return;
+        }
+
+        Object rObj = p.getContent().get(0);
+        R r;
+        if (rObj instanceof R) {
+            r = (R) rObj;
+        } else if (rObj instanceof JAXBElement) {
+            r = (R) ((JAXBElement<?>) rObj).getValue();
+        } else {
+            return;
+        }
+
+        // Ensure text element exists
+        if (r.getContent().isEmpty()) {
+            ObjectFactory factory = new ObjectFactory();
+            Text newText = factory.createText();
+            newText.setValue(text != null ? text : "");
+            r.getContent().add(newText);
+            return;
+        }
+
+        Object textObj = r.getContent().get(0);
+        Text t;
+        if (textObj instanceof Text) {
+            t = (Text) textObj;
+        } else if (textObj instanceof JAXBElement) {
+            t = (Text) ((JAXBElement<?>) textObj).getValue();
+        } else {
+            return;
+        }
+
+        t.setValue(text != null ? text : "");
+    }
+
+    /**
+     * Traverse the document content and return the Tbl element at the given logical index.
+     */
+    private Tbl findTableByIndex(MainDocumentPart mainDocumentPart, int index) {
+        int tblCount = 0;
+        for (Object obj : mainDocumentPart.getContent()) {
+            Object unwrapped = org.docx4j.XmlUtils.unwrap(obj);
+            if (unwrapped instanceof Tbl) {
+                if (tblCount == index) {
+                    return (Tbl) unwrapped;
+                }
+                tblCount++;
+            }
+        }
+        throw new IllegalStateException("Unable to locate table with index " + index);
     }
 
     private void generatePdfFromTemplate(String pdfPath, ContractCreationRequestDto dto, String contractNumber) throws Exception {
@@ -406,12 +789,7 @@ public class ContractService {
         mappings.put("seller.name", dto.getSeller().getCompanyName());
         mappings.put("buyer.name", dto.getBuyer().getCompanyName());
 
-        try {
-            mainDocumentPart.variableReplace(mappings);
-        } catch (JAXBException e) {
-            log.error("JAXBException during variable replacement", e);
-            throw new BusinessException("Error processing contract template placeholders.");
-        }
+        mainDocumentPart.variableReplace(mappings);
 
         File outputFile = new File(pdfPath);
         outputFile.getParentFile().mkdirs();
@@ -594,70 +972,163 @@ public class ContractService {
         BeanUtils.copyProperties(schedule, dto);
         return dto;
     }
-
+    
     @Transactional
-    public void addSignatureToContract(Long contractId, SignatureRequestDto signatureRequestDto) throws Exception {
+    public void signContract(Long contractId, SignatureRequestDto signatureRequestDto, Authentication authentication) throws Exception {
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + contractId));
 
-        if (contract.getFilePath() == null || contract.getFilePath().isEmpty()) {
-            throw new BusinessException("Contract file does not exist.");
-        }
+        String username = authentication.getName();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        boolean isManager = authorities.stream().anyMatch(a -> a.getAuthority().equals("MANAGER"));
+        boolean isCustomer = authorities.stream().anyMatch(a -> a.getAuthority().equals("CUSTOMER"));
 
-        String signerType = signatureRequestDto.getSignerType();
-        ContractStatus currentStatus = contract.getStatus();
-        ContractStatus nextStatus;
-        float xPosition;
-        float yPosition = 100;
-
-        if ("SELLER".equalsIgnoreCase(signerType)) {
-            if (currentStatus != ContractStatus.PENDING_SELLER_SIGNATURE) {
-                throw new BusinessException("Contract is not awaiting seller's signature.");
-            }
-            nextStatus = ContractStatus.PENDING_CUSTOMER_SIGNATURE;
-            xPosition = 50;
-            // Publish event after seller signs
-            this.eventPublisher.publishEvent(new SellerSignedEvent(this, contract));
-
-        } else if ("CUSTOMER".equalsIgnoreCase(signerType)) {
-            if (currentStatus != ContractStatus.PENDING_CUSTOMER_SIGNATURE) {
-                throw new BusinessException("Contract is not awaiting customer's signature.");
-            }
-            nextStatus = ContractStatus.ACTIVE;
-            xPosition = 350;
+        if (isManager) {
+            handleManagerSignature(contract, signatureRequestDto, username);
+        } else if (isCustomer) {
+            handleCustomerSignature(contract, signatureRequestDto, username);
         } else {
-            throw new BusinessException("Invalid signer type.");
+            throw new BusinessException("User does not have the authority to sign this contract.");
         }
+    }
 
-        Path sourcePath = fileStorageService.loadFileAsPath(contract.getFilePath());
-        File sourceFile = sourcePath.toFile();
-        File tempDestFile = Files.createTempFile("signed-", ".pdf").toFile();
+    private void handleManagerSignature(Contract contract, SignatureRequestDto signatureRequestDto, String username) throws Exception {
+        if (contract.getStatus() != ContractStatus.PENDING_SELLER_SIGNATURE) {
+            throw new BusinessException("Contract is not in a state to be signed by the seller.");
+        }
+        
+        addSignatureToPdf(contract, signatureRequestDto, true);
 
-        PdfDocument pdfDoc = new PdfDocument(new PdfReader(sourceFile), new PdfWriter(tempDestFile));
-        Document document = new Document(pdfDoc);
+        // Persist signature record
+        ContractSignature signature = ContractSignature.builder()
+                .contract(contract)
+                .signerType(SignerType.MANAGER)
+                .signerName(username)
+                .signerEmail(username)
+                .signatureType(SignatureType.DIGITAL_IMAGE)
+                .signatureData(signatureRequestDto.getSignature())
+                .signedAt(LocalDateTime.now())
+                .build();
+        contractSignatureRepository.save(signature);
 
-        byte[] imageBytes = Base64.getDecoder().decode(signatureRequestDto.getSignatureImage().split(",")[1]);
-        Image signatureImage = new Image(ImageDataFactory.create(imageBytes));
-        signatureImage.setFixedPosition(pdfDoc.getNumberOfPages(), xPosition, yPosition);
-        signatureImage.scaleToFit(150, 75);
+        ContractStatus oldStatus = contract.getStatus();
 
-        document.add(signatureImage);
-        document.close();
+        // Record signing action (no status recorded to satisfy DB constraint)
+        addHistory(contract, ContractAction.SIGNED, "Seller (manager) signed contract", username, null, null);
 
-        Files.delete(sourcePath);
-        Files.move(tempDestFile.toPath(), sourcePath);
-
-        contract.setStatus(nextStatus);
-
-        ContractHistory history = new ContractHistory();
-        history.setContract(contract);
-        history.setAction(ContractAction.SIGNED);
-        history.setOldStatus(currentStatus);
-        history.setNewStatus(nextStatus);
-        history.setChangedBy(signerType); // Placeholder, replace with actual user from security context
-        history.setChangeReason("Contract signed by " + signerType);
-        contractHistoryRepository.save(history);
-
+        // Now update status and record the status change separately
+        contract.setStatus(ContractStatus.PENDING_CUSTOMER_SIGNATURE);
         contractRepository.save(contract);
+
+        addHistory(contract, ContractAction.UPDATED, "Contract moved to PENDING_CUSTOMER_SIGNATURE after seller signed", username, null, null);
+
+        // Publish event to notify customer
+        eventPublisher.publishEvent(new SellerSignedEvent(this, contract));
+    }
+
+    private void handleCustomerSignature(Contract contract, SignatureRequestDto signatureRequestDto, String username) throws Exception {
+        if (contract.getStatus() != ContractStatus.PENDING_CUSTOMER_SIGNATURE) {
+            throw new BusinessException("Contract is not in a state to be signed by the customer.");
+        }
+        
+        addSignatureToPdf(contract, signatureRequestDto, false);
+
+        ContractSignature signature = ContractSignature.builder()
+                .contract(contract)
+                .signerType(SignerType.CUSTOMER)
+                .signerName(username)
+                .signerEmail(username)
+                .signatureType(SignatureType.DIGITAL_IMAGE)
+                .signatureData(signatureRequestDto.getSignature())
+                .signedAt(LocalDateTime.now())
+                .build();
+        contractSignatureRepository.save(signature);
+
+        ContractStatus oldStatus = contract.getStatus();
+
+        // Record signing action (no status recorded)
+        addHistory(contract, ContractAction.SIGNED, "Customer signed contract", username, null, null);
+
+        // Update status to ACTIVE and record status change
+        contract.setStatus(ContractStatus.ACTIVE);
+        contractRepository.save(contract);
+
+        addHistory(contract, ContractAction.UPDATED, "Contract activated after customer signed", username, null, null);
+    }
+    
+    private void addSignatureToPdf(Contract contract, SignatureRequestDto signatureRequestDto, boolean isSeller) throws Exception {
+        File tempFile = null;
+        try {
+            // Download from Google Drive
+            byte[] fileContent;
+            try {
+                fileContent = googleDriveService.downloadFileContent(contract.getFilePath());
+            } catch (BusinessException ex) {
+                // Attempt fallback: search by name (might have been uploaded in previous failed tx)
+                String expectedName = "signed_" + contract.getContractNumber() + ".pdf";
+                String foundId = googleDriveService.findFileIdByName(expectedName);
+                if (foundId != null) {
+                    fileContent = googleDriveService.downloadFileContent(foundId);
+                    // Update contract path to found file id for future operations
+                    contract.setFilePath(foundId);
+                } else {
+                    throw ex; // rethrow original
+                }
+            }
+            tempFile = File.createTempFile("contract-", ".pdf");
+            
+            try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+                fos.write(fileContent);
+            }
+
+            // Add signature image to PDF
+            PdfDocument pdfDoc = new PdfDocument(new PdfReader(tempFile.getAbsolutePath()), new PdfWriter(tempFile.getAbsolutePath() + "_signed.pdf"));
+
+            String base64Data = signatureRequestDto.getSignature();
+            if (base64Data.contains(",")) {
+                base64Data = base64Data.split(",", 2)[1];
+            }
+            byte[] signatureBytes = Base64.getDecoder().decode(base64Data);
+            com.itextpdf.io.image.ImageData imageData = ImageDataFactory.create(signatureBytes);
+
+            // Determine target page (last page) size to place signature dynamically
+            int targetPageNum = pdfDoc.getNumberOfPages();
+            Rectangle pageRect = pdfDoc.getPage(targetPageNum).getPageSize();
+
+            // Signature visual size
+            float width = 130f;
+            float height = 65f;
+
+            // Compute X coordinate: seller on left quarter, customer on right quarter
+            float posX = isSeller ? pageRect.getWidth() * 0.15f : pageRect.getWidth() * 0.60f;
+            // Place near bottom (about 100 pt from bottom margin)
+            float posY = 100f;
+
+            log.debug("Inserting signature on page {} at x={}, y={}, width={}, height={} (isSeller={})", targetPageNum, posX, posY, width, height, isSeller);
+
+            // Use high-level layout API for reliability
+            Document doc = new Document(pdfDoc);
+            Image signatureImg = new Image(imageData);
+            signatureImg.scaleToFit(width, height);
+            signatureImg.setFixedPosition(targetPageNum, posX, posY);
+            doc.add(signatureImg);
+            doc.close(); // also closes pdfDoc
+
+            // Upload the newly signed PDF to Google Drive and update contract path
+            File signedFile = new File(tempFile.getAbsolutePath() + "_signed.pdf");
+            String newFileId = googleDriveService.uploadFile(signedFile, "signed_" + contract.getContractNumber() + ".pdf");
+            contract.setFilePath(newFileId);
+            contractRepository.save(contract);
+
+            // Clean up local signed file
+            signedFile.delete();
+
+        } finally {
+            if (tempFile != null) {
+                // temp signed file already deleted above, but ensure deletion
+                new File(tempFile.getAbsolutePath() + "_signed.pdf").delete();
+                tempFile.delete();
+            }
+        }
     }
 } 

@@ -62,10 +62,10 @@ spring:
 
   # Mail configuration for customer notifications
   mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:your-email@gmail.com}
-    password: ${MAIL_PASSWORD:your-app-password}
+    host: smtp.gmail.com
+    port: 587
+    username: longrpk200313@gmail.com
+    password: gphi fyvo kxdf pgfr
     properties:
       mail:
         smtp:
@@ -133,6 +133,8 @@ app:
   services:
     auth-service:
       url: "http://localhost:8081/api/auth"
+      admin-username: admin@cem.local
+      admin-password: Abc123!@
     customer-service:
       url: "http://localhost:8082/api/customer"
     device-service:

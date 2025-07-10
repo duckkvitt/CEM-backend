@@ -9,8 +9,8 @@ public class UserResponse {
     private String email;
     private String firstName;
     private String lastName;
+    private String fullName;
     private String phone;
-    private String role;
-    private String accountStatus;
-    private LocalDateTime createdAt;
+    // Các trường khác có thể được thêm vào nếu cần
+    // For now, we only need a subset of fields from the actual UserResponse
 } 

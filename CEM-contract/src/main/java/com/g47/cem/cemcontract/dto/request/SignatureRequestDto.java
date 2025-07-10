@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SignatureRequestDto {
 
-    @NotBlank(message = "Signature image cannot be blank")
-    private String signatureImage;
+    @NotBlank(message = "Signature cannot be blank")
+    private String signature;
 
-    @NotBlank(message = "Signer type cannot be blank")
-    private String signerType; // "SELLER" or "CUSTOMER"
+    private String signerType; // Optional now
 } 

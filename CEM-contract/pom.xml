@@ -55,21 +55,25 @@
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
 
-		<!-- DOCX4J for DOCX manipulation -->
 		<dependency>
 			<groupId>org.docx4j</groupId>
 			<artifactId>docx4j-core</artifactId>
-			<version>8.3.9</version>
+			<version>11.4.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.docx4j</groupId>
 			<artifactId>docx4j-export-fo</artifactId>
-			<version>8.3.9</version>
+			<version>11.4.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.docx4j</groupId>
 			<artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
-			<version>8.3.9</version>
+			<version>11.4.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
 		</dependency>
 
 		<!-- Apache FOP for PDF rendering (required by docx4j-export-fo) -->
@@ -109,19 +113,12 @@
 
 		<!-- JAXB for DOCX4J on Java 9+ -->
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.3.1</version>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-core</artifactId>
-			<version>2.3.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
-			<version>2.3.3</version>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
 		</dependency>
 
 		<dependency>

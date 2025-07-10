@@ -1,12 +1,15 @@
 package com.g47.cem.cemcontract.service;
 
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+
 import com.g47.cem.cemcontract.dto.request.external.CreateUserRequest;
 import com.g47.cem.cemcontract.entity.Contract;
 import com.g47.cem.cemcontract.event.SellerSignedEvent;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
@@ -20,10 +23,6 @@ public class ContractEventListener {
     public void handleSellerSignedEvent(SellerSignedEvent event) {
         Contract contract = event.getContract();
         log.info("Handling SellerSignedEvent for contract ID: {}", contract.getId());
-
-        // TODO: Get a service-to-service auth token instead of passing one around.
-        // For now, this part is conceptual.
-        String tempAuthToken = "some-service-token";
 
         // Extract customer info from contract's buyer details (assuming stored in description or a new field)
         // This part needs a robust way to get buyer details.
@@ -43,7 +42,7 @@ public class ContractEventListener {
                 true
         );
 
-        externalService.createUser(createUserRequest, tempAuthToken)
+        externalService.createUser(createUserRequest)
             .doOnSuccess(userResponse -> {
                 log.info("Successfully created user for contract {}: {}", contract.getId(), userResponse.getEmail());
                 
@@ -61,6 +60,7 @@ public class ContractEventListener {
                 log.error("Failed to create user for contract {}: {}", contract.getId(), error.getMessage());
                 // TODO: Implement retry logic or notify admin
             })
+            .onErrorResume(e -> Mono.empty())
             .subscribe();
     }
 } 

@@ -1,5 +1,7 @@
 package com.g47.cem.cemcontract.config;
 
+import java.io.IOException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -8,9 +10,9 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
+@Component
 public class RestTemplateInterceptor implements ClientHttpRequestInterceptor {
 
     @Override

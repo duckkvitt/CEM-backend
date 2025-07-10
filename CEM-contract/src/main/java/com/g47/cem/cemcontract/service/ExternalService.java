@@ -1,7 +1,9 @@
 package com.g47.cem.cemcontract.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,34 +26,59 @@ public class ExternalService {
 
     private final WebClient webClient;
     @Value("${app.services.auth-service.url}")
-    private String authServiceUrl;
+    private String authServiceUrl; // e.g., http://localhost:8081/api/auth
     
     @Value("${app.services.customer-service.url}")
     private String customerServiceUrl;
 
     private final RestTemplate restTemplate;
 
-    public Mono<UserResponse> createUser(CreateUserRequest createUserRequest, String authToken) {
+    @Value("${app.services.auth-service.admin-username:admin}")
+    private String adminUsername;
+
+    @Value("${app.services.auth-service.admin-password:password}")
+    private String adminPassword;
+
+    private Mono<String> fetchAdminToken() {
+        String baseAuthUrl = authServiceUrl.replaceAll("/api/auth$", "");
         return webClient.post()
-                .uri(authServiceUrl + "/admin/create-user")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken)
-                .body(Mono.just(createUserRequest), CreateUserRequest.class)
+                .uri(baseAuthUrl + "/v1/auth/login")
+                .bodyValue(new LoginRequest(adminUsername, adminPassword))
                 .retrieve()
-                .bodyToMono(UserResponse.class);
+                .bodyToMono(TokenResponse.class)
+                .map(TokenResponse::getAccessToken);
+    }
+
+    public Mono<UserResponse> createUser(CreateUserRequest createUserRequest) {
+        String baseAuthUrl = authServiceUrl.replaceAll("/api/auth$", "");
+        return fetchAdminToken().flatMap(token ->
+            webClient.post()
+                .uri(baseAuthUrl + "/v1/auth/admin/create-user")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .bodyValue(createUserRequest)
+                .retrieve()
+                .bodyToMono(UserResponse.class)
+        );
     }
     
     public Mono<Object> getCustomerById(Long customerId, String authToken) {
+        String baseCustomerUrl = customerServiceUrl.replaceAll("/api/customer$", "");
         return webClient.get()
-                .uri(customerServiceUrl + "/customers/" + customerId)
+                .uri(baseCustomerUrl + "/v1/customers/" + customerId)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken)
                 .retrieve()
                 .bodyToMono(Object.class);
     }
 
-    public CustomerDto getCustomerInfo(Long customerId) {
+    public CustomerDto getCustomerInfo(Long customerId, String authToken) {
         try {
-            String url = customerServiceUrl + "/api/customers/" + customerId;
-            ResponseEntity<CustomerDto> response = restTemplate.getForEntity(url, CustomerDto.class);
+            String baseCustomerUrl = customerServiceUrl.replaceAll("/api/customer$", "");
+            String url = baseCustomerUrl + "/v1/customers/" + customerId;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(authToken);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<CustomerDto> response = restTemplate.exchange(url, HttpMethod.GET, entity, CustomerDto.class);
             
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
                 return response.getBody();
@@ -62,6 +89,28 @@ public class ExternalService {
         } catch (Exception e) {
             log.error("Error fetching customer info for ID: {}", customerId, e);
             return createPlaceholderCustomer(customerId);
+        }
+    }
+
+    public UserResponse getUserById(Long userId, String authToken) {
+        try {
+            String baseAuthUrl = authServiceUrl.replaceAll("/api/auth$", "");
+            String url = baseAuthUrl + "/v1/auth/admin/users/" + userId;
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(authToken);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<UserResponse> response = restTemplate.exchange(url, HttpMethod.GET, entity, UserResponse.class);
+
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                return response.getBody();
+            } else {
+                log.warn("Failed to fetch user info for ID: {}, status: {}", userId, response.getStatusCode());
+                return null; // Or a placeholder
+            }
+        } catch (Exception e) {
+            log.error("Error fetching user info for ID: {}", userId, e);
+            return null; // Or a placeholder
         }
     }
     
@@ -91,5 +140,17 @@ public class ExternalService {
         private String email;
         private String businessCode;
         private String taxCode;
+    }
+
+    @Data
+    @AllArgsConstructor
+    private static class LoginRequest {
+        private String username;
+        private String password;
+    }
+
+    @Data
+    private static class TokenResponse {
+        private String accessToken;
     }
 }

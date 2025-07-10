@@ -16,6 +16,7 @@ import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.Permission;
 
 import lombok.extern.slf4j.Slf4j;
@@ -135,6 +136,39 @@ public class GoogleDriveService {
     }
 
     /**
+     * Overloaded version of uploadFile allowing custom mimeType.
+     */
+    public String uploadFile(java.io.File file, String desiredName, String mimeType) {
+        try {
+            String fileName = desiredName != null ? desiredName : file.getName();
+
+            String type = mimeType != null ? mimeType : "application/octet-stream";
+            com.google.api.client.http.AbstractInputStreamContent mediaContent =
+                    new com.google.api.client.http.FileContent(type, file);
+
+            File fileMetadata = new File();
+            fileMetadata.setName(fileName);
+            if (folderId != null && folderId.length() > 20 && !folderId.contains(" ")) {
+                fileMetadata.setParents(Collections.singletonList(folderId));
+            }
+
+            File uploadedFile = drive.files().create(fileMetadata, mediaContent)
+                    .setFields("id, webViewLink, webContentLink")
+                    .execute();
+
+            Permission permission = new Permission();
+            permission.setType("anyone");
+            permission.setRole("reader");
+            drive.permissions().create(uploadedFile.getId(), permission).execute();
+
+            log.info("Uploaded file to Google Drive. id={}, name={}", uploadedFile.getId(), fileName);
+            return uploadedFile.getId();
+        } catch (Exception e) {
+            throw new BusinessException("Failed to upload file to Google Drive", e);
+        }
+    }
+
+    /**
      * Generate a public download URL (direct download) for the given Google Drive file ID.
      */
     public String getDownloadUrl(String fileId) {
@@ -164,5 +198,44 @@ public class GoogleDriveService {
             log.error("Failed to get file metadata from Google Drive for fileId: {}", fileId, e);
             throw new BusinessException("Failed to get file metadata from Google Drive", e);
         }
+    }
+
+    /**
+     * Delete a file from Google Drive by fileId.
+     */
+    public void deleteFile(String fileId) {
+        try {
+            drive.files().delete(fileId).execute();
+            log.info("Deleted file from Google Drive. id={}", fileId);
+        } catch (Exception e) {
+            log.error("Failed to delete file from Google Drive. id={}", fileId, e);
+            // Silently ignore or rethrow based on requirement. Here we just log.
+        }
+    }
+
+    /**
+     * Find a fileId on Google Drive by exact file name (first match) inside configured folder.
+     * Returns null if not found or error.
+     */
+    public String findFileIdByName(String fileName) {
+        try {
+            StringBuilder q = new StringBuilder();
+            q.append("name='").append(fileName.replace("'", "\\'")).append("'");
+            if (folderId != null && folderId.length() > 0) {
+                // Search inside folder
+                q.append(" and '" + folderId + "' in parents");
+            }
+            FileList list = drive.files().list()
+                    .setQ(q.toString())
+                    .setFields("files(id, name)")
+                    .setPageSize(1)
+                    .execute();
+            if (list.getFiles() != null && !list.getFiles().isEmpty()) {
+                return list.getFiles().get(0).getId();
+            }
+        } catch (Exception e) {
+            log.error("Failed to search file by name on Google Drive: {}", fileName, e);
+        }
+        return null;
     }
 } 

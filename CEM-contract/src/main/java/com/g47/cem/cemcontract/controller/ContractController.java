@@ -53,11 +53,17 @@ public class ContractController {
             @Valid @RequestBody CreateContractRequest requestDto, 
             Authentication authentication,
             HttpServletRequest request) {
-        ContractResponseDto createdContract = contractService.createContract(requestDto, authentication.getName(), request);
+        String authHeader = request.getHeader("Authorization");
+        String authToken = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            authToken = authHeader.substring(7);
+        }
+        
+        ContractResponseDto createdContract = contractService.createContract(requestDto, authentication.getName(), request, authToken);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(createdContract));
     }
 
-    @GetMapping
+    @GetMapping(value = {"", "/"})
     // Allow additional internal roles such as SUPPORT_TEAM, TECH_LEAD and TECHNICIAN to access the contract list as read-only
     @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN')")
     public ResponseEntity<ApiResponse<List<ContractResponseDto>>> getContractsForUser(Authentication authentication) {
@@ -132,9 +138,10 @@ public class ContractController {
     @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER')")
     public ResponseEntity<ApiResponse<Object>> addSignature(
             @PathVariable Long id, 
-            @Valid @RequestBody com.g47.cem.cemcontract.dto.request.SignatureRequestDto requestDto) {
+            @Valid @RequestBody com.g47.cem.cemcontract.dto.request.SignatureRequestDto requestDto,
+            Authentication authentication) {
         try {
-            contractService.addSignatureToContract(id, requestDto);
+            contractService.signContract(id, requestDto, authentication);
             return ResponseEntity.ok(ApiResponse.success("Signature added successfully"));
         } catch (Exception e) {
             logger.error("Failed to add signature to contract {}", id, e);
