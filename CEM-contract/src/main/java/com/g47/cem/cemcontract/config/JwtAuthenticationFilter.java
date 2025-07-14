@@ -66,6 +66,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                     
                     // Store user information in request attributes for easier access
+                    request.setAttribute("jwt", jwt); // expose raw token for downstream internal calls
                     request.setAttribute("userId", jwtUtil.extractUserId(jwt));
                     request.setAttribute("userRole", jwtUtil.extractRole(jwt));
                     request.setAttribute("userEmail", username);

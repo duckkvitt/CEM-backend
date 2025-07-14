@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -58,15 +57,6 @@ import com.g47.cem.cemcontract.repository.ContractRepository;
 import com.g47.cem.cemcontract.repository.ContractSignatureRepository;
 import com.g47.cem.cemcontract.service.ExternalService.CustomerDto;
 import com.g47.cem.cemcontract.util.MoneyToWords;
-import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Image;
-import com.itextpdf.kernel.geom.Rectangle;
-// Removed PdfCanvas import – we use Document + Image API for stamping
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.xml.bind.JAXBElement;
@@ -920,7 +910,28 @@ public class ContractService {
                 return List.of();
             }
 
-            return contractRepository.findByCustomerId(userId).stream()
+            // For CUSTOMER role, we need to find contracts where the customer email matches the user email
+            // Since the customer user was created from customer info, emails should match
+            String userEmail = authentication.getName();
+            log.debug("Looking for contracts for customer user: {} (ID: {})", userEmail, userId);
+
+            // Get all contracts and filter by customer email through external service
+            List<Contract> allContracts = contractRepository.findAll();
+            List<Contract> customerContracts = allContracts.stream()
+                    .filter(contract -> {
+                        try {
+                            // Get customer info for this contract
+                            CustomerDto customer = externalService.getCustomerInfo(contract.getCustomerId(), null);
+                            return customer != null && userEmail.equals(customer.getEmail());
+                        } catch (Exception e) {
+                            log.warn("Error checking customer email for contract {}: {}", contract.getId(), e.getMessage());
+                            return false;
+                        }
+                    })
+                    .collect(Collectors.toList());
+
+            log.info("Found {} contracts for customer user: {}", customerContracts.size(), userEmail);
+            return customerContracts.stream()
                     .map(this::mapToDto)
                     .collect(Collectors.toList());
         }
@@ -973,162 +984,51 @@ public class ContractService {
         return dto;
     }
     
+    // Legacy signature methods removed - use DigitalSignatureService for new PAdES-compliant signing
+    // Keeping legacy endpoint for backward compatibility in ContractController
+    
     @Transactional
     public void signContract(Long contractId, SignatureRequestDto signatureRequestDto, Authentication authentication) throws Exception {
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + contractId));
+
+        // Check if contract is already digitally signed
+        if (Boolean.TRUE.equals(contract.getDigitalSigned())) {
+            log.warn("Contract {} is already digitally signed. Skipping legacy signature.", contractId);
+            return; // Silently return to avoid breaking frontend
+        }
 
         String username = authentication.getName();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         boolean isManager = authorities.stream().anyMatch(a -> a.getAuthority().equals("MANAGER"));
         boolean isCustomer = authorities.stream().anyMatch(a -> a.getAuthority().equals("CUSTOMER"));
 
-        if (isManager) {
-            handleManagerSignature(contract, signatureRequestDto, username);
-        } else if (isCustomer) {
-            handleCustomerSignature(contract, signatureRequestDto, username);
+        // Create legacy signature record for backward compatibility
+        ContractSignature signature = ContractSignature.builder()
+                .contract(contract)
+                .signerType(isManager ? SignerType.MANAGER : SignerType.CUSTOMER)
+                .signerName(username)
+                .signerEmail(username)
+                .signatureType(SignatureType.DIGITAL_IMAGE)
+                .signatureData(signatureRequestDto.getSignature())
+                .signedAt(LocalDateTime.now())
+                .build();
+        contractSignatureRepository.save(signature);
+
+        // Update contract status based on signer
+        if (isManager && contract.getStatus() == ContractStatus.PENDING_SELLER_SIGNATURE) {
+            contract.setStatus(ContractStatus.PENDING_CUSTOMER_SIGNATURE);
+            addHistory(contract, ContractAction.SIGNED, "Seller (manager) signed contract (legacy)", username, null, null);
+            eventPublisher.publishEvent(new SellerSignedEvent(this, contract));
+        } else if (isCustomer && contract.getStatus() == ContractStatus.PENDING_CUSTOMER_SIGNATURE) {
+            contract.setStatus(ContractStatus.ACTIVE);
+            addHistory(contract, ContractAction.SIGNED, "Customer signed contract (legacy)", username, null, null);
         } else {
-            throw new BusinessException("User does not have the authority to sign this contract.");
-        }
-    }
-
-    private void handleManagerSignature(Contract contract, SignatureRequestDto signatureRequestDto, String username) throws Exception {
-        if (contract.getStatus() != ContractStatus.PENDING_SELLER_SIGNATURE) {
-            throw new BusinessException("Contract is not in a state to be signed by the seller.");
+            throw new BusinessException("Contract is not in a valid state for signing.");
         }
         
-        addSignatureToPdf(contract, signatureRequestDto, true);
-
-        // Persist signature record
-        ContractSignature signature = ContractSignature.builder()
-                .contract(contract)
-                .signerType(SignerType.MANAGER)
-                .signerName(username)
-                .signerEmail(username)
-                .signatureType(SignatureType.DIGITAL_IMAGE)
-                .signatureData(signatureRequestDto.getSignature())
-                .signedAt(LocalDateTime.now())
-                .build();
-        contractSignatureRepository.save(signature);
-
-        ContractStatus oldStatus = contract.getStatus();
-
-        // Record signing action (no status recorded to satisfy DB constraint)
-        addHistory(contract, ContractAction.SIGNED, "Seller (manager) signed contract", username, null, null);
-
-        // Now update status and record the status change separately
-        contract.setStatus(ContractStatus.PENDING_CUSTOMER_SIGNATURE);
         contractRepository.save(contract);
-
-        addHistory(contract, ContractAction.UPDATED, "Contract moved to PENDING_CUSTOMER_SIGNATURE after seller signed", username, null, null);
-
-        // Publish event to notify customer
-        eventPublisher.publishEvent(new SellerSignedEvent(this, contract));
-    }
-
-    private void handleCustomerSignature(Contract contract, SignatureRequestDto signatureRequestDto, String username) throws Exception {
-        if (contract.getStatus() != ContractStatus.PENDING_CUSTOMER_SIGNATURE) {
-            throw new BusinessException("Contract is not in a state to be signed by the customer.");
-        }
         
-        addSignatureToPdf(contract, signatureRequestDto, false);
-
-        ContractSignature signature = ContractSignature.builder()
-                .contract(contract)
-                .signerType(SignerType.CUSTOMER)
-                .signerName(username)
-                .signerEmail(username)
-                .signatureType(SignatureType.DIGITAL_IMAGE)
-                .signatureData(signatureRequestDto.getSignature())
-                .signedAt(LocalDateTime.now())
-                .build();
-        contractSignatureRepository.save(signature);
-
-        ContractStatus oldStatus = contract.getStatus();
-
-        // Record signing action (no status recorded)
-        addHistory(contract, ContractAction.SIGNED, "Customer signed contract", username, null, null);
-
-        // Update status to ACTIVE and record status change
-        contract.setStatus(ContractStatus.ACTIVE);
-        contractRepository.save(contract);
-
-        addHistory(contract, ContractAction.UPDATED, "Contract activated after customer signed", username, null, null);
-    }
-    
-    private void addSignatureToPdf(Contract contract, SignatureRequestDto signatureRequestDto, boolean isSeller) throws Exception {
-        File tempFile = null;
-        try {
-            // Download from Google Drive
-            byte[] fileContent;
-            try {
-                fileContent = googleDriveService.downloadFileContent(contract.getFilePath());
-            } catch (BusinessException ex) {
-                // Attempt fallback: search by name (might have been uploaded in previous failed tx)
-                String expectedName = "signed_" + contract.getContractNumber() + ".pdf";
-                String foundId = googleDriveService.findFileIdByName(expectedName);
-                if (foundId != null) {
-                    fileContent = googleDriveService.downloadFileContent(foundId);
-                    // Update contract path to found file id for future operations
-                    contract.setFilePath(foundId);
-                } else {
-                    throw ex; // rethrow original
-                }
-            }
-            tempFile = File.createTempFile("contract-", ".pdf");
-            
-            try (FileOutputStream fos = new FileOutputStream(tempFile)) {
-                fos.write(fileContent);
-            }
-
-            // Add signature image to PDF
-            PdfDocument pdfDoc = new PdfDocument(new PdfReader(tempFile.getAbsolutePath()), new PdfWriter(tempFile.getAbsolutePath() + "_signed.pdf"));
-
-            String base64Data = signatureRequestDto.getSignature();
-            if (base64Data.contains(",")) {
-                base64Data = base64Data.split(",", 2)[1];
-            }
-            byte[] signatureBytes = Base64.getDecoder().decode(base64Data);
-            com.itextpdf.io.image.ImageData imageData = ImageDataFactory.create(signatureBytes);
-
-            // Determine target page (last page) size to place signature dynamically
-            int targetPageNum = pdfDoc.getNumberOfPages();
-            Rectangle pageRect = pdfDoc.getPage(targetPageNum).getPageSize();
-
-            // Signature visual size
-            float width = 130f;
-            float height = 65f;
-
-            // Compute X coordinate: seller on left quarter, customer on right quarter
-            float posX = isSeller ? pageRect.getWidth() * 0.15f : pageRect.getWidth() * 0.60f;
-            // Place near bottom (about 100 pt from bottom margin)
-            float posY = 100f;
-
-            log.debug("Inserting signature on page {} at x={}, y={}, width={}, height={} (isSeller={})", targetPageNum, posX, posY, width, height, isSeller);
-
-            // Use high-level layout API for reliability
-            Document doc = new Document(pdfDoc);
-            Image signatureImg = new Image(imageData);
-            signatureImg.scaleToFit(width, height);
-            signatureImg.setFixedPosition(targetPageNum, posX, posY);
-            doc.add(signatureImg);
-            doc.close(); // also closes pdfDoc
-
-            // Upload the newly signed PDF to Google Drive and update contract path
-            File signedFile = new File(tempFile.getAbsolutePath() + "_signed.pdf");
-            String newFileId = googleDriveService.uploadFile(signedFile, "signed_" + contract.getContractNumber() + ".pdf");
-            contract.setFilePath(newFileId);
-            contractRepository.save(contract);
-
-            // Clean up local signed file
-            signedFile.delete();
-
-        } finally {
-            if (tempFile != null) {
-                // temp signed file already deleted above, but ensure deletion
-                new File(tempFile.getAbsolutePath() + "_signed.pdf").delete();
-                tempFile.delete();
-            }
-        }
+        log.warn("Legacy signature method used for contract {}. Consider migrating to DigitalSignatureService.", contractId);
     }
 } 

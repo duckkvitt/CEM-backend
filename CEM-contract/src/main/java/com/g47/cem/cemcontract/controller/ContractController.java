@@ -25,13 +25,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.g47.cem.cemcontract.dto.request.CreateContractRequest;
+import com.g47.cem.cemcontract.dto.request.DigitalSignatureRequest;
 import com.g47.cem.cemcontract.dto.request.UpdateContractRequest;
 import com.g47.cem.cemcontract.dto.request.UpdateContractStatusRequest;
 import com.g47.cem.cemcontract.dto.response.ApiResponse;
 import com.g47.cem.cemcontract.dto.response.ContractResponseDto;
+import com.g47.cem.cemcontract.dto.response.DigitalSignatureResponseDto;
+import com.g47.cem.cemcontract.entity.DigitalSignatureRecord;
 import com.g47.cem.cemcontract.service.ContractService;
+import com.g47.cem.cemcontract.service.DigitalSignatureService;
 import com.g47.cem.cemcontract.service.GoogleDriveService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -45,6 +50,7 @@ public class ContractController {
 
     private static final Logger logger = LoggerFactory.getLogger(ContractController.class);
     private final ContractService contractService;
+    private final DigitalSignatureService digitalSignatureService;
     private final GoogleDriveService googleDriveService;
 
     @PostMapping
@@ -134,8 +140,86 @@ public class ContractController {
         return ResponseEntity.ok(ApiResponse.success(dto));
     }
 
+    // ========== Digital Signature Endpoints ==========
+
+    @PostMapping("/{id}/digital-signature")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER')")
+    @Operation(summary = "Sign contract with PAdES-compliant digital signature", 
+               description = "Creates a digital signature on the contract PDF using canvas signature data")
+    public ResponseEntity<ApiResponse<DigitalSignatureResponseDto>> signContractDigitally(
+            @PathVariable Long id,
+            @Valid @RequestBody DigitalSignatureRequest request,
+            HttpServletRequest httpRequest,
+            Authentication authentication) {
+        try {
+            // Set audit info
+            request.setIpAddress(getClientIpAddress(httpRequest));
+            request.setUserAgent(httpRequest.getHeader("User-Agent"));
+            
+            // Set signer info from authentication if not provided
+            if (request.getSignerName() == null || request.getSignerName().isEmpty()) {
+                request.setSignerName(authentication.getName());
+            }
+            if (request.getSignerEmail() == null || request.getSignerEmail().isEmpty()) {
+                // You might want to get email from user service
+                request.setSignerEmail(authentication.getName() + "@company.com");
+            }
+            
+            // Call the signContract method with contractId and request parameters
+            DigitalSignatureResponseDto signatureResponse = digitalSignatureService.signContract(id, request);
+            
+            logger.info("Successfully signed contract {} with digital signature. Record ID: {}", 
+                       id, signatureResponse.getId());
+            
+            return ResponseEntity.ok(ApiResponse.success(signatureResponse));
+            
+        } catch (Exception e) {
+            logger.error("Failed to sign contract {} with digital signature", id, e);
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), 400));
+        }
+    }
+
+    @GetMapping("/{id}/signatures")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER')")
+    @Operation(summary = "Get all signatures for a contract", 
+               description = "Returns list of all digital signatures applied to the contract")
+    public ResponseEntity<ApiResponse<List<DigitalSignatureRecord>>> getContractSignatures(@PathVariable Long id) {
+        try {
+            // TODO: Implement getContractSignatures method in DigitalSignatureService
+            // List<DigitalSignatureRecord> signatures = digitalSignatureService.getContractSignatures(id);
+            // return ResponseEntity.ok(ApiResponse.success(signatures));
+            return ResponseEntity.ok(ApiResponse.success(List.of())); // Return empty list for now
+        } catch (Exception e) {
+            logger.error("Failed to get signatures for contract {}", id, e);
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), 400));
+        }
+    }
+
+    @PostMapping("/signatures/{signatureId}/verify")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    @Operation(summary = "Verify a digital signature", 
+               description = "Verifies the cryptographic integrity and validity of a digital signature")
+    public ResponseEntity<ApiResponse<String>> verifySignature(@PathVariable Long signatureId) {
+        try {
+            logger.info("Verifying signature with ID: {}", signatureId);
+            
+            // TODO: Implement verifySignatureById method in DigitalSignatureService
+            // SignatureVerificationResult result = digitalSignatureService.verifySignatureById(signatureId);
+            // return ResponseEntity.ok(ApiResponse.success(result));
+            return ResponseEntity.ok(ApiResponse.success("Signature verification not implemented yet"));
+            
+        } catch (Exception e) {
+            logger.error("Failed to verify signature {}", signatureId, e);
+            return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage(), 400));
+        }
+    }
+
+    // ========== Legacy Signature Endpoint (for backward compatibility) ==========
+
     @PostMapping("/{id}/signatures")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER')")
+    @Operation(summary = "Legacy signature endpoint", 
+               description = "Deprecated: Use /digital-signature endpoint instead")
     public ResponseEntity<ApiResponse<Object>> addSignature(
             @PathVariable Long id, 
             @Valid @RequestBody com.g47.cem.cemcontract.dto.request.SignatureRequestDto requestDto,
@@ -169,7 +253,9 @@ public class ContractController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.setContentDispositionFormData("inline", filename);
-            headers.setCacheControl("max-age=3600"); // Cache for 1 hour
+            headers.setCacheControl("no-cache, no-store, must-revalidate"); // No cache to always show latest signed version
+            headers.setPragma("no-cache");
+            headers.setExpires(0);
 
             return ResponseEntity.ok()
                     .headers(headers)
@@ -179,5 +265,22 @@ public class ContractController {
             logger.error("Failed to serve contract file for contract {}", id, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    /**
+     * Extract client IP address from request
+     */
+    private String getClientIpAddress(HttpServletRequest request) {
+        String xForwardedFor = request.getHeader("X-Forwarded-For");
+        if (xForwardedFor != null && !xForwardedFor.isEmpty()) {
+            return xForwardedFor.split(",")[0].trim();
+        }
+        
+        String xRealIp = request.getHeader("X-Real-IP");
+        if (xRealIp != null && !xRealIp.isEmpty()) {
+            return xRealIp;
+        }
+        
+        return request.getRemoteAddr();
     }
 } 

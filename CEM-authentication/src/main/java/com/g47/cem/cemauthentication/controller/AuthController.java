@@ -31,6 +31,7 @@ import com.g47.cem.cemauthentication.dto.response.AuthResponse;
 import com.g47.cem.cemauthentication.dto.response.RoleResponse;
 import com.g47.cem.cemauthentication.dto.response.UserResponse;
 import com.g47.cem.cemauthentication.entity.AccountStatus;
+import com.g47.cem.cemauthentication.entity.Role;
 import com.g47.cem.cemauthentication.service.AuthService;
 import com.g47.cem.cemauthentication.service.UserManagementService;
 
@@ -146,7 +147,7 @@ public class AuthController {
     @PostMapping("/admin/create-user")
     @Operation(summary = "Create user account", description = "Create a new user account (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN') or hasAuthority('MANAGER')")
     public ResponseEntity<ApiResponse<UserResponse>> createUser(
             @Valid @RequestBody CreateUserRequest request,
             Authentication authentication,
@@ -181,6 +182,31 @@ public class AuthController {
         ApiResponse<List<RoleResponse>> response = ApiResponse.success(
             roles, 
             "Roles retrieved successfully"
+        );
+        response.setPath(httpRequest.getRequestURI());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/admin/roles/by-name/{roleName}")
+    @Operation(summary = "Get role by name", description = "Retrieve role by name (Admin/Manager only)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('SUPER_ADMIN') or hasAuthority('MANAGER')")
+    public ResponseEntity<ApiResponse<RoleResponse>> getRoleByName(
+            @PathVariable String roleName,
+            HttpServletRequest httpRequest) {
+        
+        log.info("Get role by name request received: {}", roleName);
+        
+        Role role = userManagementService.getRoleByName(roleName);
+        RoleResponse roleResponse = new RoleResponse();
+        roleResponse.setId(role.getId());
+        roleResponse.setName(role.getName());
+        roleResponse.setDescription(role.getDescription());
+        
+        ApiResponse<RoleResponse> response = ApiResponse.success(
+            roleResponse, 
+            "Role retrieved successfully"
         );
         response.setPath(httpRequest.getRequestURI());
         

@@ -88,27 +88,63 @@
 			<version>2.8</version>
 		</dependency>
 
-		<!-- iText7 for PDF manipulation -->
+		<!-- iText8 for PDF manipulation -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
-			<artifactId>itext7-core</artifactId>
-			<version>7.2.5</version>
+			<artifactId>itext-core</artifactId>
+			<version>8.0.5</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>kernel</artifactId>
-			<version>7.2.5</version>
+			<version>8.0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>io</artifactId>
-			<version>7.2.5</version>
+			<version>8.0.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>layout</artifactId>
-			<version>7.2.5</version>
+			<version>8.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>forms</artifactId>
+			<version>8.0.5</version>
+		</dependency>
+		
+		<!-- iText8 Digital Signatures -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>sign</artifactId>
+			<version>8.0.5</version>
+		</dependency>
+		
+		<!-- iText8 BouncyCastle Adapter - REQUIRED for digital signatures -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>bouncy-castle-adapter</artifactId>
+			<version>8.0.5</version>
+		</dependency>
+		
+		<!-- BouncyCastle for cryptographic operations - Updated versions -->
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk18on</artifactId>
+			<version>1.78.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk18on</artifactId>
+			<version>1.78.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcutil-jdk18on</artifactId>
+			<version>1.78.1</version>
 		</dependency>
 
 		<!-- JAXB for DOCX4J on Java 9+ -->

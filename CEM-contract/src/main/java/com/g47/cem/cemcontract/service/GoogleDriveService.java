@@ -1,5 +1,6 @@
 package com.g47.cem.cemcontract.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -165,6 +166,38 @@ public class GoogleDriveService {
             return uploadedFile.getId();
         } catch (Exception e) {
             throw new BusinessException("Failed to upload file to Google Drive", e);
+        }
+    }
+
+    /**
+     * Upload byte array to Google Drive
+     */
+    public String uploadFileBytes(byte[] fileBytes, String fileName) {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(fileBytes);
+            AbstractInputStreamContent mediaContent = new InputStreamContent(
+                    "application/pdf", inputStream);
+
+            File fileMetadata = new File();
+            fileMetadata.setName(fileName);
+            if (folderId != null && folderId.length() > 20 && !folderId.contains(" ")) {
+                fileMetadata.setParents(Collections.singletonList(folderId));
+            }
+
+            File uploadedFile = drive.files().create(fileMetadata, mediaContent)
+                    .setFields("id, webViewLink, webContentLink")
+                    .execute();
+
+            // Make file readable for anyone with link
+            Permission permission = new Permission();
+            permission.setType("anyone");
+            permission.setRole("reader");
+            drive.permissions().create(uploadedFile.getId(), permission).execute();
+
+            log.info("Uploaded byte array to Google Drive. id={}, name={}", uploadedFile.getId(), fileName);
+            return uploadedFile.getId();
+        } catch (Exception e) {
+            throw new BusinessException("Failed to upload byte array to Google Drive", e);
         }
     }
 

@@ -123,11 +123,12 @@ public class UserManagementService {
         Role adminRole = new Role("ADMIN", "Administrator with full access");
         Role staffRole = new Role("STAFF", "Staff member who works directly with customers");
         Role managerRole = new Role("MANAGER", "Manager with permission to oversee operations and make strategic decisions");
+        Role customerRole = new Role("CUSTOMER", "Customer with access to view and sign contracts");
         Role supportRole = new Role("SUPPORT_TEAM", "Support team responsible for handling customer support requests");
         Role techRole = new Role("TECHNICIAN", "Technician handling maintenance and repairs");
         Role leadTechRole = new Role("LEAD_TECH", "Lead technician supervising technicians and liaising with support team");
 
-        roleRepository.saveAll(List.of(userRole, adminRole, staffRole, managerRole, supportRole, techRole, leadTechRole));
+        roleRepository.saveAll(List.of(userRole, adminRole, staffRole, managerRole, customerRole, supportRole, techRole, leadTechRole));
         log.info("Seeded default roles list");
     }
 
@@ -204,5 +205,14 @@ public class UserManagementService {
         userRepository.save(user);
 
         return mapToUserResponse(user);
+    }
+
+    /**
+     * Get role by name
+     */
+    @Transactional(readOnly = true)
+    public Role getRoleByName(String roleName) {
+        return roleRepository.findByName(roleName)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found: " + roleName));
     }
 } 
