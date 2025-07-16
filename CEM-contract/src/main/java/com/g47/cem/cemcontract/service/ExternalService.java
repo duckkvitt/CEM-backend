@@ -135,6 +135,45 @@ public class ExternalService {
                 });
     }
 
+    public CustomerDto getCustomerByEmail(String email) {
+        if (email == null || email.isBlank()) {
+            log.error("Email is null or blank. Cannot fetch customer by email.");
+            return null;
+        }
+        String url = customerServiceUrl + "/v1/customers/email/" + email;
+        try {
+            WebClient.RequestHeadersSpec<?> request = webClient.get().uri(url)
+                .header("Authorization", "Bearer " + extractAuthTokenOrServiceToken());
+            ApiResponseWrapper response = request.retrieve()
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse ->
+                    clientResponse.bodyToMono(String.class).map(body -> {
+                        log.error("Customer Service error for email {}: {} - {}", email, clientResponse.statusCode().value(), body);
+                        return new RuntimeException(clientResponse.statusCode() + " - " + body);
+                    })
+                )
+                .bodyToMono(ApiResponseWrapper.class)
+                .block();
+            if (response == null || response.getData() == null) {
+                log.error("Customer Service returned null or missing data for email: {}", email);
+                return null;
+            }
+            CustomerResponse customer = response.getData();
+            CustomerDto dto = new CustomerDto();
+            dto.setId(customer.getId());
+            dto.setCompanyName(customer.getCompanyName());
+            dto.setContactName(customer.getLegalRepresentative());
+            dto.setAddress(customer.getCompanyAddress() != null ? customer.getCompanyAddress() : customer.getAddress());
+            dto.setPhone(customer.getPhone());
+            dto.setEmail(customer.getEmail());
+            dto.setBusinessCode(null);
+            dto.setTaxCode(customer.getCompanyTaxCode());
+            return dto;
+        } catch (Exception e) {
+            log.error("Failed to fetch customer info from Customer Service for email {}: {}", email, e.getMessage());
+            return null;
+        }
+    }
+
     private String extractAuthTokenOrServiceToken() {
         // Try to extract from current request
         ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

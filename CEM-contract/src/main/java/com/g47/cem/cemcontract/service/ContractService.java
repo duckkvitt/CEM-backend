@@ -29,7 +29,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +53,6 @@ import com.g47.cem.cemcontract.repository.ContractDetailRepository;
 import com.g47.cem.cemcontract.repository.ContractHistoryRepository;
 import com.g47.cem.cemcontract.repository.ContractRepository;
 import com.g47.cem.cemcontract.repository.ContractSignatureRepository;
-import com.g47.cem.cemcontract.service.CustomerDto;
 import com.g47.cem.cemcontract.util.MoneyToWords;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -881,7 +879,7 @@ public class ContractService {
     }
 
     @Transactional(readOnly = true)
-    public List<ContractResponseDto> getContractsForUser(Authentication authentication) {
+    public List<ContractResponseDto> getContractsForUser(Authentication authentication, Long userId) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         boolean isManagerOrStaff = authorities.stream()
                 .anyMatch(a -> {
@@ -894,36 +892,17 @@ public class ContractService {
                     .map(this::mapToDto)
                     .collect(Collectors.toList());
         } else {
-            // For CUSTOMER role
-            Jwt jwt = (Jwt) authentication.getPrincipal();
-            Long userId = jwt.getClaim("userId"); // Assuming userId is a claim in the JWT
-
-            if (userId == null) {
-                // This case should ideally not happen for an authenticated customer
+            // For CUSTOMER, map user email to customerId
+            String email = authentication.getName();
+            CustomerDto customer = externalService.getCustomerByEmail(email);
+            if (customer == null || customer.getId() == null) {
+                log.warn("No customer found for email: {}", email);
                 return List.of();
             }
-
-            // For CUSTOMER role, we need to find contracts where the customer email matches the user email
-            // Since the customer user was created from customer info, emails should match
-            String userEmail = authentication.getName();
-            log.debug("Looking for contracts for customer user: {} (ID: {})", userEmail, userId);
-
-            // Get all contracts and filter by customer email through external service
-            List<Contract> allContracts = contractRepository.findAll();
-            List<Contract> customerContracts = allContracts.stream()
-                    .filter(contract -> {
-                        try {
-                            // Get customer info for this contract
-                            CustomerDto customer = externalService.getCustomerInfo(contract.getCustomerId(), null);
-                            return customer != null && userEmail.equals(customer.getEmail());
-                        } catch (Exception e) {
-                            log.warn("Error checking customer email for contract {}: {}", contract.getId(), e.getMessage());
-                            return false;
-                        }
-                    })
-                    .collect(Collectors.toList());
-
-            log.info("Found {} contracts for customer user: {}", customerContracts.size(), userEmail);
+            Long customerId = customer.getId();
+            log.debug("Looking for contracts for customerId: {} (email: {})", customerId, email);
+            List<Contract> customerContracts = contractRepository.findByCustomerId(customerId);
+            log.info("Found {} contracts for customerId: {} (email: {})", customerContracts.size(), customerId, email);
             return customerContracts.stream()
                     .map(this::mapToDto)
                     .collect(Collectors.toList());

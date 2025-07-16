@@ -72,8 +72,19 @@ public class ContractController {
     @GetMapping(value = {"", "/"})
     // Allow additional internal roles such as SUPPORT_TEAM, TECH_LEAD and TECHNICIAN to access the contract list as read-only
     @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN')")
-    public ResponseEntity<ApiResponse<List<ContractResponseDto>>> getContractsForUser(Authentication authentication) {
-        List<ContractResponseDto> contracts = contractService.getContractsForUser(authentication);
+    public ResponseEntity<ApiResponse<List<ContractResponseDto>>> getContractsForUser(Authentication authentication, HttpServletRequest request) {
+        Object userIdObj = request.getAttribute("userId");
+        Long userId = null;
+        if (userIdObj instanceof Long) {
+            userId = (Long) userIdObj;
+        } else if (userIdObj instanceof Integer) {
+            userId = ((Integer) userIdObj).longValue();
+        } else if (userIdObj instanceof String) {
+            try {
+                userId = Long.parseLong((String) userIdObj);
+            } catch (NumberFormatException ignored) {}
+        }
+        List<ContractResponseDto> contracts = contractService.getContractsForUser(authentication, userId);
         return ResponseEntity.ok(ApiResponse.success(contracts));
     }
 
