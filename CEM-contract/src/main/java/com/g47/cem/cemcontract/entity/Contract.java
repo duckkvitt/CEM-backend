@@ -202,4 +202,32 @@ public class Contract {
     public void updateTotalValue() {
         this.totalValue = calculateTotalValue();
     }
+
+    public Long getId() { return id; }
+    public String getContractNumber() { return contractNumber; }
+    public String getPaymentMethod() { return paymentMethod; }
+    public String getPaymentTerm() { return paymentTerm; }
+    public String getBankAccount() { return bankAccount; }
+    public String getWarrantyProduct() { return warrantyProduct; }
+    public Integer getWarrantyPeriodMonths() { return warrantyPeriodMonths; }
+    public LocalDate getStartDate() { return startDate; }
+    public List<ContractDeliverySchedule> getDeliverySchedules() { return deliverySchedules; }
+    public List<ContractDetail> getContractDetails() { return contractDetails; }
+    public void setDescription(String description) { this.description = description; }
+    public void setContractDetails(List<ContractDetail> contractDetails) { this.contractDetails = contractDetails; }
+    public void setFilePath(String filePath) { this.filePath = filePath; }
+    public void setStatus(com.g47.cem.cemcontract.enums.ContractStatus status) { this.status = status; }
+    public void setContractNumber(String contractNumber) { this.contractNumber = contractNumber; }
+    public void setTitle(String title) { this.title = title; }
+    public void setCustomerId(Long customerId) { this.customerId = customerId; }
+    public void setStaffId(Long staffId) { this.staffId = staffId; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+    public void setDeliverySchedules(List<ContractDeliverySchedule> deliverySchedules) { this.deliverySchedules = deliverySchedules; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    public LocalDate getEndDate() { return endDate; }
+    public java.math.BigDecimal getTotalValue() { return totalValue; }
+    public String getDescription() { return description; }
+    public String getTitle() { return title; }
+    public String getCreatedBy() { return createdBy; }
+    public com.g47.cem.cemcontract.enums.ContractStatus getStatus() { return status; }
 } 

@@ -79,6 +79,21 @@ public class CreateContractRequest {
     @Positive(message = "Warranty period must be positive")
     private Integer warrantyPeriodMonths; // Thời gian bảo hành (tháng)
     
+    public Long getStaffId() { return staffId; }
+    public String getTitle() { return title; }
+    public String getDescription() { return description; }
+    public Long getCustomerId() { return customerId; }
+    public java.math.BigDecimal getTotalValue() { return totalValue; }
+    public java.time.LocalDate getStartDate() { return startDate; }
+    public java.time.LocalDate getEndDate() { return endDate; }
+    public String getPaymentMethod() { return paymentMethod; }
+    public String getPaymentTerm() { return paymentTerm; }
+    public String getBankAccount() { return bankAccount; }
+    public String getWarrantyProduct() { return warrantyProduct; }
+    public Integer getWarrantyPeriodMonths() { return warrantyPeriodMonths; }
+    public java.util.List<CreateContractDetailRequest> getContractDetails() { return contractDetails; }
+    public java.util.List<CreateDeliveryScheduleRequest> getDeliverySchedules() { return deliverySchedules; }
+    
     @Data
     @Builder
     @NoArgsConstructor
@@ -106,6 +121,14 @@ public class CreateContractRequest {
         
         @Size(max = 500, message = "Notes must not exceed 500 characters")
         private String notes;
+
+        public String getWorkCode() { return workCode; }
+        public Long getDeviceId() { return deviceId; }
+        public String getDescription() { return description; }
+        public Integer getQuantity() { return quantity; }
+        public BigDecimal getUnitPrice() { return unitPrice; }
+        public Integer getWarrantyMonths() { return warrantyMonths; }
+        public String getNotes() { return notes; }
     }
     
     /**
@@ -136,5 +159,12 @@ public class CreateContractRequest {
         
         @Size(max = 1000, message = "Notes must not exceed 1000 characters")
         private String notes; // Ghi chú
+
+        public String getItemName() { return itemName; }
+        public String getUnit() { return unit; }
+        public Integer getQuantity() { return quantity; }
+        public String getDeliveryTime() { return deliveryTime; }
+        public String getDeliveryLocation() { return deliveryLocation; }
+        public String getNotes() { return notes; }
     }
 } 

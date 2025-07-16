@@ -213,6 +213,20 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/admin/roles/health")
+    @Operation(summary = "Health check for default roles", description = "Verify all default roles exist in the database")
+    public ResponseEntity<ApiResponse<Object>> checkDefaultRolesHealth() {
+        List<String> requiredRoles = List.of("USER", "ADMIN", "STAFF", "MANAGER", "CUSTOMER", "SUPPORT_TEAM", "TECHNICIAN", "LEAD_TECH");
+        List<String> missing = requiredRoles.stream()
+            .filter(role -> !userManagementService.roleExists(role))
+            .toList();
+        if (missing.isEmpty()) {
+            return ResponseEntity.ok(ApiResponse.success("All default roles exist"));
+        } else {
+            return ResponseEntity.status(500).body(ApiResponse.error("Missing roles: " + missing, 500));
+        }
+    }
+
     @PostMapping("/change-password")
     @Operation(summary = "Change password", description = "Change user password")
     @SecurityRequirement(name = "Bearer Authentication")

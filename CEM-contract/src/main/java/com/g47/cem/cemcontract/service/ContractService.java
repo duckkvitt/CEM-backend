@@ -33,7 +33,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.g47.cem.cemcontract.dto.request.ContractCreationRequestDto;
 import com.g47.cem.cemcontract.dto.request.CreateContractRequest;
 import com.g47.cem.cemcontract.dto.request.SignatureRequestDto;
 import com.g47.cem.cemcontract.dto.request.UpdateContractRequest;
@@ -55,7 +54,7 @@ import com.g47.cem.cemcontract.repository.ContractDetailRepository;
 import com.g47.cem.cemcontract.repository.ContractHistoryRepository;
 import com.g47.cem.cemcontract.repository.ContractRepository;
 import com.g47.cem.cemcontract.repository.ContractSignatureRepository;
-import com.g47.cem.cemcontract.service.ExternalService.CustomerDto;
+import com.g47.cem.cemcontract.service.CustomerDto;
 import com.g47.cem.cemcontract.util.MoneyToWords;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -191,37 +190,31 @@ public class ContractService {
     }
 
     @Transactional
-    public Contract createAndGenerateContract(ContractCreationRequestDto requestDto) {
+    public Contract createAndGenerateContract(CreateContractRequest requestDto) {
         String contractNumber = contractNumberGenerator.generate();
         Contract contract = new Contract();
         contract.setContractNumber(contractNumber);
-        String title = String.format("Hợp đồng mua bán giữa %s và %s",
-                requestDto.getSeller().getCompanyName(),
-                requestDto.getBuyer().getCompanyName());
-        contract.setTitle(title);
-        contract.setDescription(requestDto.getNotes());
-        contract.setCustomerId(requestDto.getBuyer().getEntityId());
-        contract.setStaffId(requestDto.getSeller().getEntityId());
-        contract.setCreatedBy(requestDto.getSeller().getLegalRepresentative());
+        contract.setTitle(requestDto.getTitle());
+        contract.setDescription(requestDto.getDescription());
+        contract.setCustomerId(requestDto.getCustomerId());
+        contract.setStaffId(requestDto.getStaffId());
+        contract.setCreatedBy(null); // No legal representative in CreateContractRequest
 
-        List<ContractDetail> details = requestDto.getItems().stream().map(itemDto -> {
+        List<ContractDetail> details = requestDto.getContractDetails() != null ? requestDto.getContractDetails().stream().map(itemDto -> {
             ContractDetail detail = new ContractDetail();
-            detail.setDescription(itemDto.getName()); // Use description instead of serviceName
-            detail.setQuantity(itemDto.getQuantity().intValue());
+            detail.setDescription(itemDto.getDescription());
+            detail.setQuantity(itemDto.getQuantity());
             detail.setUnitPrice(itemDto.getUnitPrice());
-                        detail.calculateTotalPrice();
+            detail.calculateTotalPrice();
             detail.setContract(contract);
-                        return detail;
-        }).collect(Collectors.toList());
-            contract.setContractDetails(details);
-            contract.updateTotalValue();
+            return detail;
+        }).collect(Collectors.toList()) : new ArrayList<>();
+        contract.setContractDetails(details);
+        contract.updateTotalValue();
 
         try {
-            // authToken is missing here, we might need to adjust how this method is called or retrieve it.
-            // For now, let's assume it's not available in this flow and it might fail or use placeholders.
-            // A proper fix would involve getting the token for the system/user creating the contract.
-            String googleDriveFileId = generateContractPdf(contract, requestDto.getSeller().getLegalRepresentative(), null); // Passing null for authToken
-            contract.setFilePath(googleDriveFileId); // Store Google Drive file ID
+            String googleDriveFileId = generateContractPdf(contract, null, null); // No username/authToken available
+            contract.setFilePath(googleDriveFileId);
         } catch (Exception e) {
             log.error("Failed to generate PDF for contract {}", contractNumber, e);
             throw new BusinessException("Failed to generate PDF from template.");
@@ -229,8 +222,8 @@ public class ContractService {
         contract.setStatus(ContractStatus.PENDING_SELLER_SIGNATURE);
 
         Contract savedContract = contractRepository.save(contract);
-        String reason = "Contract generated from template by " + savedContract.getCreatedBy();
-        addHistory(savedContract, ContractAction.CREATED, reason, savedContract.getCreatedBy(), null, ContractStatus.PENDING_SELLER_SIGNATURE);
+        String reason = "Contract generated from template by system";
+        addHistory(savedContract, ContractAction.CREATED, reason, null, null, ContractStatus.PENDING_SELLER_SIGNATURE);
         return savedContract;
     }
 
@@ -768,7 +761,7 @@ public class ContractService {
         throw new IllegalStateException("Unable to locate table with index " + index);
     }
 
-    private void generatePdfFromTemplate(String pdfPath, ContractCreationRequestDto dto, String contractNumber) throws Exception {
+    private void generatePdfFromTemplate(String pdfPath, CreateContractRequest.CreateDeliveryScheduleRequest dto, String contractNumber) throws Exception {
         java.io.InputStream templateInputStream = this.getClass().getClassLoader().getResourceAsStream("templates/HD-mua-ban-hang-hoa2025.docx");
         if (templateInputStream == null) throw new ResourceNotFoundException("Contract template not found.");
 
@@ -776,8 +769,8 @@ public class ContractService {
         org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart mainDocumentPart = wordMLPackage.getMainDocumentPart();
         HashMap<String, String> mappings = new HashMap<>();
         mappings.put("contractNumber", contractNumber);
-        mappings.put("seller.name", dto.getSeller().getCompanyName());
-        mappings.put("buyer.name", dto.getBuyer().getCompanyName());
+        mappings.put("seller.name", ""); // No seller info in this DTO
+        mappings.put("buyer.name", ""); // No buyer info in this DTO
 
         mainDocumentPart.variableReplace(mappings);
 

@@ -56,4 +56,23 @@ public class DigitalSignatureRequest {
     // Timestamp options
     private Boolean includeTimestamp; // Whether to include RFC 3161 timestamp
     private String timestampUrl; // Custom TSA URL (optional)
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
+    }
+    public String getSignerName() {
+        return signerName;
+    }
+    public void setSignerName(String signerName) {
+        this.signerName = signerName;
+    }
+    public String getSignerEmail() {
+        return signerEmail;
+    }
+    public void setSignerEmail(String signerEmail) {
+        this.signerEmail = signerEmail;
+    }
 } 

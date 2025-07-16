@@ -1,6 +1,7 @@
 package com.g47.cem.cemauthentication.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -112,24 +113,27 @@ public class UserManagementService {
 
     @Transactional
     public void initializeDefaultRoles() {
-        log.info("Initializing default roles (only if table is empty)");
+        log.info("Checking and initializing default roles...");
 
-        if (roleRepository.count() > 0) {
-            log.info("Roles already present -> seeding skipped");
-            return;
-        }
+        Map<String, String> rolesToCreate = Map.of(
+            "USER", "Standard user with basic access",
+            "ADMIN", "Administrator with full access",
+            "STAFF", "Staff member who works directly with customers",
+            "MANAGER", "Manager with permission to oversee operations and make strategic decisions",
+            "CUSTOMER", "Customer with access to view and sign contracts",
+            "SUPPORT_TEAM", "Support team responsible for handling customer support requests",
+            "TECHNICIAN", "Technician handling maintenance and repairs",
+            "LEAD_TECH", "Lead technician supervising technicians and liaising with support team"
+        );
 
-        Role userRole = new Role("USER", "Standard user with basic access");
-        Role adminRole = new Role("ADMIN", "Administrator with full access");
-        Role staffRole = new Role("STAFF", "Staff member who works directly with customers");
-        Role managerRole = new Role("MANAGER", "Manager with permission to oversee operations and make strategic decisions");
-        Role customerRole = new Role("CUSTOMER", "Customer with access to view and sign contracts");
-        Role supportRole = new Role("SUPPORT_TEAM", "Support team responsible for handling customer support requests");
-        Role techRole = new Role("TECHNICIAN", "Technician handling maintenance and repairs");
-        Role leadTechRole = new Role("LEAD_TECH", "Lead technician supervising technicians and liaising with support team");
+        rolesToCreate.forEach((roleName, description) -> {
+            if (!roleRepository.existsByName(roleName)) {
+                roleRepository.save(new Role(roleName, description));
+                log.info("Created default role: {}", roleName);
+            }
+        });
 
-        roleRepository.saveAll(List.of(userRole, adminRole, staffRole, managerRole, customerRole, supportRole, techRole, leadTechRole));
-        log.info("Seeded default roles list");
+        log.info("Default roles check completed.");
     }
 
     /**
@@ -214,5 +218,9 @@ public class UserManagementService {
     public Role getRoleByName(String roleName) {
         return roleRepository.findByName(roleName)
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found: " + roleName));
+    }
+
+    public boolean roleExists(String roleName) {
+        return roleRepository.existsByName(roleName);
     }
 } 

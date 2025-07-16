@@ -39,4 +39,8 @@ public class DigitalSignatureResponseDto {
     private Double signatureY;
     private Double signatureWidth;
     private Double signatureHeight;
+
+    public Long getId() {
+        return id;
+    }
 } 

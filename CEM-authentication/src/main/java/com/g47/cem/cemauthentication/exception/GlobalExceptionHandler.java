@@ -1,8 +1,8 @@
 package com.g47.cem.cemauthentication.exception;
 
-import com.g47.cem.cemauthentication.dto.response.ApiResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.g47.cem.cemauthentication.dto.response.ApiResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Global exception handler for all REST controllers
@@ -125,6 +127,10 @@ public class GlobalExceptionHandler {
             ResourceNotFoundException ex, HttpServletRequest request) {
         
         log.warn("Resource not found for request: {} - {}", request.getRequestURI(), ex.getMessage());
+        
+        if (ex.getMessage() != null && ex.getMessage().contains("Role not found")) {
+            log.warn("Role not found: {}", ex.getMessage());
+        }
         
         ApiResponse<Object> response = ApiResponse.error(
                 ex.getMessage(), 

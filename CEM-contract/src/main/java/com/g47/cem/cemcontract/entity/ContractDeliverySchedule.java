@@ -98,4 +98,11 @@ public class ContractDeliverySchedule {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public String getItemName() { return itemName; }
+    public String getUnit() { return unit; }
+    public Integer getQuantity() { return quantity; }
+    public String getDeliveryTime() { return deliveryTime; }
+    public String getDeliveryLocation() { return deliveryLocation; }
+    public String getNotes() { return notes; }
 } 

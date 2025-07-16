@@ -11,4 +11,8 @@ public class UpdateContractStatusRequest {
     private ContractStatus status;
 
     private String comment;
+
+    public com.g47.cem.cemcontract.enums.ContractStatus getStatus() {
+        return status;
+    }
 } 

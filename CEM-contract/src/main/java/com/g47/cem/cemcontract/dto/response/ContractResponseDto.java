@@ -63,4 +63,8 @@ public class ContractResponseDto {
         private String deliveryLocation; // Địa điểm giao hàng
         private String notes; // Ghi chú
     }
+
+    public String getFilePath() {
+        return filePath;
+    }
 } 

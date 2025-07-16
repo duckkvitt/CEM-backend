@@ -1,10 +1,8 @@
 package com.g47.cem.cemcontract.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -14,9 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.g47.cem.cemcontract.dto.request.external.CreateUserRequest;
 import com.g47.cem.cemcontract.dto.response.external.UserResponse;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -25,218 +21,187 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @Slf4j
 public class ExternalService {
-
     private final WebClient webClient;
     @Value("${app.services.auth-service.url}")
-    private String authServiceUrl; // e.g., http://localhost:8081/api/auth
-    
+    private String authServiceUrl;
     @Value("${app.services.customer-service.url}")
     private String customerServiceUrl;
-
     private final RestTemplate restTemplate;
+    // ... (rest of the ExternalService implementation, including all methods and static inner DTOs)
 
-    /**
-     * Resolve current JWT token from the active HTTP request (set by JwtAuthenticationFilter).
-     */
-    private String getCurrentJwt() {
-        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (attrs == null) {
+    public CustomerDto getCustomerInfo(Long customerId, String authToken) {
+        if (customerId == null) {
+            log.error("Customer ID is null. Cannot fetch customer info.");
             return null;
         }
-        Object tokenAttr = attrs.getRequest().getAttribute("jwt");
-        if (tokenAttr instanceof String token && !token.isBlank()) {
-            return token;
+        String url = customerServiceUrl + "/v1/customers/" + customerId;
+        String tokenToUse = authToken;
+        if (tokenToUse == null || tokenToUse.isBlank()) {
+            // Try to extract from current request
+            ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (attrs != null && attrs.getRequest() != null) {
+                String header = attrs.getRequest().getHeader("Authorization");
+                if (header != null && header.startsWith("Bearer ")) {
+                    tokenToUse = header.substring(7);
+                }
+            }
         }
-        String header = attrs.getRequest().getHeader(HttpHeaders.AUTHORIZATION);
-        if (header != null && header.startsWith("Bearer ")) {
-            return header.substring(7);
-        }
+        try {
+            WebClient.RequestHeadersSpec<?> request = webClient.get().uri(url)
+                .header("Authorization", "Bearer " + tokenToUse);
+            ApiResponseWrapper response = request.retrieve()
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse ->
+                    clientResponse.bodyToMono(String.class).map(body -> {
+                        log.error("Customer Service error for ID {}: {} - {}", customerId, clientResponse.statusCode().value(), body);
+                        return new RuntimeException(clientResponse.statusCode() + " - " + body);
+                    })
+                )
+                .bodyToMono(ApiResponseWrapper.class)
+                .block();
+            if (response == null || response.getData() == null) {
+                log.error("Customer Service returned null or missing data for ID: {}", customerId);
+                return null;
+            }
+            CustomerResponse customer = response.getData();
+            CustomerDto dto = new CustomerDto();
+            dto.setId(customer.getId());
+            dto.setCompanyName(customer.getCompanyName());
+            dto.setContactName(customer.getLegalRepresentative());
+            dto.setAddress(customer.getCompanyAddress() != null ? customer.getCompanyAddress() : customer.getAddress());
+            dto.setPhone(customer.getPhone());
+            dto.setEmail(customer.getEmail());
+            dto.setBusinessCode(null);
+            dto.setTaxCode(customer.getCompanyTaxCode());
+            return dto;
+        } catch (Exception e) {
+            log.error("Failed to fetch customer info from Customer Service for ID {}: {}", customerId, e.getMessage());
         return null;
+        }
+    }
+    public RoleDto getRoleByName(String roleName) {
+        if (roleName == null || roleName.isBlank()) {
+            log.error("Role name is null or blank. Cannot fetch role info.");
+            return null;
+        }
+        String url = authServiceUrl + "/admin/roles/by-name/" + roleName;
+        String tokenToUse = extractAuthTokenOrServiceToken();
+        try {
+            WebClient.RequestHeadersSpec<?> request = webClient.get().uri(url)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenToUse)
+                .accept(MediaType.APPLICATION_JSON);
+            ApiRoleResponseWrapper response = request.retrieve()
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse ->
+                    clientResponse.bodyToMono(String.class).map(body -> {
+                        log.error("Auth Service error for role '{}': {} - {}", roleName, clientResponse.statusCode().value(), body);
+                        return new RuntimeException(clientResponse.statusCode() + " - " + body);
+                    })
+                )
+                .bodyToMono(ApiRoleResponseWrapper.class)
+                .block();
+            if (response == null || response.getData() == null) {
+                log.error("Auth Service returned null or missing data for role: {}", roleName);
+                return null;
+            }
+            RoleResponse role = response.getData();
+            return new RoleDto(role.getId(), role.getName(), role.getDescription());
+        } catch (Exception e) {
+            log.error("Failed to fetch role '{}' from Auth Service: {}", roleName, e.getMessage());
+            return null;
+        }
     }
 
     public Mono<UserResponse> createUser(CreateUserRequest createUserRequest) {
-        String token = getCurrentJwt();
-        if (token == null || token.isBlank()) {
-            return Mono.error(new IllegalStateException("Authorization token not found for createUser call"));
-        }
-
-        String baseAuthUrl = authServiceUrl.replaceAll("/api/auth$", "");
+        String url = authServiceUrl + "/admin/create-user";
+        String tokenToUse = extractAuthTokenOrServiceToken();
         return webClient.post()
-                .uri(baseAuthUrl + "/v1/auth/admin/create-user")
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .uri(url)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenToUse)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(createUserRequest)
                 .retrieve()
-                .bodyToMono(UserResponse.class);
-    }
-    
-    public Mono<Object> getCustomerById(Long customerId, String authToken) {
-        String baseCustomerUrl = customerServiceUrl.replaceAll("/api/customer$", "");
-        return webClient.get()
-                .uri(baseCustomerUrl + "/v1/customers/" + customerId)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + authToken)
-                .retrieve()
-                .bodyToMono(Object.class);
-    }
-
-    public CustomerDto getCustomerInfo(Long customerId, String authToken) {
-        if (authToken == null || authToken.isBlank()) {
-            authToken = getCurrentJwt();
-        }
-        
-        if (authToken == null || authToken.isBlank()) {
-            log.error("No authorization token available for customer service call. Customer ID: {}", customerId);
-            return null;
-        }
-        
-        return getCustomerInfoWithRetry(customerId, authToken, 3);
-    }
-    
-    private CustomerDto getCustomerInfoWithRetry(Long customerId, String authToken, int maxAttempts) {
-        String baseCustomerUrl = customerServiceUrl.replaceAll("/api/customer$", "");
-        String url = baseCustomerUrl + "/v1/customers/" + customerId;
-        
-        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
-            try {
-                HttpHeaders headers = new HttpHeaders();
-                headers.setBearerAuth(authToken);
-                HttpEntity<String> entity = new HttpEntity<>(headers);
-
-                log.debug("Attempting to fetch customer info for ID: {} (attempt {}/{})", customerId, attempt, maxAttempts);
-                ResponseEntity<CustomerDto> response = restTemplate.exchange(url, HttpMethod.GET, entity, CustomerDto.class);
-                
-                if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                    log.debug("Successfully fetched customer info for ID: {} on attempt {}", customerId, attempt);
-                    return response.getBody();
-                } else {
-                    log.warn("Failed to fetch customer info for ID: {} on attempt {}. Status: {}", 
-                            customerId, attempt, response.getStatusCode());
-                    
-                    if (attempt == maxAttempts) {
-                        log.error("All {} attempts failed to fetch customer info for ID: {}. Final status: {}, URL: {}", 
-                                 maxAttempts, customerId, response.getStatusCode(), url);
-                        return null;
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse ->
+                    clientResponse.bodyToMono(String.class).map(body -> {
+                        log.error("Auth Service error creating user: {} - {}", clientResponse.statusCode().value(), body);
+                        return new RuntimeException(clientResponse.statusCode() + " - " + body);
+                    })
+                )
+                .bodyToMono(ApiUserResponseWrapper.class)
+                .map(wrapper -> {
+                    if (wrapper == null || wrapper.getData() == null) {
+                        throw new RuntimeException("Auth Service returned null or missing data for user creation");
                     }
-                }
-            } catch (Exception e) {
-                log.warn("Error fetching customer info for ID: {} on attempt {}. Error: {}", 
-                        customerId, attempt, e.getMessage());
-                
-                if (attempt == maxAttempts) {
-                    log.error("All {} attempts failed to fetch customer info for ID: {} from URL: {}. Final error: {}", 
-                             maxAttempts, customerId, customerServiceUrl, e.getMessage(), e);
-                    return null;
-                }
-            }
-            
-            // Wait before retry (exponential backoff)
-            if (attempt < maxAttempts) {
-                try {
-                    long delay = (long) Math.pow(2, attempt - 1) * 1000; // 1s, 2s, 4s...
-                    log.debug("Waiting {}ms before retry attempt {} for customer ID: {}", delay, attempt + 1, customerId);
-                    Thread.sleep(delay);
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
-                    log.error("Retry interrupted for customer ID: {}", customerId);
-                    return null;
-                }
+                    return wrapper.getData();
+                });
+    }
+
+    private String extractAuthTokenOrServiceToken() {
+        // Try to extract from current request
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attrs != null && attrs.getRequest() != null) {
+            String header = attrs.getRequest().getHeader("Authorization");
+            if (header != null && header.startsWith("Bearer ")) {
+                return header.substring(7);
             }
         }
-        
         return null;
     }
 
-    public UserResponse getUserById(Long userId, String authToken) {
-        try {
-            String baseAuthUrl = authServiceUrl.replaceAll("/api/auth$", "");
-            String url = baseAuthUrl + "/v1/auth/admin/users/" + userId;
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(authToken);
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-
-            ResponseEntity<UserResponse> response = restTemplate.exchange(url, HttpMethod.GET, entity, UserResponse.class);
-
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                return response.getBody();
-            } else {
-                log.warn("Failed to fetch user info for ID: {}, status: {}", userId, response.getStatusCode());
-                return null; // Or a placeholder
-            }
-        } catch (Exception e) {
-            log.error("Error fetching user info for ID: {}", userId, e);
-            return null; // Or a placeholder
-        }
-    }
-    
-    /**
-     * Get role by name from Auth Service
-     */
-    public RoleDto getRoleByName(String roleName) {
-        String token = getCurrentJwt();
-        if (token == null || token.isBlank()) {
-            throw new IllegalStateException("Authorization token not found for getRoleByName call");
-        }
-
-        try {
-            String baseAuthUrl = authServiceUrl.replaceAll("/api/auth$", "");
-            String url = baseAuthUrl + "/v1/auth/admin/roles/by-name/" + roleName;
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(token);
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-
-            ResponseEntity<RoleDto> response = restTemplate.exchange(url, HttpMethod.GET, entity, RoleDto.class);
-            
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                return response.getBody();
-            } else {
-                log.warn("Failed to fetch role info for name: {}, status: {}", roleName, response.getStatusCode());
-                return null;
-            }
-        } catch (Exception e) {
-            log.error("Error fetching role info for name: {}", roleName, e);
-            return null;
-        }
-    }
-    
-
-    
-    /**
-     * DTO for Customer information
-     */
+    // Helper classes for deserialization
     @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CustomerDto {
+    private static class ApiResponseWrapper {
+        private boolean success;
+        private String message;
+        private CustomerResponse data;
+        private Object errors;
+        private String path;
+        private Integer status;
+    }
+    @Data
+    private static class CustomerResponse {
         private Long id;
-        private String companyName;
-        private String contactName;
-        private String address;
-        private String phone;
+        private String name;
         private String email;
-        private String businessCode;
-        private String taxCode;
+        private String phone;
+        private String address;
+        private String companyName;
+        private String companyTaxCode;
+        private String companyAddress;
+        private String legalRepresentative;
+        private String title;
+        private String identityNumber;
+        private String identityIssueDate;
+        private String identityIssuePlace;
+        private String fax;
+        private Boolean isHidden;
+        private String createdBy;
     }
 
-    /**
-     * DTO for Role information
-     */
+    // Helper classes for deserialization
     @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class RoleDto {
+    private static class RoleResponse {
         private Long id;
         private String name;
         private String description;
+        private java.time.LocalDateTime createdAt;
+        private java.time.LocalDateTime updatedAt;
     }
-
     @Data
-    @AllArgsConstructor
-    private static class LoginRequest {
-        private String username;
-        private String password;
+    private static class ApiRoleResponseWrapper {
+        private boolean success;
+        private String message;
+        private RoleResponse data;
+        private Object errors;
+        private String path;
+        private Integer status;
     }
-
     @Data
-    private static class TokenResponse {
-        private String accessToken;
+    private static class ApiUserResponseWrapper {
+        private boolean success;
+        private String message;
+        private UserResponse data;
+        private Object errors;
+        private String path;
+        private Integer status;
     }
-}
+} 

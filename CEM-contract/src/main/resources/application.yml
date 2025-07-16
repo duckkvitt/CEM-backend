@@ -135,9 +135,9 @@ app:
     permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/actuator/health,/api/contracts/test/**"
   services:
     auth-service:
-      url: "http://localhost:8081/api/auth"
+      url: "http://localhost:8080/api/auth/v1/auth"
     customer-service:
-      url: "http://localhost:8082/api/customer"
+      url: "http://localhost:8080/api/customer"
     device-service:
       url: "http://localhost:8083/api/device"
   

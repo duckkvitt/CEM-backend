@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 import com.g47.cem.cemcontract.dto.request.external.CreateUserRequest;
 import com.g47.cem.cemcontract.entity.Contract;
 import com.g47.cem.cemcontract.event.SellerSignedEvent;
-import com.g47.cem.cemcontract.service.ExternalService.CustomerDto;
+import com.g47.cem.cemcontract.service.CustomerDto;
+import com.g47.cem.cemcontract.service.RoleDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +75,7 @@ public class ContractEventListener {
             log.info("Creating user account for customer: {} ({})", customerName, customerEmail);
 
             // Get CUSTOMER role ID dynamically from Auth Service
-            ExternalService.RoleDto customerRole = externalService.getRoleByName("CUSTOMER");
+            RoleDto customerRole = externalService.getRoleByName("CUSTOMER");
             if (customerRole == null) {
                 log.error("CUSTOMER role not found in Auth Service. Cannot create user account for contract {}", contract.getId());
                 return;

@@ -123,4 +123,21 @@ public class ContractDetail {
     public boolean hasWarranty() {
         return warrantyMonths != null && warrantyMonths > 0;
     }
+
+    public String getWorkCode() { return workCode; }
+    public Long getDeviceId() { return deviceId; }
+    public String getDescription() { return description; }
+    public Integer getQuantity() { return quantity; }
+    public BigDecimal getUnitPrice() { return unitPrice; }
+    public Integer getWarrantyMonths() { return warrantyMonths; }
+    public String getNotes() { return notes; }
+    public BigDecimal getTotalPrice() { return totalPrice; }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
+    public void setDescription(String description) { this.description = description; }
+    public void setQuantity(int quantity) { this.quantity = quantity; calculateTotalPrice(); }
+    public void setUnitPrice(BigDecimal unitPrice) { this.unitPrice = unitPrice; calculateTotalPrice(); }
 } 
