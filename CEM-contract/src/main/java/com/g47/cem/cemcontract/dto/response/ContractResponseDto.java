@@ -15,6 +15,7 @@ public class ContractResponseDto {
     private Long id;
     private String contractNumber;
     private Long customerId;
+    private String customerName; // Add customer name for display
     private Long staffId;
     private String title;
     private String description;

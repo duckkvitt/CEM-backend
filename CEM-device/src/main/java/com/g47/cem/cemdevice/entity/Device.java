@@ -70,6 +70,12 @@ public class Device {
     @Builder.Default
     private Integer quantity = 1;
     
+    @Column(name = "price", precision = 15, scale = 2)
+    private java.math.BigDecimal price;
+    
+    @Column(name = "unit", length = 50)
+    private String unit;
+    
     @Column(name = "created_by")
     private String createdBy;
     

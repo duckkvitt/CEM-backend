@@ -160,4 +160,31 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSp
     long countByIsHiddenFalse();
 
     List<Contract> findByCustomerId(Long customerId);
+    
+    /**
+     * Find contracts by customer ID with pagination
+     */
+    Page<Contract> findByCustomerId(Long customerId, Pageable pageable);
+    
+    /**
+     * Find contracts by title or contract number containing search term
+     */
+    Page<Contract> findByTitleContainingIgnoreCaseOrContractNumberContainingIgnoreCase(
+            String title, String contractNumber, Pageable pageable);
+    
+    /**
+     * Find contracts by status list
+     */
+    Page<Contract> findByStatusIn(List<ContractStatus> statuses, Pageable pageable);
+    
+    /**
+     * Find contracts by customer ID and title or contract number containing search term
+     */
+    Page<Contract> findByCustomerIdAndTitleContainingIgnoreCaseOrCustomerIdAndContractNumberContainingIgnoreCase(
+            Long customerId1, String title, Long customerId2, String contractNumber, Pageable pageable);
+    
+    /**
+     * Find contracts by customer ID and status list
+     */
+    Page<Contract> findByCustomerIdAndStatusIn(Long customerId, List<ContractStatus> statuses, Pageable pageable);
 } 

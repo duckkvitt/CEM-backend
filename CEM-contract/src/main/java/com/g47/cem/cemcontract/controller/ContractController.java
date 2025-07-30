@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.g47.cem.cemcontract.dto.request.CreateContractRequest;
@@ -72,7 +73,14 @@ public class ContractController {
     @GetMapping(value = {"", "/"})
     // Allow additional internal roles such as SUPPORT_TEAM, TECH_LEAD and TECHNICIAN to access the contract list as read-only
     @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN')")
-    public ResponseEntity<ApiResponse<List<ContractResponseDto>>> getContractsForUser(Authentication authentication, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Page<ContractResponseDto>>> getContractsForUser(
+            Authentication authentication, 
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) Long customerId,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String status) {
         Object userIdObj = request.getAttribute("userId");
         Long userId = null;
         if (userIdObj instanceof Long) {
@@ -84,7 +92,8 @@ public class ContractController {
                 userId = Long.parseLong((String) userIdObj);
             } catch (NumberFormatException ignored) {}
         }
-        List<ContractResponseDto> contracts = contractService.getContractsForUser(authentication, userId);
+        Page<ContractResponseDto> contracts = contractService.getContractsForUserWithFilters(
+            authentication, userId, page, size, customerId, search, status);
         return ResponseEntity.ok(ApiResponse.success(contracts));
     }
 

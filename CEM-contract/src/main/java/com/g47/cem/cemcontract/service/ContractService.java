@@ -26,7 +26,9 @@ import org.docx4j.wml.Tr;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -909,6 +911,77 @@ public class ContractService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Page<ContractResponseDto> getContractsForUserWithFilters(
+            Authentication authentication, 
+            Long userId, 
+            int page, 
+            int size, 
+            Long customerId, 
+            String search, 
+            String status) {
+        
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        boolean isManagerOrStaff = authorities.stream()
+                .anyMatch(a -> {
+                    String role = a.getAuthority();
+                    return role.equals("MANAGER") || role.equals("STAFF") || role.equals("SUPPORT_TEAM") || role.equals("TECH_LEAD") || role.equals("TECHNICIAN");
+                });
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        
+        if (isManagerOrStaff) {
+            // For staff/managers, apply filters
+            if (customerId != null) {
+                return contractRepository.findByCustomerId(customerId, pageable)
+                        .map(this::mapToDto);
+            } else if (search != null && !search.trim().isEmpty()) {
+                return contractRepository.findByTitleContainingIgnoreCaseOrContractNumberContainingIgnoreCase(
+                        search.trim(), search.trim(), pageable)
+                        .map(this::mapToDto);
+            } else if (status != null && !status.trim().isEmpty()) {
+                if ("HIDDEN".equals(status)) {
+                    return contractRepository.findByIsHiddenTrue(pageable)
+                            .map(this::mapToDto);
+                } else {
+                    List<ContractStatus> statusList = Arrays.stream(status.split(","))
+                            .map(s -> ContractStatus.valueOf(s.trim()))
+                            .collect(Collectors.toList());
+                    return contractRepository.findByStatusIn(statusList, pageable)
+                            .map(this::mapToDto);
+                }
+            } else {
+                return contractRepository.findAll(pageable)
+                        .map(this::mapToDto);
+            }
+        } else {
+            // For CUSTOMER, map user email to customerId and apply filters
+            String email = authentication.getName();
+            CustomerDto customer = externalService.getCustomerByEmail(email);
+            if (customer == null || customer.getId() == null) {
+                log.warn("No customer found for email: {}", email);
+                return Page.empty(pageable);
+            }
+            Long userCustomerId = customer.getId();
+            
+            // Apply filters for customer
+            if (search != null && !search.trim().isEmpty()) {
+                return contractRepository.findByCustomerIdAndTitleContainingIgnoreCaseOrCustomerIdAndContractNumberContainingIgnoreCase(
+                        userCustomerId, search.trim(), userCustomerId, search.trim(), pageable)
+                        .map(this::mapToDto);
+            } else if (status != null && !status.trim().isEmpty()) {
+                List<ContractStatus> statusList = Arrays.stream(status.split(","))
+                        .map(s -> ContractStatus.valueOf(s.trim()))
+                        .collect(Collectors.toList());
+                return contractRepository.findByCustomerIdAndStatusIn(userCustomerId, statusList, pageable)
+                        .map(this::mapToDto);
+            } else {
+                return contractRepository.findByCustomerId(userCustomerId, pageable)
+                        .map(this::mapToDto);
+            }
+        }
+    }
+
     private void addHistory(Contract contract, ContractAction action, String reason, String changedBy, ContractStatus oldStatus, ContractStatus newStatus) {
         ContractHistory history = new ContractHistory();
         history.setContract(contract);
@@ -924,6 +997,18 @@ public class ContractService {
     private ContractResponseDto mapToDto(Contract contract) {
         ContractResponseDto dto = new ContractResponseDto();
         BeanUtils.copyProperties(contract, dto);
+        
+        // Set customer name
+        try {
+            CustomerDto customer = externalService.getCustomerInfo(contract.getCustomerId(), null);
+            if (customer != null) {
+                dto.setCustomerName(customer.getCompanyName() != null ? customer.getCompanyName() : customer.getContactName());
+            }
+        } catch (Exception e) {
+            log.warn("Could not fetch customer name for customerId: {}", contract.getCustomerId(), e);
+            dto.setCustomerName("Unknown Customer");
+        }
+        
         if (contract.getContractDetails() != null) {
             dto.setContractDetails(contract.getContractDetails().stream()
                     .map(this::mapDetailToDto).collect(Collectors.toList()));

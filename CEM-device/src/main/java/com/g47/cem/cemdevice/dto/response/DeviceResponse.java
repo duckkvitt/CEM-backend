@@ -34,4 +34,6 @@ public class DeviceResponse {
     private List<DeviceNoteResponse> notes;
     private List<CustomerDeviceResponse> customerDevices;
     private Integer quantity;
+    private java.math.BigDecimal price;
+    private String unit;
 } 

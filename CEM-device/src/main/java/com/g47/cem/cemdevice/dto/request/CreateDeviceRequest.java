@@ -34,6 +34,11 @@ public class CreateDeviceRequest {
     
     private Integer quantity;
     
+    private java.math.BigDecimal price;
+    
+    @Size(max = 50, message = "Unit must not exceed 50 characters")
+    private String unit;
+    
     @Builder.Default
     private DeviceStatus status = DeviceStatus.ACTIVE;
 } 
