@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.g47.cem.cemcontract.dto.request.external.CreateUserRequest;
 import com.g47.cem.cemcontract.dto.response.external.UserResponse;
+import com.g47.cem.cemcontract.dto.response.DeviceDto;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class ExternalService {
     private String authServiceUrl;
     @Value("${app.services.customer-service.url}")
     private String customerServiceUrl;
+    @Value("${app.services.device-service.url}")
+    private String deviceServiceUrl;
     private final RestTemplate restTemplate;
     // ... (rest of the ExternalService implementation, including all methods and static inner DTOs)
 
@@ -34,7 +37,7 @@ public class ExternalService {
             log.error("Customer ID is null. Cannot fetch customer info.");
             return null;
         }
-        String url = customerServiceUrl + "/v1/customers/" + customerId;
+        String url = customerServiceUrl + "/" + customerId;
         String tokenToUse = authToken;
         if (tokenToUse == null || tokenToUse.isBlank()) {
             // Try to extract from current request
@@ -135,12 +138,85 @@ public class ExternalService {
                 });
     }
 
+    public DeviceDto getDeviceInfo(Long deviceId, String authToken) {
+        if (deviceId == null) {
+            log.error("Device ID is null. Cannot fetch device info.");
+            return null;
+        }
+        String url = deviceServiceUrl + "/devices/" + deviceId;
+        String tokenToUse = authToken;
+        if (tokenToUse == null || tokenToUse.isBlank()) {
+            // Try to extract from current request
+            ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (attrs != null && attrs.getRequest() != null) {
+                String header = attrs.getRequest().getHeader("Authorization");
+                if (header != null && header.startsWith("Bearer ")) {
+                    tokenToUse = header.substring(7);
+                }
+            }
+        }
+        
+        log.debug("Calling device service at: {} for deviceId: {}", url, deviceId);
+        
+        try {
+            WebClient.RequestHeadersSpec<?> request = webClient.get().uri(url);
+            
+            // Add authorization header if token is available
+            if (tokenToUse != null && !tokenToUse.isBlank()) {
+                request = request.header("Authorization", "Bearer " + tokenToUse);
+                log.debug("Using authorization token for device service call");
+            } else {
+                log.warn("No authorization token available for device service call");
+            }
+            
+            DeviceApiResponseWrapper response = request.retrieve()
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse ->
+                    clientResponse.bodyToMono(String.class).map(body -> {
+                        log.error("Device Service error for ID {}: {} - {}", deviceId, clientResponse.statusCode().value(), body);
+                        return new RuntimeException(clientResponse.statusCode() + " - " + body);
+                    })
+                )
+                .bodyToMono(DeviceApiResponseWrapper.class)
+                .block();
+                
+            if (response == null) {
+                log.error("Device Service returned null response for ID: {}", deviceId);
+                return null;
+            }
+            
+            if (!response.isSuccess()) {
+                log.error("Device Service returned unsuccessful response for ID {}: {}", deviceId, response.getMessage());
+                return null;
+            }
+            
+            if (response.getData() == null) {
+                log.error("Device Service returned null data for ID: {}", deviceId);
+                return null;
+            }
+            
+            DeviceResponse device = response.getData();
+            DeviceDto dto = new DeviceDto();
+            dto.setId(device.getId());
+            dto.setName(device.getName());
+            dto.setModel(device.getModel());
+            dto.setSerialNumber(device.getSerialNumber());
+            dto.setPrice(device.getPrice());
+            dto.setUnit(device.getUnit());
+            
+            log.debug("Successfully fetched device info for ID {}: name={}, model={}", deviceId, device.getName(), device.getModel());
+            return dto;
+        } catch (Exception e) {
+            log.error("Failed to fetch device info from Device Service for ID {}: {}", deviceId, e.getMessage(), e);
+            return null;
+        }
+    }
+
     public CustomerDto getCustomerByEmail(String email) {
         if (email == null || email.isBlank()) {
             log.error("Email is null or blank. Cannot fetch customer by email.");
             return null;
         }
-        String url = customerServiceUrl + "/v1/customers/email/" + email;
+        String url = customerServiceUrl + "/email/" + email;
         try {
             WebClient.RequestHeadersSpec<?> request = webClient.get().uri(url)
                 .header("Authorization", "Bearer " + extractAuthTokenOrServiceToken());
@@ -242,5 +318,29 @@ public class ExternalService {
         private Object errors;
         private String path;
         private Integer status;
+    }
+
+    @Data
+    private static class DeviceApiResponseWrapper {
+        private boolean success;
+        private String message;
+        private DeviceResponse data;
+        private Object errors;
+        private String path;
+        private Integer status;
+    }
+
+    @Data
+    private static class DeviceResponse {
+        private Long id;
+        private String name;
+        private String model;
+        private String serialNumber;
+        private java.math.BigDecimal price;
+        private String unit;
+        private String status;
+        private String createdBy;
+        private java.time.LocalDateTime createdAt;
+        private java.time.LocalDateTime updatedAt;
     }
 } 

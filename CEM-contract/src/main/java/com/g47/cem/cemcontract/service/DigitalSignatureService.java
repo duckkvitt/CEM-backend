@@ -71,6 +71,7 @@ public class DigitalSignatureService {
     private final CertificateTestUtil certificateTestUtil;
     private final GoogleDriveService googleDriveService;
     private final ApplicationEventPublisher eventPublisher;
+    private final ContractService contractService;
     
     @Value("${app.file.upload-dir:./uploads/contracts}")
     private String uploadDir;
@@ -547,6 +548,18 @@ public class DigitalSignatureService {
                         contract.getId(), currentStatus);
                 // Still set to ACTIVE if customer signs
                 contract.setStatus(ContractStatus.ACTIVE);
+            }
+            
+            // Trigger device linking when contract becomes ACTIVE
+            if (contract.getStatus() == ContractStatus.ACTIVE) {
+                log.info("Contract {} became ACTIVE after customer signature, triggering device linking", contract.getId());
+                try {
+                    // Trigger device linking through ContractService
+                    contractService.triggerDeviceLinkingForContract(contract);
+                } catch (Exception e) {
+                    log.error("Failed to trigger device linking for contract {} after digital signature: {}", 
+                            contract.getId(), e.getMessage(), e);
+                }
             }
         } else {
             // Default behavior for other signer types

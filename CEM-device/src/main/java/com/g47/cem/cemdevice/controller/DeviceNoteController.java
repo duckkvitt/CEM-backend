@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,8 @@ import com.g47.cem.cemdevice.dto.request.UpdateDeviceNoteRequest;
 import com.g47.cem.cemdevice.dto.response.ApiResponse;
 import com.g47.cem.cemdevice.dto.response.DeviceNoteResponse;
 import com.g47.cem.cemdevice.service.DeviceNoteService;
+import com.g47.cem.cemdevice.service.ExternalCustomerService;
+import com.g47.cem.cemdevice.service.ContractDeviceLinkService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,6 +46,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DeviceNoteController {
     
     private final DeviceNoteService deviceNoteService;
+    private final ExternalCustomerService externalCustomerService;
+    private final ContractDeviceLinkService contractDeviceLinkService;
     
     /**
      * Add a note to a device (Staff only)
@@ -64,16 +69,49 @@ public class DeviceNoteController {
     }
     
     /**
-     * Get device note by ID
+     * Get device note by ID (Staff can access all notes, customers can only access notes for their own devices)
      */
     @GetMapping("/{noteId}")
-    @PreAuthorize("hasAuthority('STAFF') or hasAuthority('MANAGER') or hasAuthority('SUPPORT_TEAM') or hasAuthority('TECH_LEAD') or hasAuthority('TECHNICIAN')")
-    @Operation(summary = "Get device note by ID", description = "Retrieves a specific device note")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN', 'CUSTOMER')")
+    @Operation(summary = "Get device note by ID", description = "Retrieves a specific device note. Staff can access all notes, customers can only access notes for their own devices.")
     public ResponseEntity<ApiResponse<DeviceNoteResponse>> getDeviceNoteById(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
-            @Parameter(description = "Note ID") @PathVariable Long noteId) {
+            @Parameter(description = "Note ID") @PathVariable Long noteId,
+            Authentication authentication) {
         
-        log.debug("Fetching device note with ID: {} for device: {}", noteId, deviceId);
+        log.debug("Fetching device note with ID: {} for device: {} by user: {}", noteId, deviceId, authentication.getName());
+        
+        // Check if user is staff or customer
+        boolean isStaff = authentication.getAuthorities().stream()
+                .anyMatch(a -> {
+                    String role = a.getAuthority();
+                    return role.equals("STAFF") || role.equals("MANAGER") || 
+                           role.equals("SUPPORT_TEAM") || role.equals("TECH_LEAD") || 
+                           role.equals("TECHNICIAN");
+                });
+        
+        if (!isStaff) {
+            // For customers, verify they own the device
+            String userEmail = authentication.getName();
+            var customerInfo = externalCustomerService.getCustomerByEmail(userEmail);
+            
+            if (customerInfo == null || customerInfo.getId() == null) {
+                log.error("Could not find customer info for user email: {}", userEmail);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(ApiResponse.error("Access denied: Customer information not found", HttpStatus.FORBIDDEN.value()));
+            }
+            
+            Long customerId = customerInfo.getId();
+            
+            // Check if the device belongs to the customer
+            if (!contractDeviceLinkService.isDeviceLinkedToCustomer(customerId, deviceId)) {
+                log.warn("Customer {} attempted to access notes for device {} which they don't own", customerId, deviceId);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(ApiResponse.error("Access denied: You can only access notes for your own devices", HttpStatus.FORBIDDEN.value()));
+            }
+            
+            log.debug("Customer {} verified ownership of device {} for note access", customerId, deviceId);
+        }
         
         DeviceNoteResponse response = deviceNoteService.getDeviceNoteById(noteId);
         
@@ -81,18 +119,51 @@ public class DeviceNoteController {
     }
     
     /**
-     * Get all notes for a device
+     * Get all notes for a device (Staff can access all notes, customers can only access notes for their own devices)
      */
     @GetMapping
-    @PreAuthorize("hasAuthority('STAFF') or hasAuthority('MANAGER') or hasAuthority('SUPPORT_TEAM') or hasAuthority('TECH_LEAD') or hasAuthority('TECHNICIAN')")
-    @Operation(summary = "Get device notes", description = "Retrieves all notes for a device")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN', 'CUSTOMER')")
+    @Operation(summary = "Get device notes", description = "Retrieves all notes for a device. Staff can access all notes, customers can only access notes for their own devices.")
     public ResponseEntity<ApiResponse<Object>> getDeviceNotes(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
             @Parameter(description = "Use pagination") @RequestParam(defaultValue = "false") boolean paginated,
             @Parameter(description = "Search keyword") @RequestParam(required = false) String keyword,
-            @PageableDefault(size = 20) Pageable pageable) {
+            @PageableDefault(size = 20) Pageable pageable,
+            Authentication authentication) {
         
-        log.debug("Fetching notes for device ID: {}", deviceId);
+        log.debug("Fetching notes for device ID: {} by user: {}", deviceId, authentication.getName());
+        
+        // Check if user is staff or customer
+        boolean isStaff = authentication.getAuthorities().stream()
+                .anyMatch(a -> {
+                    String role = a.getAuthority();
+                    return role.equals("STAFF") || role.equals("MANAGER") || 
+                           role.equals("SUPPORT_TEAM") || role.equals("TECH_LEAD") || 
+                           role.equals("TECHNICIAN");
+                });
+        
+        if (!isStaff) {
+            // For customers, verify they own the device
+            String userEmail = authentication.getName();
+            var customerInfo = externalCustomerService.getCustomerByEmail(userEmail);
+            
+            if (customerInfo == null || customerInfo.getId() == null) {
+                log.error("Could not find customer info for user email: {}", userEmail);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(ApiResponse.error("Access denied: Customer information not found", HttpStatus.FORBIDDEN.value()));
+            }
+            
+            Long customerId = customerInfo.getId();
+            
+            // Check if the device belongs to the customer
+            if (!contractDeviceLinkService.isDeviceLinkedToCustomer(customerId, deviceId)) {
+                log.warn("Customer {} attempted to access notes for device {} which they don't own", customerId, deviceId);
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(ApiResponse.error("Access denied: You can only access notes for your own devices", HttpStatus.FORBIDDEN.value()));
+            }
+            
+            log.debug("Customer {} verified ownership of device {} for notes access", customerId, deviceId);
+        }
         
         if (keyword != null && !keyword.trim().isEmpty()) {
             // Search notes by keyword

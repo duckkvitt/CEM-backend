@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 
 /**
  * REST Controller for Customer management
@@ -78,12 +80,14 @@ public class CustomerController {
     @GetMapping("/{id}")
     @Operation(summary = "Get customer by ID", description = "Retrieve a customer by their ID")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasAuthority('STAFF') or hasAuthority('MANAGER') or hasAuthority('SUPPORT_TEAM')")
+    @Secured({"STAFF", "MANAGER", "SUPPORT_TEAM", "CUSTOMER"})
     public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerById(
             @PathVariable Long id,
             HttpServletRequest httpRequest) {
         
         log.debug("Fetching customer with ID: {}", id);
+        log.debug("Current user authorities: {}", 
+                SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         
         CustomerResponse customer = customerService.getCustomerById(id);
         
@@ -107,6 +111,15 @@ public class CustomerController {
         
         CustomerResponse customer = customerService.getCustomerByEmail(email);
         
+        if (customer == null) {
+            ApiResponse<CustomerResponse> response = ApiResponse.error(
+                    "Customer not found with email: " + email,
+                    HttpStatus.NOT_FOUND.value(),
+                    httpRequest.getRequestURI()
+            );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        
         ApiResponse<CustomerResponse> response = ApiResponse.success(customer);
         response.setPath(httpRequest.getRequestURI());
         
@@ -119,7 +132,7 @@ public class CustomerController {
     @GetMapping
     @Operation(summary = "Get all customers", description = "Retrieve all customers with pagination and optional filters")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasAuthority('STAFF') or hasAuthority('MANAGER') or hasAuthority('SUPPORT_TEAM')")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER', 'SUPPORT_TEAM')")
     public ResponseEntity<ApiResponse<Page<CustomerResponse>>> getAllCustomers(
             @Parameter(description = "Page number (0-based)")
             @RequestParam(defaultValue = "0") int page,

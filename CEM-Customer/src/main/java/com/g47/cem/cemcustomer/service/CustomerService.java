@@ -95,7 +95,12 @@ public class CustomerService {
         log.debug("Fetching customer with email: {}", email);
         
         Customer customer = customerRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "email", email));
+                .orElse(null);
+        
+        if (customer == null) {
+            log.warn("Customer not found with email: {}", email);
+            return null;
+        }
         
         return mapToCustomerResponse(customer);
     }

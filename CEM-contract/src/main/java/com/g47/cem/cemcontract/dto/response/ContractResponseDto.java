@@ -44,10 +44,18 @@ public class ContractResponseDto {
     @Data
     public static class ContractDetailDto {
         private Long id;
+        private String workCode;
+        private String description;
+        private String serviceName; // Alias for deviceName for frontend compatibility
+        private Long deviceId;
         private String deviceName;
+        private String deviceModel;
+        private String serialNumber;
         private int quantity;
         private BigDecimal unitPrice;
         private BigDecimal totalPrice;
+        private Integer warrantyMonths;
+        private String notes;
     }
     
     /**

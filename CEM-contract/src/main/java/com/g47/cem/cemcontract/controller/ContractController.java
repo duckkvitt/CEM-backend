@@ -2,6 +2,8 @@ package com.g47.cem.cemcontract.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +34,10 @@ import com.g47.cem.cemcontract.dto.request.UpdateContractStatusRequest;
 import com.g47.cem.cemcontract.dto.response.ApiResponse;
 import com.g47.cem.cemcontract.dto.response.ContractResponseDto;
 import com.g47.cem.cemcontract.dto.response.DigitalSignatureResponseDto;
+import com.g47.cem.cemcontract.entity.Contract;
+import com.g47.cem.cemcontract.entity.ContractDetail;
 import com.g47.cem.cemcontract.entity.DigitalSignatureRecord;
+import com.g47.cem.cemcontract.repository.ContractDetailRepository;
 import com.g47.cem.cemcontract.service.ContractService;
 import com.g47.cem.cemcontract.service.DigitalSignatureService;
 import com.g47.cem.cemcontract.service.GoogleDriveService;
@@ -42,6 +47,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/")
@@ -53,6 +59,7 @@ public class ContractController {
     private final ContractService contractService;
     private final DigitalSignatureService digitalSignatureService;
     private final GoogleDriveService googleDriveService;
+    private final ContractDetailRepository contractDetailRepository;
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
@@ -284,6 +291,63 @@ public class ContractController {
         } catch (Exception e) {
             logger.error("Failed to serve contract file for contract {}", id, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * Manually trigger device linking for a contract
+     */
+    @PostMapping("/{id}/trigger-device-linking")
+    @PreAuthorize("hasAuthority('MANAGER')")
+    @Operation(summary = "Manually trigger device linking", description = "Manually trigger device linking for a contract")
+    public ResponseEntity<ApiResponse<String>> triggerDeviceLinking(@PathVariable Long id) {
+        try {
+            // Get contract entity from repository
+            Contract contract = contractService.getContractEntityById(id);
+            if (contract == null) {
+                return ResponseEntity.badRequest().body(ApiResponse.error("Contract not found", 400));
+            }
+            
+            // Trigger device linking
+            contractService.triggerDeviceLinkingForContract(contract);
+            
+            return ResponseEntity.ok(ApiResponse.success("Device linking triggered successfully for contract " + id));
+        } catch (Exception e) {
+            logger.error("Error triggering device linking for contract {}: {}", id, e.getMessage(), e);
+            return ResponseEntity.badRequest().body(ApiResponse.error("Failed to trigger device linking: " + e.getMessage(), 400));
+        }
+    }
+
+    /**
+     * Debug endpoint to check contracts with specific device ID
+     */
+    @GetMapping("/debug/device/{deviceId}")
+    @PreAuthorize("hasAuthority('MANAGER')")
+    @Operation(summary = "Debug contracts with device ID", description = "Debug endpoint to check contracts containing specific device")
+    public ResponseEntity<ApiResponse<Object>> debugContractsWithDevice(@PathVariable Long deviceId) {
+        try {
+            // Find contract details with this device
+            List<ContractDetail> contractDetails = contractDetailRepository.findByDeviceId(deviceId);
+            
+            List<Object> result = contractDetails.stream().map(detail -> {
+                Contract contract = detail.getContract();
+                return Map.of(
+                    "contractId", contract.getId(),
+                    "contractNumber", contract.getContractNumber(),
+                    "contractStatus", contract.getStatus(),
+                    "customerId", contract.getCustomerId(),
+                    "detailId", detail.getId(),
+                    "deviceId", detail.getDeviceId(),
+                    "workCode", detail.getWorkCode(),
+                    "description", detail.getDescription(),
+                    "quantity", detail.getQuantity()
+                );
+            }).collect(Collectors.toList());
+            
+            return ResponseEntity.ok(ApiResponse.success(result, "Contracts with device " + deviceId));
+        } catch (Exception e) {
+            logger.error("Error debugging contracts with device {}: {}", deviceId, e.getMessage(), e);
+            return ResponseEntity.badRequest().body(ApiResponse.error("Debug failed: " + e.getMessage(), 400));
         }
     }
 

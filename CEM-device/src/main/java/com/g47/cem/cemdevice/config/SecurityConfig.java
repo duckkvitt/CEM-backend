@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
     

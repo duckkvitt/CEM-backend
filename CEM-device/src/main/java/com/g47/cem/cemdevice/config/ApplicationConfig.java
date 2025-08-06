@@ -3,6 +3,7 @@ package com.g47.cem.cemdevice.config;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -25,5 +26,10 @@ public class ApplicationConfig {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return mapper;
+    }
+    
+    @Bean
+    public WebClient webClient() {
+        return WebClient.builder().build();
     }
 } 

@@ -40,4 +40,42 @@ public interface CustomerDeviceRepository extends JpaRepository<CustomerDevice, 
     long countByCustomerIdAndStatus(@Param("customerId") Long customerId, @Param("status") CustomerDeviceStatus status);
 
     boolean existsByCustomerIdAndDeviceId(Long customerId, Long deviceId);
+    
+    /**
+     * Find all devices of a specific type for a customer
+     */
+    @Query("SELECT cd FROM CustomerDevice cd WHERE cd.customerId = :customerId AND cd.device.id = :deviceId")
+    List<CustomerDevice> findByCustomerIdAndDeviceId(@Param("customerId") Long customerId, @Param("deviceId") Long deviceId);
+    
+    /**
+     * Count devices of a specific type for a customer
+     */
+    @Query("SELECT COUNT(cd) FROM CustomerDevice cd WHERE cd.customerId = :customerId AND cd.device.id = :deviceId")
+    long countByCustomerIdAndDeviceId(@Param("customerId") Long customerId, @Param("deviceId") Long deviceId);
+    
+    /**
+     * Count total devices for a customer
+     */
+    @Query("SELECT COUNT(cd) FROM CustomerDevice cd WHERE cd.customerId = :customerId")
+    long countByCustomerId(@Param("customerId") Long customerId);
+    
+    /**
+     * Find customer devices by status with pagination
+     */
+    Page<CustomerDevice> findByCustomerIdAndStatus(Long customerId, CustomerDeviceStatus status, Pageable pageable);
+    
+    /**
+     * Find customer devices with expired warranty
+     */
+    @Query("SELECT cd FROM CustomerDevice cd WHERE cd.customerId = :customerId AND cd.warrantyEnd < :date")
+    Page<CustomerDevice> findByCustomerIdAndWarrantyExpired(@Param("customerId") Long customerId, @Param("date") LocalDate date, Pageable pageable);
+    
+    /**
+     * Search customer devices by device information (name, model, serial number)
+     */
+    @Query("SELECT cd FROM CustomerDevice cd WHERE cd.customerId = :customerId AND " +
+           "(LOWER(cd.device.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(cd.device.model) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(cd.device.serialNumber) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+    Page<CustomerDevice> findByCustomerIdAndDeviceInfoContaining(@Param("customerId") Long customerId, @Param("keyword") String keyword, Pageable pageable);
 } 

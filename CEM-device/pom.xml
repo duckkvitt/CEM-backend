@@ -51,6 +51,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- WebClient for external service communication -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
         <!-- Swagger/OpenAPI for API Documentation -->
         <dependency>
             <groupId>org.springdoc</groupId>

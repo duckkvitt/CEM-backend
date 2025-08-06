@@ -137,7 +137,7 @@ app:
     auth-service:
       url: "http://localhost:8080/api/auth/v1/auth"
     customer-service:
-      url: "http://localhost:8080/api/customer"
+      url: "http://localhost:8082/v1/customers"
     device-service:
       url: "http://localhost:8083/api/device"
   

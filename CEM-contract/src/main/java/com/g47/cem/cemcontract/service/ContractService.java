@@ -33,12 +33,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.g47.cem.cemcontract.dto.request.CreateContractRequest;
 import com.g47.cem.cemcontract.dto.request.SignatureRequestDto;
 import com.g47.cem.cemcontract.dto.request.UpdateContractRequest;
 import com.g47.cem.cemcontract.dto.response.ContractResponseDto;
+import com.g47.cem.cemcontract.dto.response.DeviceDto;
 import com.g47.cem.cemcontract.entity.Contract;
+import com.g47.cem.cemcontract.dto.request.LinkDevicesRequest;
 import com.g47.cem.cemcontract.entity.ContractDeliverySchedule;
 import com.g47.cem.cemcontract.entity.ContractDetail;
 import com.g47.cem.cemcontract.entity.ContractHistory;
@@ -80,6 +88,7 @@ public class ContractService {
     private final GoogleDriveService googleDriveService; // For cloud storage
     private final Path fileStorageLocation; // Assuming this is configured
     private final ApplicationEventPublisher eventPublisher;
+    private final RestTemplate restTemplate;
 
     @Transactional
     public ContractResponseDto createContract(CreateContractRequest requestDto, String username, HttpServletRequest request, String authToken) {
@@ -139,11 +148,22 @@ public class ContractService {
                         .notes(detailDto.getNotes())
                         .build();
                 detail.calculateTotalPrice();
+                
+                // Log device information for debugging
+                if (detailDto.getDeviceId() != null) {
+                    log.debug("Adding device to contract: deviceId={}, description={}, quantity={}", 
+                            detailDto.getDeviceId(), detailDto.getDescription(), detailDto.getQuantity());
+                }
+                
                 return detail;
             }).collect(Collectors.toList());
             
             contract.setContractDetails(details);
             contract.updateTotalValue();
+            
+            // Log total devices in contract
+            long deviceCount = details.stream().filter(d -> d.getDeviceId() != null).count();
+            log.info("Contract created with {} devices out of {} total items", deviceCount, details.size());
         }
         
         // Tạo delivery schedules nếu có (Điều 3)
@@ -807,8 +827,159 @@ public class ContractService {
         String reason = "Status changed to " + status.getVietnameseName();
         addHistory(contract, ContractAction.STATUS_CHANGED, reason, updatedBy, oldStatus, status);
         Contract updatedContract = contractRepository.save(contract);
-        log.info("Contract status updated for ID: {}. New status: {}", updatedContract.getId(), status);
+        log.info("Contract status updated for ID: {}. Old status: {}, New status: {}", updatedContract.getId(), oldStatus, status);
+        
+        // If contract becomes active, trigger device linking
+        if (status == ContractStatus.ACTIVE && oldStatus != ContractStatus.ACTIVE) {
+            log.info("Contract {} became ACTIVE, triggering device linking", updatedContract.getId());
+            triggerDeviceLinkingForContract(updatedContract);
+        } 
+        // If contract is cancelled or rejected and was previously active, trigger device unlinking
+        else if ((status == ContractStatus.CANCELLED || status == ContractStatus.REJECTED) && oldStatus == ContractStatus.ACTIVE) {
+            log.info("Contract {} was cancelled/rejected, triggering device unlinking", updatedContract.getId());
+            triggerDeviceUnlinkingForContract(updatedContract);
+        } else {
+            log.debug("Contract {} status changed from {} to {}, no device linking/unlinking needed", 
+                    updatedContract.getId(), oldStatus, status);
+        }
+        
         return mapToDto(updatedContract);
+    }
+    
+    /**
+     * Trigger device linking when contract becomes active
+     */
+    public void triggerDeviceLinkingForContract(Contract contract) {
+        try {
+            log.info("Triggering device linking for active contract ID: {}", contract.getId());
+            
+            // Extract device information from contract details
+            List<ContractDetail> contractDetails = contractDetailRepository.findByContractId(contract.getId());
+            log.debug("Found {} contract details for contract {}", contractDetails.size(), contract.getId());
+            
+            List<LinkDevicesRequest.DeviceInfo> deviceInfos = contractDetails.stream()
+                    .filter(detail -> detail.getDeviceId() != null)
+                    .map(detail -> {
+                        LinkDevicesRequest.DeviceInfo deviceInfo = new LinkDevicesRequest.DeviceInfo();
+                        deviceInfo.setDeviceId(detail.getDeviceId());
+                        deviceInfo.setQuantity(detail.getQuantity());
+                        deviceInfo.setWarrantyMonths(detail.getWarrantyMonths());
+                        log.debug("Adding device to link: deviceId={}, quantity={}, warrantyMonths={}", 
+                                detail.getDeviceId(), detail.getQuantity(), detail.getWarrantyMonths());
+                        return deviceInfo;
+                    })
+                    .collect(Collectors.toList());
+            
+            log.info("Found {} devices to link for contract {}", deviceInfos.size(), contract.getId());
+            
+            if (!deviceInfos.isEmpty()) {
+                // Create request to link devices to customer
+                LinkDevicesRequest linkRequest = new LinkDevicesRequest();
+                linkRequest.setCustomerId(contract.getCustomerId());
+                linkRequest.setDevices(deviceInfos);
+                
+                // Call device service via REST
+                try {
+                    String deviceServiceUrl = "http://localhost:8083/api/device/devices/link-to-customer";
+                    String authToken = extractAuthTokenOrServiceToken();
+                    
+                    log.info("Calling device service at {} to link devices for customer {}", deviceServiceUrl, contract.getCustomerId());
+                    
+                    // Create headers with authorization
+                    HttpHeaders headers = new HttpHeaders();
+                    if (authToken != null) {
+                        headers.setBearerAuth(authToken);
+                    }
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    
+                    // Create HTTP entity with headers and body
+                    HttpEntity<LinkDevicesRequest> requestEntity = new HttpEntity<>(linkRequest, headers);
+                    
+                    // Use RestTemplate to make the call
+                    var response = restTemplate.postForEntity(deviceServiceUrl, requestEntity, String.class);
+                    
+                    log.info("Successfully linked {} devices to customer {} for contract {}. Response: {}", 
+                            deviceInfos.size(), contract.getCustomerId(), contract.getId(), response.getStatusCode());
+                            
+                } catch (Exception e) {
+                    log.error("Failed to call device service for contract {}: {}", contract.getId(), e.getMessage(), e);
+                    // Note: Event publishing is not available since services are separate
+                    // The device linking will need to be triggered manually or through a different mechanism
+                }
+            } else {
+                log.warn("No devices found to link for contract {}", contract.getId());
+            }
+        } catch (Exception e) {
+            log.error("Failed to trigger device linking for contract {}: {}", contract.getId(), e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * Trigger device unlinking when contract is cancelled or rejected
+     */
+    public void triggerDeviceUnlinkingForContract(Contract contract) {
+        try {
+            log.info("Triggering device unlinking for cancelled/rejected contract ID: {}", contract.getId());
+            
+            // Extract device information from contract details
+            List<ContractDetail> contractDetails = contractDetailRepository.findByContractId(contract.getId());
+            log.debug("Found {} contract details for contract {}", contractDetails.size(), contract.getId());
+            
+            List<LinkDevicesRequest.DeviceInfo> deviceInfos = contractDetails.stream()
+                    .filter(detail -> detail.getDeviceId() != null)
+                    .map(detail -> {
+                        LinkDevicesRequest.DeviceInfo deviceInfo = new LinkDevicesRequest.DeviceInfo();
+                        deviceInfo.setDeviceId(detail.getDeviceId());
+                        deviceInfo.setQuantity(detail.getQuantity());
+                        deviceInfo.setWarrantyMonths(detail.getWarrantyMonths());
+                        log.debug("Adding device to unlink: deviceId={}, quantity={}", 
+                                detail.getDeviceId(), detail.getQuantity());
+                        return deviceInfo;
+                    })
+                    .collect(Collectors.toList());
+            
+            log.info("Found {} devices to unlink for contract {}", deviceInfos.size(), contract.getId());
+            
+            if (!deviceInfos.isEmpty()) {
+                // Call device service via REST to unlink devices
+                try {
+                    String deviceServiceUrl = "http://localhost:8083/api/device/devices/unlink-from-customer";
+                    String authToken = extractAuthTokenOrServiceToken();
+                    
+                    log.info("Calling device service at {} to unlink devices for customer {}", deviceServiceUrl, contract.getCustomerId());
+                    
+                    // Create headers with authorization
+                    HttpHeaders headers = new HttpHeaders();
+                    if (authToken != null) {
+                        headers.setBearerAuth(authToken);
+                    }
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    
+                    // Create request for unlinking
+                    LinkDevicesRequest unlinkRequest = new LinkDevicesRequest();
+                    unlinkRequest.setCustomerId(contract.getCustomerId());
+                    unlinkRequest.setDevices(deviceInfos);
+                    
+                    // Create HTTP entity with headers and body
+                    HttpEntity<LinkDevicesRequest> requestEntity = new HttpEntity<>(unlinkRequest, headers);
+                    
+                    // Use RestTemplate to make the call
+                    var response = restTemplate.postForEntity(deviceServiceUrl, requestEntity, String.class);
+                    
+                    log.info("Successfully unlinked {} devices from customer {} for contract {}. Response: {}", 
+                            deviceInfos.size(), contract.getCustomerId(), contract.getId(), response.getStatusCode());
+                            
+                } catch (Exception e) {
+                    log.error("Failed to call device service for unlinking contract {}: {}", contract.getId(), e.getMessage(), e);
+                    // Note: Event publishing is not available since services are separate
+                    // The device unlinking will need to be triggered manually or through a different mechanism
+                }
+            } else {
+                log.warn("No devices found to unlink for contract {}", contract.getId());
+            }
+        } catch (Exception e) {
+            log.error("Failed to trigger device unlinking for contract {}: {}", contract.getId(), e.getMessage(), e);
+        }
     }
 
     @Transactional
@@ -852,6 +1023,14 @@ public class ContractService {
         Contract contract = contractRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
         return mapToDto(contract);
+    }
+    
+    /**
+     * Get contract entity by ID (for internal use)
+     */
+    public Contract getContractEntityById(Long id) {
+        return contractRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Contract not found with id: " + id));
     }
 
     @Transactional(readOnly = true)
@@ -1030,8 +1209,36 @@ public class ContractService {
     private ContractResponseDto.ContractDetailDto mapDetailToDto(ContractDetail detail) {
         ContractResponseDto.ContractDetailDto dto = new ContractResponseDto.ContractDetailDto();
         BeanUtils.copyProperties(detail, dto);
-        // Use description as device name since we removed serviceName
-        dto.setDeviceName(detail.getDescription());
+        
+        // Set device information if deviceId exists
+        if (detail.getDeviceId() != null) {
+            try {
+                // Fetch device information from device service
+                DeviceDto device = externalService.getDeviceInfo(detail.getDeviceId(), null);
+                if (device != null) {
+                    dto.setDeviceName(device.getName());
+                    dto.setDeviceModel(device.getModel());
+                    dto.setSerialNumber(device.getSerialNumber());
+                    dto.setServiceName(device.getName()); // Set serviceName for frontend compatibility
+                    log.debug("Successfully fetched device info for deviceId: {} - Name: {}", detail.getDeviceId(), device.getName());
+                } else {
+                    dto.setDeviceName("Device not found (ID: " + detail.getDeviceId() + ")");
+                    dto.setServiceName("Device not found (ID: " + detail.getDeviceId() + ")");
+                    log.warn("Device not found for deviceId: {}", detail.getDeviceId());
+                }
+            } catch (Exception e) {
+                log.error("Could not fetch device info for deviceId: {} - Error: {}", detail.getDeviceId(), e.getMessage());
+                dto.setDeviceName("Device info unavailable (ID: " + detail.getDeviceId() + ")");
+                dto.setServiceName("Device info unavailable (ID: " + detail.getDeviceId() + ")");
+                dto.setDeviceModel("Error: " + e.getMessage());
+            }
+        } else {
+            // Use description as device name for non-device items
+            dto.setDeviceName(detail.getDescription());
+            dto.setServiceName(detail.getDescription());
+            log.debug("No deviceId for contract detail, using description: {}", detail.getDescription());
+        }
+        
         return dto;
     }
 
@@ -1080,6 +1287,10 @@ public class ContractService {
         } else if (isCustomer && contract.getStatus() == ContractStatus.PENDING_CUSTOMER_SIGNATURE) {
             contract.setStatus(ContractStatus.ACTIVE);
             addHistory(contract, ContractAction.SIGNED, "Customer signed contract (legacy)", username, null, null);
+            
+            // Trigger device linking when contract becomes ACTIVE
+            log.info("Contract {} became ACTIVE after customer legacy signature, triggering device linking", contract.getId());
+            triggerDeviceLinkingForContract(contract);
         } else {
             throw new BusinessException("Contract is not in a valid state for signing.");
         }
@@ -1087,5 +1298,17 @@ public class ContractService {
         contractRepository.save(contract);
         
         log.warn("Legacy signature method used for contract {}. Consider migrating to DigitalSignatureService.", contractId);
+    }
+
+    private String extractAuthTokenOrServiceToken() {
+        // Try to extract from current request
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attrs != null && attrs.getRequest() != null) {
+            String header = attrs.getRequest().getHeader("Authorization");
+            if (header != null && header.startsWith("Bearer ")) {
+                return header.substring(7);
+            }
+        }
+        return null;
     }
 } 
