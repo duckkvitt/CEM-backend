@@ -49,7 +49,7 @@ public class ServiceRequestController {
      * Create a new service request
      */
     @PostMapping
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<ServiceRequestResponse>> createServiceRequest(
             @Valid @RequestBody CreateServiceRequestRequest request,
             Authentication authentication) {
@@ -69,7 +69,7 @@ public class ServiceRequestController {
      * Get service request by ID
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<ServiceRequestResponse>> getServiceRequestById(
             @PathVariable Long id,
             Authentication authentication) {
@@ -86,7 +86,7 @@ public class ServiceRequestController {
      * Get service request by request ID
      */
     @GetMapping("/by-request-id/{requestId}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<ServiceRequestResponse>> getServiceRequestByRequestId(
             @PathVariable String requestId,
             Authentication authentication) {
@@ -103,7 +103,7 @@ public class ServiceRequestController {
      * Get customer's service requests with pagination and filtering
      */
     @GetMapping
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<Page<ServiceRequestResponse>>> getCustomerServiceRequests(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) ServiceRequestStatus status,
@@ -133,7 +133,7 @@ public class ServiceRequestController {
      * Update service request
      */
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<ServiceRequestResponse>> updateServiceRequest(
             @PathVariable Long id,
             @Valid @RequestBody UpdateServiceRequestRequest request,
@@ -152,7 +152,7 @@ public class ServiceRequestController {
      * Add comment to service request
      */
     @PostMapping("/{id}/comments")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<ServiceRequestResponse>> addComment(
             @PathVariable Long id,
             @RequestBody CommentRequest commentRequest,
@@ -171,7 +171,7 @@ public class ServiceRequestController {
      * Get service request statistics for customer
      */
     @GetMapping("/statistics")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<ServiceRequestStatistics>> getServiceRequestStatistics(
             Authentication authentication) {
         
@@ -187,7 +187,7 @@ public class ServiceRequestController {
      * Get service requests by device ID
      */
     @GetMapping("/device/{deviceId}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<Page<ServiceRequestResponse>>> getServiceRequestsByDevice(
             @PathVariable Long deviceId,
             @RequestParam(defaultValue = "0") int page,
@@ -209,7 +209,7 @@ public class ServiceRequestController {
      * Get service requests by type
      */
     @GetMapping("/type/{type}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<Page<ServiceRequestResponse>>> getServiceRequestsByType(
             @PathVariable ServiceRequestType type,
             @RequestParam(defaultValue = "0") int page,
@@ -231,7 +231,7 @@ public class ServiceRequestController {
      * Get service requests by status
      */
     @GetMapping("/status/{status}")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public ResponseEntity<ApiResponse<Page<ServiceRequestResponse>>> getServiceRequestsByStatus(
             @PathVariable ServiceRequestStatus status,
             @RequestParam(defaultValue = "0") int page,
