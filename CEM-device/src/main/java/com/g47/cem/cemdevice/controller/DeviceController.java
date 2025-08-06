@@ -9,7 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,13 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.g47.cem.cemdevice.dto.request.CreateDeviceRequest;
-import com.g47.cem.cemdevice.dto.request.UpdateDeviceRequest;
 import com.g47.cem.cemdevice.dto.request.LinkDevicesRequest;
+import com.g47.cem.cemdevice.dto.request.UpdateDeviceRequest;
 import com.g47.cem.cemdevice.dto.response.ApiResponse;
 import com.g47.cem.cemdevice.dto.response.DeviceResponse;
 import com.g47.cem.cemdevice.enums.DeviceStatus;
-import com.g47.cem.cemdevice.service.DeviceService;
 import com.g47.cem.cemdevice.service.ContractDeviceLinkService;
+import com.g47.cem.cemdevice.service.DeviceService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,14 +37,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.access.annotation.Secured;
 
 /**
  * REST Controller for Device operations
  */
 @RestController
-@RequestMapping("/devices")
+@RequestMapping({"/api/device/devices", "/devices"})
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Device Management", description = "APIs for managing devices")
@@ -164,14 +164,13 @@ public class DeviceController {
      * Link devices to customer (called when contract is completed)
      */
     @PostMapping("/link-to-customer")
-    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER')")
     @Operation(summary = "Link devices to customer", description = "Links devices to customer when contract is completed")
     public ResponseEntity<ApiResponse<String>> linkDevicesToCustomer(
             @Valid @RequestBody LinkDevicesRequest request,
             Principal principal) {
         
         log.info("Linking {} devices to customer {} by user: {}", 
-                request.getDevices().size(), request.getCustomerId(), principal.getName());
+                request.getDevices().size(), request.getCustomerId(), principal != null ? principal.getName() : "SYSTEM");
         
         // Convert request to service format
         List<ContractDeviceLinkService.ContractDeviceInfo> deviceInfos = request.getDevices().stream()
@@ -184,6 +183,32 @@ public class DeviceController {
         contractDeviceLinkService.linkDevicesFromContract(request.getCustomerId(), deviceInfos);
         
         return ResponseEntity.ok(ApiResponse.success("Devices linked to customer successfully"));
+    }
+    
+    /**
+     * Test endpoint to manually trigger device linking
+     */
+    @PostMapping("/test-link-devices")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER')")
+    @Operation(summary = "Test device linking", description = "Test endpoint to manually trigger device linking")
+    public ResponseEntity<ApiResponse<String>> testLinkDevices(
+            @Valid @RequestBody LinkDevicesRequest request,
+            Principal principal) {
+        
+        log.info("TEST: Linking {} devices to customer {} by user: {}", 
+                request.getDevices().size(), request.getCustomerId(), principal.getName());
+        
+        // Convert request to service format
+        List<ContractDeviceLinkService.ContractDeviceInfo> deviceInfos = request.getDevices().stream()
+                .map(device -> new ContractDeviceLinkService.ContractDeviceInfo(
+                        device.getDeviceId(),
+                        device.getQuantity(),
+                        device.getWarrantyMonths()))
+                .collect(Collectors.toList());
+        
+        contractDeviceLinkService.linkDevicesFromContract(request.getCustomerId(), deviceInfos);
+        
+        return ResponseEntity.ok(ApiResponse.success("Test device linking completed successfully"));
     }
     
     /**

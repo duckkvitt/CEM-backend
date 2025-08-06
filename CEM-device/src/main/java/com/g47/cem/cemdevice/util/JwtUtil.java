@@ -102,7 +102,9 @@ public class JwtUtil {
         if (roles == null || roles.isEmpty()) {
              return Collections.emptyList();
         }
-        return roles.stream().map(SimpleGrantedAuthority::new).toList();
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .toList();
     }
 
     public boolean validateToken(String token) {

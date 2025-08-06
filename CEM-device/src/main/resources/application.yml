@@ -1,7 +1,7 @@
 server:
   port: 8083
   servlet:
-    context-path: /api/device
+    context-path: /
 
 spring:
   application:
@@ -115,7 +115,7 @@ app:
   cors:
     allowedOrigins: "http://localhost:3000,http://localhost:3001,http://localhost:8080,https://localhost:8080,https://localhost:8081,https://localhost:8082,https://localhost:8083,https://localhost:8084,https://cem.vercel.app,https://api-cem.azurewebsites.net"
   security:
-    permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/actuator/health"
+    permitAll: "/api-docs/**,/swagger-ui/**,/swagger-ui.html,/actuator/health,/api/device/devices/link-to-customer,/api/device/devices/test-link-devices"
   services:
     auth-service:
       url: "http://localhost:8081/api/auth"

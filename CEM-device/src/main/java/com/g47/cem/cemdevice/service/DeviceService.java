@@ -105,14 +105,20 @@ public class DeviceService {
      */
     @Transactional(readOnly = true)
     public Page<DeviceResponse> searchDevices(String keyword, Boolean inStock, DeviceStatus status, Pageable pageable) {
-        log.debug("Searching devices with filters - keyword: {}, inStock: {}, status: {}", keyword, inStock, status);
-        
+        log.debug("Searching devices with keyword: {}, inStock: {}, status: {}", keyword, inStock, status);
+
         String pattern = null;
         if (keyword != null && !keyword.isBlank()) {
             pattern = "%" + keyword.trim() + "%";
         }
-        
-        Page<Device> devices = deviceRepository.searchDevices(pattern, inStock, status, pageable);
+
+        // Ensure inStock is Boolean or null
+        Boolean safeInStock = null;
+        if (inStock != null) {
+            safeInStock = Boolean.TRUE.equals(inStock) ? Boolean.TRUE : Boolean.FALSE;
+        }
+
+        Page<Device> devices = deviceRepository.searchDevices(pattern, safeInStock, status, pageable);
         return devices.map(this::mapToDeviceResponse);
     }
     

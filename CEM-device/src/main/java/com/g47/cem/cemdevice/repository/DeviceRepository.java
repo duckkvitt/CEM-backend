@@ -32,14 +32,14 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
 
     /**
      * Search devices with flexible filters for keyword, stock status, and device status.
+     * Refactored to use LEFT JOIN for inStock filtering to avoid subquery issues.
      */
-    @Query("SELECT d FROM Device d WHERE " +
-           "(:keyword IS NULL OR d.serialNumber LIKE :keyword OR d.name LIKE :keyword OR d.model LIKE :keyword) " +
+    @Query("SELECT d FROM Device d LEFT JOIN d.customerDevices cd " +
+           "WHERE (:keyword IS NULL OR d.serialNumber LIKE :keyword OR d.name LIKE :keyword OR d.model LIKE :keyword) " +
            "AND (:status IS NULL OR d.status = :status) " +
-           // Nếu inStock là true, chỉ lấy device không có trong bảng customer_devices
            "AND (:inStock IS NULL OR " +
-           "     (:inStock = true AND NOT EXISTS (SELECT 1 FROM CustomerDevice cd WHERE cd.device = d)) OR " +
-           "     (:inStock = false AND EXISTS (SELECT 1 FROM CustomerDevice cd WHERE cd.device = d))" +
+           "     (:inStock = true AND cd.id IS NULL) OR " +
+           "     (:inStock = false AND cd.id IS NOT NULL)" +
            ")")
     Page<Device> searchDevices(@Param("keyword") String keyword,
                                @Param("inStock") Boolean inStock,
