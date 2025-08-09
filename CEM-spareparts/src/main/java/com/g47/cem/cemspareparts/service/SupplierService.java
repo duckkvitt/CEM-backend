@@ -251,6 +251,15 @@ public class SupplierService {
         log.info("Successfully deactivated supplier with ID: {}", id);
     }
 
+    public void activateSupplier(Long id) {
+        log.info("Activating supplier with ID: {}", id);
+        Supplier supplier = supplierRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier", "id", id));
+        supplier.setStatus(SupplierStatus.ACTIVE);
+        supplierRepository.save(supplier);
+        log.info("Successfully activated supplier with ID: {}", id);
+    }
+
     public void deleteSupplier(Long id) {
         log.info("Deleting supplier with ID: {}", id);
         Supplier supplier = supplierRepository.findById(id)
