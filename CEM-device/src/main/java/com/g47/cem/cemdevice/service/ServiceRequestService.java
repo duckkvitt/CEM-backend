@@ -53,7 +53,7 @@ public class ServiceRequestService {
      */
     @Transactional
     public ServiceRequestResponse createServiceRequest(CreateServiceRequestRequest request, Long customerId, String createdBy) {
-        log.debug("Creating service request for customer: {} with device: {}", customerId, request.getDeviceId());
+        log.debug("Creating service request for customer: {} with customerDeviceId: {}", customerId, request.getDeviceId());
         
         // Verify the device belongs to the customer
         CustomerDevice customerDevice = customerDeviceRepository.findById(request.getDeviceId())

@@ -12,6 +12,8 @@ import lombok.Data;
 @Data
 public class LinkDevicesRequest {
     
+    private Long contractId; // optional; required when linking from contract service
+    
     @NotNull(message = "Customer ID is required")
     private Long customerId;
     

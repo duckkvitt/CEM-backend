@@ -34,12 +34,12 @@ public class ContractDeviceLinkService {
      * This method should be called when a contract becomes active
      */
     @Transactional
-    public void linkDevicesFromContract(Long customerId, List<ContractDeviceInfo> contractDevices) {
-        log.info("Linking {} devices to customer ID: {}", contractDevices.size(), customerId);
+    public void linkDevicesFromContract(Long contractId, Long customerId, List<ContractDeviceInfo> contractDevices) {
+        log.info("Linking {} devices to customer ID: {} under contract {}", contractDevices.size(), customerId, contractId);
         
         for (ContractDeviceInfo deviceInfo : contractDevices) {
             try {
-                linkDeviceToCustomer(customerId, deviceInfo);
+                linkDeviceToCustomer(contractId, customerId, deviceInfo);
             } catch (Exception e) {
                 log.error("Failed to link device {} to customer {}: {}", 
                         deviceInfo.getDeviceId(), customerId, e.getMessage());
@@ -47,53 +47,45 @@ public class ContractDeviceLinkService {
             }
         }
         
-        log.info("Successfully linked devices to customer ID: {}", customerId);
+        log.info("Successfully linked devices to customer ID: {} under contract {}", customerId, contractId);
     }
     
     /**
      * Link a single device to customer
      */
     @Transactional
-    public void linkDeviceToCustomer(Long customerId, ContractDeviceInfo deviceInfo) {
-        log.debug("Linking device ID: {} to customer ID: {} with quantity: {}", 
-                deviceInfo.getDeviceId(), customerId, deviceInfo.getQuantity());
+    public void linkDeviceToCustomer(Long contractId, Long customerId, ContractDeviceInfo deviceInfo) {
+        log.debug("Linking device ID: {} to customer ID: {} with quantity: {} under contract {}", 
+                deviceInfo.getDeviceId(), customerId, deviceInfo.getQuantity(), contractId);
         
         // Check if device exists
         Device device = deviceRepository.findById(deviceInfo.getDeviceId())
                 .orElseThrow(() -> new BusinessException("Device not found with ID: " + deviceInfo.getDeviceId()));
         
         // Get quantity (default to 1 if not specified)
-        int quantity = deviceInfo.getQuantity() != null ? deviceInfo.getQuantity() : 1;
+        int quantity = deviceInfo.getQuantity() != null ? deviceInfo.getQuantity().intValue() : 1;
         
         // Calculate warranty end date
         LocalDate warrantyEnd = calculateWarrantyEndDate(deviceInfo.getWarrantyMonths());
         
         // Create customer device records for each quantity
         for (int i = 0; i < quantity; i++) {
-            // Check if we've already linked enough devices of this type to this customer
-            long existingCount = customerDeviceRepository.countByCustomerIdAndDeviceId(customerId, deviceInfo.getDeviceId());
-            if (existingCount >= quantity) {
-                log.warn("Already linked {} devices of type {} to customer {}. Skipping additional links.", 
-                        existingCount, deviceInfo.getDeviceId(), customerId);
-                break;
-            }
-            
-            // Create customer device record
+            String code = generateCustomerDeviceCode(contractId, deviceInfo.getDeviceId(), customerId, i + 1);
             CustomerDevice customerDevice = CustomerDevice.builder()
                     .customerId(customerId)
+                    .contractId(contractId)
                     .device(device)
                     .warrantyEnd(warrantyEnd)
                     .status(CustomerDeviceStatus.ACTIVE)
+                    .customerDeviceCode(code)
                     .build();
-            
             customerDeviceRepository.save(customerDevice);
-            
-            log.debug("Created customer device record {} for device {} to customer {}", 
-                    customerDevice.getId(), deviceInfo.getDeviceId(), customerId);
+            log.debug("Created customer device record {} (code: {}) for device {} to customer {} under contract {}", 
+                    customerDevice.getId(), code, deviceInfo.getDeviceId(), customerId, contractId);
         }
         
-        log.info("Successfully linked {} devices of type {} to customer {} with warranty until {}", 
-                quantity, deviceInfo.getDeviceId(), customerId, warrantyEnd);
+        log.info("Successfully linked {} devices of type {} to customer {} under contract {} with warranty until {}", 
+                quantity, deviceInfo.getDeviceId(), customerId, contractId, warrantyEnd);
     }
     
     /**
@@ -105,6 +97,11 @@ public class ContractDeviceLinkService {
         }
         
         return LocalDate.now().plusMonths(warrantyMonths);
+    }
+
+    private String generateCustomerDeviceCode(Long contractId, Long deviceId, Long customerId, int sequence) {
+        // Format: C{customerId}-K{contractId}-D{deviceId}-{seq:03}
+        return String.format("C%d-K%d-D%d-%03d", customerId, contractId, deviceId, sequence);
     }
     
     /**

@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * REST Controller for Customer Device operations
  */
 @RestController
-@RequestMapping("/customer-devices")
+    @RequestMapping("/customer-devices")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Customer Device Management", description = "APIs for customers to view their purchased devices")
@@ -53,6 +53,7 @@ public class CustomerDeviceController {
             @Parameter(description = "Search keyword (matches device name, model, serial number)") @RequestParam(required = false) String keyword,
             @Parameter(description = "Device status filter") @RequestParam(required = false) CustomerDeviceStatus status,
             @Parameter(description = "Filter by expired warranty") @RequestParam(required = false) Boolean warrantyExpired,
+            @Parameter(description = "Filter by contract ID") @RequestParam(required = false) Long contractId,
             @PageableDefault(size = 20) Pageable pageable,
             Principal principal,
             HttpServletRequest request) {
@@ -64,7 +65,7 @@ public class CustomerDeviceController {
         Long customerId = extractCustomerIdFromUserEmail(principal.getName());
         
         Page<CustomerDeviceResponse> devices = customerDeviceService.getCustomerPurchasedDevices(
-                customerId, keyword, status, warrantyExpired, pageable);
+                customerId, keyword, status, warrantyExpired, contractId, pageable);
         
         return ResponseEntity.ok(ApiResponse.success(devices, "Purchased devices retrieved successfully"));
     }

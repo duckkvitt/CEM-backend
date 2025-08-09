@@ -30,11 +30,17 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT c FROM Customer c WHERE c.isHidden = true")
     Page<Customer> findAllHidden(Pageable pageable);
     
-    @Query("SELECT c FROM Customer c WHERE " +
-           "(:name IS NULL OR LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
-           "(:email IS NULL OR LOWER(c.email) LIKE LOWER(CONCAT('%', :email, '%'))) AND " +
-           "(:phone IS NULL OR c.phone LIKE CONCAT('%', :phone, '%')) AND " +
-           "(:isHidden IS NULL OR c.isHidden = :isHidden)")
+    @Query(value = "SELECT * FROM customers c WHERE " +
+           "(:name IS NULL OR LOWER(c.name::text) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
+           "(:email IS NULL OR LOWER(c.email::text) LIKE LOWER(CONCAT('%', :email, '%'))) AND " +
+           "(:phone IS NULL OR c.phone::text LIKE CONCAT('%', :phone, '%')) AND " +
+           "(:isHidden IS NULL OR c.is_hidden = :isHidden)",
+           countQuery = "SELECT COUNT(*) FROM customers c WHERE " +
+           "(:name IS NULL OR LOWER(c.name::text) LIKE LOWER(CONCAT('%', :name, '%'))) AND " +
+           "(:email IS NULL OR LOWER(c.email::text) LIKE LOWER(CONCAT('%', :email, '%'))) AND " +
+           "(:phone IS NULL OR c.phone::text LIKE CONCAT('%', :phone, '%')) AND " +
+           "(:isHidden IS NULL OR c.is_hidden = :isHidden)",
+           nativeQuery = true)
     Page<Customer> findCustomersWithFilters(
             @Param("name") String name,
             @Param("email") String email,

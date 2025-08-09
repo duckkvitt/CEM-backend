@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "spare_parts")
@@ -37,13 +38,8 @@ public class SparePart {
     @Column(name = "compatible_devices")
     private String compatibleDevices;
 
-    @Column(name = "quantity_in_stock", nullable = false)
-    private int quantityInStock;
-
     @Column(name = "unit_of_measurement", nullable = false)
     private String unitOfMeasurement;
-
-    private String supplier;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -57,4 +53,7 @@ public class SparePart {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
+    @ManyToMany(mappedBy = "spareParts", fetch = FetchType.LAZY)
+    private Set<Supplier> suppliers;
 } 

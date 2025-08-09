@@ -868,6 +868,7 @@ public class ContractService {
             if (!deviceInfos.isEmpty()) {
                 // Create request to link devices to customer
                 LinkDevicesRequest linkRequest = new LinkDevicesRequest();
+                linkRequest.setContractId(contract.getId());
                 linkRequest.setCustomerId(contract.getCustomerId());
                 linkRequest.setDevices(deviceInfos);
                 

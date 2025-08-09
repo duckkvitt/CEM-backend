@@ -27,6 +27,8 @@ public interface CustomerDeviceRepository extends JpaRepository<CustomerDevice, 
 
     Page<CustomerDevice> findByStatus(CustomerDeviceStatus status, Pageable pageable);
 
+    Page<CustomerDevice> findByCustomerIdAndContractId(Long customerId, Long contractId, Pageable pageable);
+
     @Query("SELECT cd FROM CustomerDevice cd WHERE cd.warrantyEnd < :date")
     List<CustomerDevice> findExpiredWarranties(@Param("date") LocalDate date);
 
@@ -78,4 +80,6 @@ public interface CustomerDeviceRepository extends JpaRepository<CustomerDevice, 
            "LOWER(cd.device.model) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
            "LOWER(cd.device.serialNumber) LIKE LOWER(CONCAT('%', :keyword, '%')))")
     Page<CustomerDevice> findByCustomerIdAndDeviceInfoContaining(@Param("customerId") Long customerId, @Param("keyword") String keyword, Pageable pageable);
+
+    boolean existsByCustomerDeviceCode(String customerDeviceCode);
 } 

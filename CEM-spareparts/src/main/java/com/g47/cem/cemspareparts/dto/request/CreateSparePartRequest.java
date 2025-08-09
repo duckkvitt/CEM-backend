@@ -22,14 +22,7 @@ public class CreateSparePartRequest {
     @Size(max = 255, message = "Compatible devices must be less than 255 characters")
     private String compatibleDevices;
 
-    @NotNull(message = "Quantity in stock is required")
-    @Min(value = 0, message = "Quantity in stock cannot be negative")
-    private Integer quantityInStock;
-
     @NotBlank(message = "Unit of measurement is required")
     @Size(max = 255, message = "Unit of measurement must be less than 255 characters")
     private String unitOfMeasurement;
-
-    @Size(max = 255, message = "Supplier must be less than 255 characters")
-    private String supplier;
 } 

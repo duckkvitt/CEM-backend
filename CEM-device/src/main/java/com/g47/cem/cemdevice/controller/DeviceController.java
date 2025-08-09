@@ -180,7 +180,8 @@ public class DeviceController {
                         device.getWarrantyMonths()))
                 .collect(Collectors.toList());
         
-        contractDeviceLinkService.linkDevicesFromContract(request.getCustomerId(), deviceInfos);
+        Long contractId = request.getContractId() != null ? request.getContractId() : 0L;
+        contractDeviceLinkService.linkDevicesFromContract(contractId, request.getCustomerId(), deviceInfos);
         
         return ResponseEntity.ok(ApiResponse.success("Devices linked to customer successfully"));
     }
@@ -206,7 +207,8 @@ public class DeviceController {
                         device.getWarrantyMonths()))
                 .collect(Collectors.toList());
         
-        contractDeviceLinkService.linkDevicesFromContract(request.getCustomerId(), deviceInfos);
+        Long contractId = request.getContractId() != null ? request.getContractId() : 0L;
+        contractDeviceLinkService.linkDevicesFromContract(contractId, request.getCustomerId(), deviceInfos);
         
         return ResponseEntity.ok(ApiResponse.success("Test device linking completed successfully"));
     }

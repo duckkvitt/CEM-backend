@@ -51,11 +51,22 @@ public class SparePartService {
     }
 
     public PagedResponse<SparePartResponse> getAllSpareParts(int page, int size, String sortBy, String sortDir) {
-        log.info("Fetching all spare parts. Page: {}, Size: {}, SortBy: {}, SortDir: {}", page, size, sortBy, sortDir);
+        return getAllSpareParts(page, size, sortBy, sortDir, null);
+    }
+
+    public PagedResponse<SparePartResponse> getAllSpareParts(int page, int size, String sortBy, String sortDir, String keyword) {
+        log.info("Fetching all spare parts. Page: {}, Size: {}, SortBy: {}, SortDir: {}, Keyword: {}", 
+                page, size, sortBy, sortDir, keyword);
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<SparePart> sparePartsPage = sparePartRepository.findAll(pageable);
+        
+        Page<SparePart> sparePartsPage;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sparePartsPage = sparePartRepository.findSparePartsWithKeyword(keyword.trim(), pageable);
+        } else {
+            sparePartsPage = sparePartRepository.findAll(pageable);
+        }
         
         List<SparePartResponse> content = sparePartsPage.getContent().stream()
                 .map(sparePart -> modelMapper.map(sparePart, SparePartResponse.class))

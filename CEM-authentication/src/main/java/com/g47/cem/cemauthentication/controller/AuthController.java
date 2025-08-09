@@ -26,6 +26,7 @@ import com.g47.cem.cemauthentication.dto.request.ForgotPasswordRequest;
 import com.g47.cem.cemauthentication.dto.request.LoginRequest;
 import com.g47.cem.cemauthentication.dto.request.ResetPasswordRequest;
 import com.g47.cem.cemauthentication.dto.request.UpdateProfileRequest;
+import com.g47.cem.cemauthentication.dto.request.UpdateUserRoleRequest;
 import com.g47.cem.cemauthentication.dto.response.ApiResponse;
 import com.g47.cem.cemauthentication.dto.response.AuthResponse;
 import com.g47.cem.cemauthentication.dto.response.RoleResponse;
@@ -333,6 +334,39 @@ public class AuthController {
         UserResponse userResponse = userManagementService.deactivateUser(id);
 
         ApiResponse<UserResponse> response = ApiResponse.success(userResponse, "User deactivated successfully");
+        response.setPath(httpRequest.getRequestURI());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/admin/users/{id}/activate")
+    @Operation(summary = "Activate user", description = "Set user's status to ACTIVE (Admin only)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    public ResponseEntity<ApiResponse<UserResponse>> activateUser(
+            @PathVariable Long id,
+            HttpServletRequest httpRequest) {
+
+        UserResponse userResponse = userManagementService.activateUser(id);
+
+        ApiResponse<UserResponse> response = ApiResponse.success(userResponse, "User activated successfully");
+        response.setPath(httpRequest.getRequestURI());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/admin/users/{id}/role")
+    @Operation(summary = "Update user role", description = "Update user's role (Admin only)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    public ResponseEntity<ApiResponse<UserResponse>> updateUserRole(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateUserRoleRequest request,
+            HttpServletRequest httpRequest) {
+
+        UserResponse userResponse = userManagementService.updateUserRole(id, request);
+
+        ApiResponse<UserResponse> response = ApiResponse.success(userResponse, "User role updated successfully");
         response.setPath(httpRequest.getRequestURI());
 
         return ResponseEntity.ok(response);

@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -147,9 +149,53 @@ public class CustomerService {
         log.debug("Searching customers with filters - name: {}, email: {}, phone: {}, isHidden: {}", 
                 name, email, phone, isHidden);
         
+        // Map Java field names to database column names for native query
+        Pageable mappedPageable = mapFieldNamesToColumnNames(pageable);
+        
         Page<Customer> customers = customerRepository.findCustomersWithFilters(
-                name, email, phone, isHidden, pageable);
+                name, email, phone, isHidden, mappedPageable);
         return customers.map(this::mapToCustomerResponse);
+    }
+    
+    /**
+     * Maps Java field names to database column names for native queries
+     */
+    private Pageable mapFieldNamesToColumnNames(Pageable pageable) {
+        if (pageable.getSort().isUnsorted()) {
+            // Default sorting by created_at desc if no sort specified
+            return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), 
+                    Sort.by(Sort.Direction.DESC, "created_at"));
+        }
+        
+        List<Sort.Order> mappedOrders = pageable.getSort().stream()
+                .map(order -> {
+                    String property = order.getProperty();
+                    String mappedProperty = mapFieldToColumn(property);
+                    return new Sort.Order(order.getDirection(), mappedProperty);
+                })
+                .collect(java.util.stream.Collectors.toList());
+        
+        Sort mappedSort = Sort.by(mappedOrders);
+        return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), mappedSort);
+    }
+    
+    /**
+     * Maps individual field names to column names
+     */
+    private String mapFieldToColumn(String fieldName) {
+        return switch (fieldName) {
+            case "createdAt" -> "created_at";
+            case "updatedAt" -> "updated_at";
+            case "isHidden" -> "is_hidden";
+            case "companyName" -> "company_name";
+            case "companyTaxCode" -> "company_tax_code";
+            case "companyAddress" -> "company_address";
+            case "legalRepresentative" -> "legal_representative";
+            case "identityNumber" -> "identity_number";
+            case "identityIssueDate" -> "identity_issue_date";
+            case "identityIssuePlace" -> "identity_issue_place";
+            default -> fieldName; // Return as-is if no mapping needed
+        };
     }
     
     /**

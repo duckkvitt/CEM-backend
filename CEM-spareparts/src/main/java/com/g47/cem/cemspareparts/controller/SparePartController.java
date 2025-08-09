@@ -43,8 +43,9 @@ public class SparePartController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir) {
-        PagedResponse<SparePartResponse> response = sparePartService.getAllSpareParts(page, size, sortBy, sortDir);
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(required = false) String keyword) {
+        PagedResponse<SparePartResponse> response = sparePartService.getAllSpareParts(page, size, sortBy, sortDir, keyword);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 

@@ -18,6 +18,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -30,7 +31,11 @@ import lombok.NoArgsConstructor;
  * CustomerDevice entity representing customer-owned devices
  */
 @Entity
-@Table(name = "customer_devices")
+@Table(name = "customer_devices", indexes = {
+    @Index(name = "idx_customer_devices_customer", columnList = "customer_id"),
+    @Index(name = "idx_customer_devices_contract", columnList = "contract_id"),
+    @Index(name = "uk_customer_device_code", columnList = "customer_device_code", unique = true)
+})
 @Data
 @Builder
 @NoArgsConstructor
@@ -45,6 +50,9 @@ public class CustomerDevice {
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
+    @Column(name = "contract_id", nullable = false)
+    private Long contractId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "device_id", nullable = false)
     private Device device;
@@ -54,7 +62,11 @@ public class CustomerDevice {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
+    @Builder.Default
     private CustomerDeviceStatus status = CustomerDeviceStatus.ACTIVE;
+
+    @Column(name = "customer_device_code", nullable = false, length = 100)
+    private String customerDeviceCode;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

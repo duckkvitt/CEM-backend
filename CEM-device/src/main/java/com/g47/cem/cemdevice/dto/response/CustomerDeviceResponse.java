@@ -17,6 +17,7 @@ public class CustomerDeviceResponse {
     // CustomerDevice fields
     private Long id;
     private Long customerId;
+    private Long contractId;
     private LocalDate warrantyEnd;
     private CustomerDeviceStatus status;
     private LocalDateTime createdAt;
@@ -29,6 +30,7 @@ public class CustomerDeviceResponse {
     private String serialNumber;
     private BigDecimal devicePrice;
     private String deviceUnit;
+    private String customerDeviceCode;
     
     // Calculated fields
     private Boolean warrantyExpired;

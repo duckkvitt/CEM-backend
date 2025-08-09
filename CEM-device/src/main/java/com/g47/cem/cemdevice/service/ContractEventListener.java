@@ -35,8 +35,8 @@ public class ContractEventListener {
             log.info("Linking {} devices to customer {} for contract {}", 
                     deviceInfos.size(), event.getCustomerId(), event.getContractId());
 
-            // Link devices to customer
-            contractDeviceLinkService.linkDevicesFromContract(event.getCustomerId(), deviceInfos);
+            // Link devices to customer with contract context
+            contractDeviceLinkService.linkDevicesFromContract(event.getContractId(), event.getCustomerId(), deviceInfos);
 
             log.info("Successfully linked {} devices to customer {} for contract {}", 
                     deviceInfos.size(), event.getCustomerId(), event.getContractId());

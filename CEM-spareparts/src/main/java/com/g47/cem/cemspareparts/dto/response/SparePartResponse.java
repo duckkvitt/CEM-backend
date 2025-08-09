@@ -12,10 +12,8 @@ public class SparePartResponse {
     private String partCode;
     private String description;
     private String compatibleDevices;
-    private int quantityInStock;
     private String unitOfMeasurement;
-    private String supplier;
     private SparePartStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-} 
+}

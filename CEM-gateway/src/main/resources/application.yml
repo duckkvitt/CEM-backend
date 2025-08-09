@@ -58,6 +58,12 @@ spring:
             - Path=/api/spare-parts/**
           filters:
             - StripPrefix=1
+        - id: suppliers-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/suppliers/**
+          filters:
+            - StripPrefix=1
 
 management:
   endpoints:

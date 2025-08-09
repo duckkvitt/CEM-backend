@@ -1,12 +1,9 @@
 package com.g47.cem.cemdevice.controller;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -25,6 +22,7 @@ import com.g47.cem.cemdevice.dto.response.ApiResponse;
 import com.g47.cem.cemdevice.dto.response.ServiceRequestResponse;
 import com.g47.cem.cemdevice.enums.ServiceRequestStatus;
 import com.g47.cem.cemdevice.enums.ServiceRequestType;
+import com.g47.cem.cemdevice.service.ExternalCustomerService;
 import com.g47.cem.cemdevice.service.ServiceRequestService;
 import com.g47.cem.cemdevice.service.ServiceRequestService.ServiceRequestStatistics;
 import com.g47.cem.cemdevice.util.JwtUtil;
@@ -43,7 +41,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ServiceRequestController {
     
     private final ServiceRequestService serviceRequestService;
-    private final JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil; // kept for potential future token validations
+    private final ExternalCustomerService externalCustomerService;
     
     /**
      * Create a new service request
@@ -255,24 +254,15 @@ public class ServiceRequestController {
      */
     private Long extractCustomerId(Authentication authentication) {
         try {
-            // Get the JWT token from the request
-            // Since we don't have direct access to the request here,
-            // we'll use a different approach
-            String username = authentication.getName();
-            
-            // For now, we'll use a mapping based on the database
-            // In a real implementation, customer ID should be in JWT claims
-            if ("longrpk200314@gmail.com".equals(username)) {
-                return 12L;
+            String userEmail = authentication.getName();
+            var customerInfo = externalCustomerService.getCustomerByEmail(userEmail);
+            if (customerInfo == null || customerInfo.getId() == null) {
+                log.error("Customer not found for user email: {}", userEmail);
+                throw new RuntimeException("Customer not found for current user");
             }
-            
-            // If no mapping found, try to extract from JWT claims if available
-            // This would require storing the token somewhere accessible
-            log.warn("No customer ID mapping found for user: {}, using fallback", username);
-            return 12L; // Fallback to customer ID 12 based on the database
-            
+            return customerInfo.getId();
         } catch (Exception e) {
-            log.error("Failed to extract customer ID from authentication", e);
+            log.error("Failed to extract customer ID from authentication: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to extract customer ID");
         }
     }

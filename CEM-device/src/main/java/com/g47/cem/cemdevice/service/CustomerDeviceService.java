@@ -29,17 +29,18 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerDeviceService {
     
     private final CustomerDeviceRepository customerDeviceRepository;
-    private final ModelMapper modelMapper;
+    private final ModelMapper modelMapper; // reserved for future mappings
     
     /**
      * Get customer's purchased devices with pagination and filtering
      */
     @Transactional(readOnly = true)
     public Page<CustomerDeviceResponse> getCustomerPurchasedDevices(
-            Long customerId, 
-            String keyword, 
+            Long customerId,
+            String keyword,
             CustomerDeviceStatus status,
             Boolean warrantyExpired,
+            Long contractId,
             Pageable pageable) {
         
         log.debug("Fetching purchased devices for customer: {} with filters - keyword: {}, status: {}, warrantyExpired: {}", 
@@ -47,7 +48,9 @@ public class CustomerDeviceService {
         
         Page<CustomerDevice> customerDevices;
         
-        if (keyword != null && !keyword.trim().isEmpty()) {
+        if (contractId != null) {
+            customerDevices = customerDeviceRepository.findByCustomerIdAndContractId(customerId, contractId, pageable);
+        } else if (keyword != null && !keyword.trim().isEmpty()) {
             // Search by device name, model, or serial number
             customerDevices = customerDeviceRepository.findByCustomerIdAndDeviceInfoContaining(
                     customerId, keyword.trim(), pageable);
@@ -147,10 +150,12 @@ public class CustomerDeviceService {
         // Map customer device information
         response.setId(customerDevice.getId());
         response.setCustomerId(customerDevice.getCustomerId());
+        response.setContractId(customerDevice.getContractId());
         response.setWarrantyEnd(customerDevice.getWarrantyEnd());
         response.setStatus(customerDevice.getStatus());
         response.setCreatedAt(customerDevice.getCreatedAt());
         response.setUpdatedAt(customerDevice.getUpdatedAt());
+        response.setCustomerDeviceCode(customerDevice.getCustomerDeviceCode());
         
         // Calculate warranty status
         if (customerDevice.getWarrantyEnd() != null) {
@@ -178,7 +183,7 @@ public class CustomerDeviceService {
         }
         
         public static class CustomerDeviceStatisticsBuilder {
-            private CustomerDeviceStatistics statistics = new CustomerDeviceStatistics();
+            private final CustomerDeviceStatistics statistics = new CustomerDeviceStatistics();
             
             public CustomerDeviceStatisticsBuilder totalDevices(long totalDevices) {
                 statistics.totalDevices = totalDevices;

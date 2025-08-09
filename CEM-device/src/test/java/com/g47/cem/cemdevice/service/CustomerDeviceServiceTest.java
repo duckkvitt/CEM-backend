@@ -85,7 +85,7 @@ class CustomerDeviceServiceTest {
 
         // When
         Page<CustomerDeviceResponse> result = customerDeviceService.getCustomerPurchasedDevices(
-                customerId, null, null, null, pageable);
+                customerId, null, null, null, null, pageable);
 
         // Then
         assertNotNull(result);

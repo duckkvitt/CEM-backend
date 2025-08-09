@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.g47.cem.cemauthentication.dto.request.CreateUserRequest;
+import com.g47.cem.cemauthentication.dto.request.UpdateUserRoleRequest;
 import com.g47.cem.cemauthentication.dto.response.RoleResponse;
 import com.g47.cem.cemauthentication.dto.response.UserResponse;
 import com.g47.cem.cemauthentication.entity.AccountStatus;
@@ -222,5 +223,35 @@ public class UserManagementService {
 
     public boolean roleExists(String roleName) {
         return roleRepository.existsByName(roleName);
+    }
+
+    @Transactional
+    public UserResponse activateUser(Long userId) {
+        log.info("Activating user with id {}", userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
+
+        user.setStatus(AccountStatus.ACTIVE);
+        userRepository.save(user);
+
+        log.info("User with id {} activated successfully", userId);
+        return mapToUserResponse(user);
+    }
+
+    @Transactional
+    public UserResponse updateUserRole(Long userId, UpdateUserRoleRequest request) {
+        log.info("Updating role for user with id {} to roleId {}", userId, request.getRoleId());
+        
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + userId));
+
+        Role role = roleRepository.findById(request.getRoleId())
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with ID: " + request.getRoleId()));
+
+        user.setRole(role);
+        userRepository.save(user);
+
+        log.info("User role updated successfully for user id {} to role {}", userId, role.getName());
+        return mapToUserResponse(user);
     }
 } 
