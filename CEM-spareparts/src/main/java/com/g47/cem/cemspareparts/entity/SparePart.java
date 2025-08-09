@@ -1,21 +1,35 @@
 package com.g47.cem.cemspareparts.entity;
 
-import com.g47.cem.cemspareparts.enums.SparePartStatus;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.Set;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import com.g47.cem.cemspareparts.enums.SparePartStatus;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "spare_parts")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -56,4 +70,39 @@ public class SparePart {
     
     @ManyToMany(mappedBy = "spareParts", fetch = FetchType.LAZY)
     private Set<Supplier> suppliers;
+    
+    /**
+     * Custom equals method that only uses ID to avoid circular dependencies with collections.
+     * This prevents ConcurrentModificationException during collection operations.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        SparePart sparePart = (SparePart) obj;
+        return id != null && id.equals(sparePart.id);
+    }
+    
+    /**
+     * Custom hashCode method that only uses ID to avoid circular dependencies with collections.
+     * This prevents ConcurrentModificationException during collection operations.
+     */
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+    
+    /**
+     * Custom toString method that excludes collections to avoid circular dependencies.
+     */
+    @Override
+    public String toString() {
+        return "SparePart{" +
+                "id=" + id +
+                ", partName='" + partName + '\'' +
+                ", partCode='" + partCode + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}';
+    }
 } 

@@ -1,5 +1,19 @@
 package com.g47.cem.cemspareparts.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.g47.cem.cemspareparts.dto.request.CreateSupplierRequest;
 import com.g47.cem.cemspareparts.dto.request.UpdateSupplierRequest;
 import com.g47.cem.cemspareparts.dto.response.PagedResponse;
@@ -12,21 +26,9 @@ import com.g47.cem.cemspareparts.exception.BusinessException;
 import com.g47.cem.cemspareparts.exception.ResourceNotFoundException;
 import com.g47.cem.cemspareparts.repository.SparePartRepository;
 import com.g47.cem.cemspareparts.repository.SupplierRepository;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,15 +56,9 @@ public class SupplierService {
         Supplier supplier = modelMapper.map(request, Supplier.class);
         supplier.setStatus(SupplierStatus.ACTIVE);
         
-        // Set spare parts if provided
+        // Set spare parts if provided - use safe collection manipulation
         if (request.getSparePartIds() != null && !request.getSparePartIds().isEmpty()) {
-            Set<SparePart> spareParts = new HashSet<>();
-            for (Long sparePartId : request.getSparePartIds()) {
-                SparePart sparePart = sparePartRepository.findById(sparePartId)
-                    .orElseThrow(() -> new ResourceNotFoundException("SparePart", "id", sparePartId));
-                spareParts.add(sparePart);
-            }
-            supplier.setSpareParts(spareParts);
+            updateSupplierSpareParts(supplier, request.getSparePartIds());
         }
         
         Supplier savedSupplier = supplierRepository.save(supplier);
@@ -142,6 +138,33 @@ public class SupplierService {
     }
     
     /**
+     * Safely updates supplier's spare parts collection to prevent ConcurrentModificationException.
+     * This method creates a completely new collection without reusing existing Hibernate-managed collections.
+     */
+    private void updateSupplierSpareParts(Supplier supplier, Set<Long> sparePartIds) {
+        // Clear existing spare parts collection safely
+        if (supplier.getSpareParts() != null) {
+            supplier.getSpareParts().clear();
+        }
+        
+        // Create a completely new HashSet to avoid any Hibernate collection issues
+        Set<SparePart> newSpareParts = new HashSet<>();
+        
+        if (sparePartIds != null && !sparePartIds.isEmpty()) {
+            for (Long sparePartId : sparePartIds) {
+                SparePart sparePart = sparePartRepository.findById(sparePartId)
+                    .orElseThrow(() -> new ResourceNotFoundException("SparePart", "id", sparePartId));
+                
+                // Add the spare part to our new collection
+                newSpareParts.add(sparePart);
+            }
+        }
+        
+        // Set the completely new collection
+        supplier.setSpareParts(newSpareParts);
+    }
+    
+    /**
      * Fallback method for manual pagination when native queries fail.
      * This method prevents ConcurrentModificationException by using eager loading.
      */
@@ -205,17 +228,9 @@ public class SupplierService {
         
         modelMapper.map(request, supplier);
         
-        // Update spare parts if provided
+        // Update spare parts if provided - use safe collection manipulation
         if (request.getSparePartIds() != null) {
-            Set<SparePart> spareParts = new HashSet<>();
-            if (!request.getSparePartIds().isEmpty()) {
-                for (Long sparePartId : request.getSparePartIds()) {
-                    SparePart sparePart = sparePartRepository.findById(sparePartId)
-                        .orElseThrow(() -> new ResourceNotFoundException("SparePart", "id", sparePartId));
-                    spareParts.add(sparePart);
-                }
-            }
-            supplier.setSpareParts(spareParts);
+            updateSupplierSpareParts(supplier, request.getSparePartIds());
         }
         
         Supplier updatedSupplier = supplierRepository.save(supplier);
