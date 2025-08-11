@@ -170,9 +170,9 @@ public class AuthController {
     }
 
     @GetMapping("/admin/roles")
-    @Operation(summary = "Get all roles", description = "Retrieve all available roles (Admin only)")
+    @Operation(summary = "Get all roles", description = "Retrieve all available roles (Admin/Manager/Support/TechLead)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN', 'MANAGER', 'SUPPORT_TEAM', 'LEAD_TECH')")
     public ResponseEntity<ApiResponse<List<RoleResponse>>> getAllRoles(
             HttpServletRequest httpRequest) {
         
@@ -290,9 +290,9 @@ public class AuthController {
     }
 
     @GetMapping("/admin/users")
-    @Operation(summary = "Get users with filters", description = "Retrieve paginated list of users with optional filters (Admin only)")
+    @Operation(summary = "Get users with filters", description = "Retrieve paginated list of users with optional filters (Admin/Manager/Support/TechLead)")
     @SecurityRequirement(name = "Bearer Authentication")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN', 'MANAGER', 'SUPPORT_TEAM', 'LEAD_TECH')")
     public ResponseEntity<ApiResponse<Page<UserResponse>>> getUsers(
             @Parameter(description = "Search keyword (first name, last name or email)")
             @RequestParam(required = false) String search,

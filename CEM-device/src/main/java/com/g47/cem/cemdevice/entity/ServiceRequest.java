@@ -88,6 +88,21 @@ public class ServiceRequest {
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
+    @Column(name = "rejection_reason", columnDefinition = "TEXT")
+    private String rejectionReason;
+
+    @Column(name = "rejected_by")
+    private String rejectedBy;
+
+    @Column(name = "rejected_at")
+    private LocalDateTime rejectedAt;
+
+    @Column(name = "approved_by")
+    private String approvedBy;
+
+    @Column(name = "approved_at")
+    private LocalDateTime approvedAt;
+
     @Column(name = "created_by", nullable = false)
     private String createdBy;
 
@@ -118,6 +133,10 @@ public class ServiceRequest {
 
     public boolean isCompleted() {
         return status == ServiceRequestStatus.COMPLETED;
+    }
+
+    public boolean isRejected() {
+        return status == ServiceRequestStatus.REJECTED;
     }
 
     public boolean isMaintenanceRequest() {

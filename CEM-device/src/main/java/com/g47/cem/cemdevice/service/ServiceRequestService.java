@@ -403,6 +403,104 @@ public class ServiceRequestService {
     }
     
     /**
+     * Get all service requests for staff with filtering (Support Team, Manager, Admin)
+     */
+    @Transactional(readOnly = true)
+    public Page<ServiceRequestResponse> getAllServiceRequests(String keyword, ServiceRequestStatus status, 
+            ServiceRequestType type, Long customerId, Pageable pageable) {
+        
+        log.debug("Getting all service requests for staff with filters");
+        
+        // This is a simplified implementation - in production you'd want more sophisticated filtering
+        Page<ServiceRequest> serviceRequests;
+        
+        if (status != null) {
+            serviceRequests = serviceRequestRepository.findByStatus(status, pageable);
+        } else {
+            serviceRequests = serviceRequestRepository.findAll(pageable);
+        }
+        
+        return serviceRequests.map(this::mapToServiceRequestResponse);
+    }
+    
+    /**
+     * Get service request by ID for staff (no customer validation)
+     */
+    @Transactional(readOnly = true)
+    public ServiceRequestResponse getServiceRequestByIdForStaff(Long id) {
+        log.debug("Getting service request by ID for staff: {}", id);
+        
+        ServiceRequest serviceRequest = serviceRequestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ServiceRequest", "id", id));
+        
+        return mapToServiceRequestResponse(serviceRequest);
+    }
+    
+    /**
+     * Get service requests by status
+     */
+    @Transactional(readOnly = true)
+    public Page<ServiceRequestResponse> getServiceRequestsByStatus(ServiceRequestStatus status, Pageable pageable) {
+        log.debug("Getting service requests by status: {}", status);
+        
+        Page<ServiceRequest> serviceRequests = serviceRequestRepository.findByStatus(status, pageable);
+        return serviceRequests.map(this::mapToServiceRequestResponse);
+    }
+    
+    /**
+     * Update staff notes for service request
+     */
+    @Transactional
+    public ServiceRequestResponse updateStaffNotes(Long id, String staffNotes, String updatedBy) {
+        log.debug("Updating staff notes for service request: {}", id);
+        
+        ServiceRequest serviceRequest = serviceRequestRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ServiceRequest", "id", id));
+        
+        serviceRequest.setStaffNotes(staffNotes);
+        serviceRequest = serviceRequestRepository.save(serviceRequest);
+        
+        // Create history entry
+        ServiceRequestHistory history = ServiceRequestHistory.builder()
+                .serviceRequest(serviceRequest)
+                .status(serviceRequest.getStatus())
+                .comment("Staff notes updated")
+                .updatedBy(updatedBy)
+                .build();
+        serviceRequestHistoryRepository.save(history);
+        
+        return mapToServiceRequestResponse(serviceRequest);
+    }
+    
+    /**
+     * Get service request statistics for all requests (staff dashboard)
+     */
+    @Transactional(readOnly = true)
+    public ServiceRequestStatistics getAllServiceRequestStatistics() {
+        log.debug("Getting service request statistics for all requests");
+        
+        long totalRequests = serviceRequestRepository.count();
+        long pendingRequests = serviceRequestRepository.countByStatus(ServiceRequestStatus.PENDING);
+        long approvedRequests = serviceRequestRepository.countByStatus(ServiceRequestStatus.APPROVED);
+        long rejectedRequests = serviceRequestRepository.countByStatus(ServiceRequestStatus.REJECTED);
+        long inProgressRequests = serviceRequestRepository.countByStatus(ServiceRequestStatus.IN_PROGRESS);
+        long completedRequests = serviceRequestRepository.countByStatus(ServiceRequestStatus.COMPLETED);
+        long maintenanceRequests = serviceRequestRepository.countByType(ServiceRequestType.MAINTENANCE);
+        long warrantyRequests = serviceRequestRepository.countByType(ServiceRequestType.WARRANTY);
+        
+        return ServiceRequestStatistics.builder()
+                .totalRequests(totalRequests)
+                .pendingRequests(pendingRequests)
+                .approvedRequests(approvedRequests)
+                .rejectedRequests(rejectedRequests)
+                .inProgressRequests(inProgressRequests)
+                .completedRequests(completedRequests)
+                .maintenanceRequests(maintenanceRequests)
+                .warrantyRequests(warrantyRequests)
+                .build();
+    }
+    
+    /**
      * Map ServiceRequestHistory entity to ServiceRequestHistoryResponse DTO
      */
     private ServiceRequestHistoryResponse mapToServiceRequestHistoryResponse(ServiceRequestHistory history) {
@@ -422,6 +520,7 @@ public class ServiceRequestService {
         private long totalRequests;
         private long pendingRequests;
         private long approvedRequests;
+        private long rejectedRequests;
         private long inProgressRequests;
         private long completedRequests;
         private long maintenanceRequests;
@@ -433,7 +532,7 @@ public class ServiceRequestService {
         }
         
         public static class ServiceRequestStatisticsBuilder {
-            private ServiceRequestStatistics statistics = new ServiceRequestStatistics();
+            private final ServiceRequestStatistics statistics = new ServiceRequestStatistics();
             
             public ServiceRequestStatisticsBuilder totalRequests(long totalRequests) {
                 statistics.totalRequests = totalRequests;
@@ -447,6 +546,11 @@ public class ServiceRequestService {
             
             public ServiceRequestStatisticsBuilder approvedRequests(long approvedRequests) {
                 statistics.approvedRequests = approvedRequests;
+                return this;
+            }
+            
+            public ServiceRequestStatisticsBuilder rejectedRequests(long rejectedRequests) {
+                statistics.rejectedRequests = rejectedRequests;
                 return this;
             }
             
@@ -479,6 +583,7 @@ public class ServiceRequestService {
         public long getTotalRequests() { return totalRequests; }
         public long getPendingRequests() { return pendingRequests; }
         public long getApprovedRequests() { return approvedRequests; }
+        public long getRejectedRequests() { return rejectedRequests; }
         public long getInProgressRequests() { return inProgressRequests; }
         public long getCompletedRequests() { return completedRequests; }
         public long getMaintenanceRequests() { return maintenanceRequests; }

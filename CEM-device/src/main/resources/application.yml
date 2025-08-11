@@ -116,4 +116,9 @@ app:
     auth-service:
       url: "http://localhost:8081/api/auth"
     customer-service:
-      url: "http://localhost:8082/v1/customers" 
+      url: "http://localhost:8082/v1/customers"
+  auth:
+    service:
+      url: "http://localhost:8081"
+      admin:
+        token: "${AUTH_ADMIN_TOKEN:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBjZW0ubG9jYWwiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2ODg4MTM2MDAsImV4cCI6Mjk5OTk5OTk5OX0.X8kS7BkQJ8vXpL3zY2wH9rN4mF5cA6tE8qP0nR7sU1B}" 

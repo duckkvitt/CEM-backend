@@ -267,6 +267,104 @@ public class ServiceRequestController {
         }
     }
     
+    // ========== Support Team and Staff Endpoints ==========
+    
+    /**
+     * Get all service requests for staff (Support Team, Manager, Admin)
+     */
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'MANAGER', 'ADMIN')")
+    public ResponseEntity<ApiResponse<Page<ServiceRequestResponse>>> getAllServiceRequests(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) ServiceRequestStatus status,
+            @RequestParam(required = false) ServiceRequestType type,
+            @RequestParam(required = false) Long customerId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir) {
+        
+        log.debug("Fetching all service requests with filters - keyword: {}, status: {}, type: {}, customerId: {}", 
+                keyword, status, type, customerId);
+        
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDir), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        
+        Page<ServiceRequestResponse> response = serviceRequestService.getAllServiceRequests(
+                keyword, status, type, customerId, pageable);
+        
+        return ResponseEntity.ok(ApiResponse.success(response, "Service requests retrieved successfully"));
+    }
+    
+    /**
+     * Get service request by ID for staff (Support Team, Manager, Admin)
+     */
+    @GetMapping("/staff/{id}")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'MANAGER', 'ADMIN', 'LEAD_TECH')")
+    public ResponseEntity<ApiResponse<ServiceRequestResponse>> getServiceRequestByIdForStaff(
+            @PathVariable Long id) {
+        
+        log.debug("Fetching service request with ID: {} for staff", id);
+        
+        ServiceRequestResponse response = serviceRequestService.getServiceRequestByIdForStaff(id);
+        
+        return ResponseEntity.ok(ApiResponse.success(response, "Service request retrieved successfully"));
+    }
+    
+    /**
+     * Get pending service requests for Support Team
+     */
+    @GetMapping("/pending")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'MANAGER', 'ADMIN')")
+    public ResponseEntity<ApiResponse<Page<ServiceRequestResponse>>> getPendingServiceRequests(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+        
+        log.debug("Fetching pending service requests");
+        
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDir), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        
+        Page<ServiceRequestResponse> response = serviceRequestService.getServiceRequestsByStatus(
+                ServiceRequestStatus.PENDING, pageable);
+        
+        return ResponseEntity.ok(ApiResponse.success(response, "Pending service requests retrieved successfully"));
+    }
+    
+    /**
+     * Update service request notes (Support Team, Manager)
+     */
+    @PutMapping("/staff/{id}/notes")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'MANAGER', 'ADMIN')")
+    public ResponseEntity<ApiResponse<ServiceRequestResponse>> updateServiceRequestNotes(
+            @PathVariable Long id,
+            @RequestBody StaffNotesRequest notesRequest,
+            Authentication authentication) {
+        
+        log.info("Updating service request notes for ID: {} by user: {}", id, authentication.getName());
+        
+        ServiceRequestResponse response = serviceRequestService.updateStaffNotes(
+                id, notesRequest.getStaffNotes(), authentication.getName());
+        
+        return ResponseEntity.ok(ApiResponse.success(response, "Service request notes updated successfully"));
+    }
+    
+    /**
+     * Get service request statistics for staff dashboard
+     */
+    @GetMapping("/statistics/all")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'MANAGER', 'ADMIN')")
+    public ResponseEntity<ApiResponse<ServiceRequestStatistics>> getAllServiceRequestStatistics() {
+        
+        log.debug("Fetching service request statistics for staff dashboard");
+        
+        ServiceRequestStatistics statistics = serviceRequestService.getAllServiceRequestStatistics();
+        
+        return ResponseEntity.ok(ApiResponse.success(statistics, "Statistics retrieved successfully"));
+    }
+
     /**
      * Inner class for comment request
      */
@@ -279,6 +377,21 @@ public class ServiceRequestController {
         
         public void setComment(String comment) {
             this.comment = comment;
+        }
+    }
+    
+    /**
+     * Inner class for staff notes request
+     */
+    public static class StaffNotesRequest {
+        private String staffNotes;
+        
+        public String getStaffNotes() {
+            return staffNotes;
+        }
+        
+        public void setStaffNotes(String staffNotes) {
+            this.staffNotes = staffNotes;
         }
     }
 } 

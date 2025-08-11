@@ -89,4 +89,14 @@ public interface ServiceRequestRepository extends JpaRepository<ServiceRequest, 
            "(sr.description LIKE %:keyword% OR sr.requestId LIKE %:keyword% OR " +
            "sr.device.device.name LIKE %:keyword% OR sr.device.device.model LIKE %:keyword%)")
     Page<ServiceRequest> findByCustomerIdAndKeyword(@Param("customerId") Long customerId, @Param("keyword") String keyword, Pageable pageable);
+    
+    /**
+     * Count service requests by status
+     */
+    long countByStatus(ServiceRequestStatus status);
+    
+    /**
+     * Count service requests by type
+     */
+    long countByType(ServiceRequestType type);
 } 
