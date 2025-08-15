@@ -80,6 +80,14 @@ public class Supplier {
     )
     private Set<SparePart> spareParts;
 
+    @Column(name = "supplies_devices")
+    @Builder.Default
+    private Boolean suppliesDevices = false;
+
+    @Column(name = "supplies_spare_parts")
+    @Builder.Default
+    private Boolean suppliesSpareParts = true;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Builder.Default
