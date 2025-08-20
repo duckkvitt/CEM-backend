@@ -18,9 +18,9 @@ import com.g47.cem.cemspareparts.repository.SparePartRepository;
 import com.g47.cem.cemspareparts.repository.SparePartsImportRequestRepository;
 import com.g47.cem.cemspareparts.repository.SupplierRepository;
 
-import lombok.RequiredArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
