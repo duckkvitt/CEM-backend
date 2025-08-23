@@ -63,27 +63,6 @@ public interface SparePartsInventoryTransactionRepository extends JpaRepository<
                                                         Pageable pageable);
     
     /**
-     * Search transactions with filters
-     */
-    @Query("SELECT spit FROM SparePartsInventoryTransaction spit " +
-           "LEFT JOIN FETCH spit.sparePart sp " +
-           "WHERE " +
-           "(:keyword IS NULL OR " +
-           "LOWER(spit.transactionNumber) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(sp.partName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(sp.partCode) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(spit.createdBy) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(spit.transactionReason) LIKE LOWER(CONCAT('%', :keyword, '%'))) AND " +
-           "(:transactionType IS NULL OR spit.transactionType = :transactionType) AND " +
-           "(:referenceType IS NULL OR spit.referenceType = :referenceType) AND " +
-           "(:sparePartId IS NULL OR spit.sparePart.id = :sparePartId)")
-    Page<SparePartsInventoryTransaction> searchTransactions(@Param("keyword") String keyword,
-                                                           @Param("transactionType") InventoryTransactionType transactionType,
-                                                           @Param("referenceType") InventoryReferenceType referenceType,
-                                                           @Param("sparePartId") Long sparePartId,
-                                                           Pageable pageable);
-    
-    /**
      * Get transaction statistics
      */
     @Query("SELECT " +
@@ -124,4 +103,26 @@ public interface SparePartsInventoryTransactionRepository extends JpaRepository<
     @Query("SELECT spit FROM SparePartsInventoryTransaction spit " +
            "WHERE spit.sparePart.id = :sparePartId ORDER BY spit.createdAt DESC")
     Optional<SparePartsInventoryTransaction> findLastTransactionForSparePart(@Param("sparePartId") Long sparePartId);
+
+    /**
+     * Search transactions with filters using JPQL with JOIN FETCH
+     */
+    @Query("SELECT DISTINCT spit FROM SparePartsInventoryTransaction spit " +
+           "LEFT JOIN FETCH spit.sparePart sp " +
+           "WHERE " +
+           "(:keyword IS NULL OR " +
+           "LOWER(spit.transactionNumber) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(sp.partName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(sp.partCode) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(spit.createdBy) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(spit.transactionReason) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+           "AND (:transactionType IS NULL OR spit.transactionType = :transactionType) " +
+           "AND (:referenceType IS NULL OR spit.referenceType = :referenceType) " +
+           "AND (:sparePartId IS NULL OR spit.sparePart.id = :sparePartId)")
+    Page<SparePartsInventoryTransaction> searchTransactions(
+            @Param("keyword") String keyword,
+            @Param("transactionType") InventoryTransactionType transactionType,
+            @Param("referenceType") InventoryReferenceType referenceType,
+            @Param("sparePartId") Long sparePartId,
+            Pageable pageable);
 }

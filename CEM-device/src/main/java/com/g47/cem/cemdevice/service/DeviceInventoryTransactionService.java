@@ -2,90 +2,97 @@ package com.g47.cem.cemdevice.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.g47.cem.cemdevice.entity.Device;
 import com.g47.cem.cemdevice.entity.DeviceInventoryTransaction;
+import com.g47.cem.cemdevice.entity.Device;
 import com.g47.cem.cemdevice.enums.InventoryTransactionType;
 import com.g47.cem.cemdevice.enums.InventoryReferenceType;
 import com.g47.cem.cemdevice.repository.DeviceInventoryTransactionRepository;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.g47.cem.cemdevice.repository.DeviceRepository;
 
 /**
- * Service for managing device inventory transactions
+ * Service class for DeviceInventoryTransaction operations
  */
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @Transactional
 public class DeviceInventoryTransactionService {
 
-    private final DeviceInventoryTransactionRepository transactionRepository;
+    @Autowired
+    private DeviceInventoryTransactionRepository transactionRepository;
+    
+    @Autowired
+    private DeviceRepository deviceRepository;
 
     /**
-     * Create import transaction
+     * Create a new transaction
      */
-    public DeviceInventoryTransaction createImportTransaction(
-            Device device, Integer quantity, Integer beforeQuantity, 
-            Long importRequestId, String reason, String createdBy) {
+    public DeviceInventoryTransaction createTransaction(DeviceInventoryTransaction transaction) {
+        // Validate device exists
+        Device device = deviceRepository.findById(transaction.getDevice().getId())
+                .orElseThrow(() -> new RuntimeException("Device not found"));
         
-        String transactionNumber = generateTransactionNumber();
-        DeviceInventoryTransaction transaction = DeviceInventoryTransaction.createImportTransaction(
-                device, quantity, beforeQuantity, importRequestId, reason, createdBy, transactionNumber);
+        // Set transaction number if not provided
+        if (transaction.getTransactionNumber() == null) {
+            transaction.setTransactionNumber(generateTransactionNumber());
+        }
         
-        DeviceInventoryTransaction saved = transactionRepository.save(transaction);
-        log.info("Created import transaction {} for device {} with quantity {}", 
-                transactionNumber, device.getId(), quantity);
-        return saved;
+        // Calculate quantities
+        if (transaction.getQuantityBefore() == null) {
+            transaction.setQuantityBefore(device.getQuantity());
+        }
+        
+        if (transaction.getQuantityAfter() == null) {
+            int change = transaction.getQuantityChange();
+            if (transaction.getTransactionType() == InventoryTransactionType.EXPORT) {
+                change = -change; // Export reduces quantity
+            }
+            transaction.setQuantityAfter(transaction.getQuantityBefore() + change);
+        }
+        
+        // Update device quantity
+        device.setQuantity(transaction.getQuantityAfter());
+        deviceRepository.save(device);
+        
+        return transactionRepository.save(transaction);
     }
 
     /**
-     * Create export transaction
+     * Get transaction by ID
      */
-    public DeviceInventoryTransaction createExportTransaction(
-            Device device, Integer quantity, Integer beforeQuantity, 
-            Long contractId, String reason, String createdBy) {
-        
-        String transactionNumber = generateTransactionNumber();
-        DeviceInventoryTransaction transaction = DeviceInventoryTransaction.createExportTransaction(
-                device, quantity, beforeQuantity, contractId, reason, createdBy, transactionNumber);
-        
-        DeviceInventoryTransaction saved = transactionRepository.save(transaction);
-        log.info("Created export transaction {} for device {} with quantity {}", 
-                transactionNumber, device.getId(), quantity);
-        return saved;
+    @Transactional(readOnly = true)
+    public Optional<DeviceInventoryTransaction> getTransactionById(Long id) {
+        return transactionRepository.findById(id);
     }
 
     /**
-     * Create adjustment transaction
+     * Get all transactions with pagination
      */
-    public DeviceInventoryTransaction createAdjustmentTransaction(
-            Device device, Integer newQuantity, Integer beforeQuantity, 
-            String reason, String createdBy) {
-        
-        String transactionNumber = generateTransactionNumber();
-        DeviceInventoryTransaction transaction = DeviceInventoryTransaction.createAdjustmentTransaction(
-                device, newQuantity, beforeQuantity, reason, createdBy, transactionNumber);
-        
-        DeviceInventoryTransaction saved = transactionRepository.save(transaction);
-        log.info("Created adjustment transaction {} for device {} from {} to {}", 
-                transactionNumber, device.getId(), beforeQuantity, newQuantity);
-        return saved;
+    @Transactional(readOnly = true)
+    public Page<DeviceInventoryTransaction> getAllTransactions(Pageable pageable) {
+        return transactionRepository.findAll(pageable);
     }
 
     /**
-     * Get transactions for a device
+     * Get transactions by device ID
      */
     @Transactional(readOnly = true)
     public List<DeviceInventoryTransaction> getTransactionsByDeviceId(Long deviceId) {
         return transactionRepository.findByDeviceIdOrderByCreatedAtDesc(deviceId);
+    }
+
+    /**
+     * Get transactions by type
+     */
+    @Transactional(readOnly = true)
+    public Page<DeviceInventoryTransaction> getTransactionsByType(InventoryTransactionType type, Pageable pageable) {
+        return transactionRepository.findByTransactionTypeOrderByCreatedAtDesc(type, pageable);
     }
 
     /**
@@ -97,12 +104,22 @@ public class DeviceInventoryTransactionService {
     }
 
     /**
-     * Search transactions
+     * Get transactions by created by user
+     */
+    @Transactional(readOnly = true)
+    public Page<DeviceInventoryTransaction> getTransactionsByCreatedBy(String createdBy, Pageable pageable) {
+        return transactionRepository.findByCreatedByOrderByCreatedAtDesc(createdBy, pageable);
+    }
+
+    /**
+     * Search transactions using repository method with JOIN FETCH
      */
     @Transactional(readOnly = true)
     public Page<DeviceInventoryTransaction> searchTransactions(
             String keyword, InventoryTransactionType transactionType, 
             InventoryReferenceType referenceType, Long deviceId, Pageable pageable) {
+        
+        // Use repository method with JOIN FETCH to avoid LazyInitializationException
         return transactionRepository.searchTransactions(keyword, transactionType, referenceType, deviceId, pageable);
     }
 

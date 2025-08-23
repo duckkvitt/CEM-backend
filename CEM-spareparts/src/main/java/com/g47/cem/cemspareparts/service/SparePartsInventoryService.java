@@ -140,12 +140,12 @@ public class SparePartsInventoryService {
     }
 
     /**
-     * Search inventory with filters
+     * Search inventory using repository method with JOIN FETCH
      */
     @Transactional(readOnly = true)
     public Page<SparePartsInventory> searchInventory(String keyword, Boolean lowStock, Boolean outOfStock, Pageable pageable) {
-        String keywordPattern = (keyword == null || keyword.isBlank()) ? null : ("%" + keyword.toLowerCase() + "%");
-        return inventoryRepository.searchInventory(keywordPattern, lowStock, outOfStock, pageable);
+        // Use repository method with JOIN FETCH to avoid LazyInitializationException
+        return inventoryRepository.searchInventory(keyword, lowStock, outOfStock, pageable);
     }
 
     /**

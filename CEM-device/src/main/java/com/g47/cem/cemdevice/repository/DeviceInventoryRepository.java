@@ -60,25 +60,6 @@ public interface DeviceInventoryRepository extends JpaRepository<DeviceInventory
     Long getActiveDeviceTypesCount();
     
     /**
-     * Search inventory with filters
-     */
-    @Query("SELECT di FROM DeviceInventory di JOIN FETCH di.device d WHERE " +
-           "(:keywordPattern IS NULL OR " +
-           "LOWER(d.name) LIKE :keywordPattern OR " +
-           "LOWER(d.model) LIKE :keywordPattern OR " +
-           "LOWER(d.serialNumber) LIKE :keywordPattern) AND " +
-           "(:lowStock IS NULL OR " +
-           "(:lowStock = true AND di.quantityInStock <= di.minimumStockLevel) OR " +
-           "(:lowStock = false AND di.quantityInStock > di.minimumStockLevel)) AND " +
-           "(:outOfStock IS NULL OR " +
-           "(:outOfStock = true AND di.quantityInStock = 0) OR " +
-           "(:outOfStock = false AND di.quantityInStock > 0))")
-    Page<DeviceInventory> searchInventory(@Param("keywordPattern") String keywordPattern,
-                                         @Param("lowStock") Boolean lowStock,
-                                         @Param("outOfStock") Boolean outOfStock,
-                                         Pageable pageable);
-    
-    /**
      * Get inventory statistics
      */
     @Query("SELECT " +
@@ -88,4 +69,37 @@ public interface DeviceInventoryRepository extends JpaRepository<DeviceInventory
            "COUNT(CASE WHEN di.quantityInStock = 0 THEN 1 END) as outOfStockCount " +
            "FROM DeviceInventory di")
     Object[] getInventoryStatistics();
+    
+    /**
+     * Get low stock items count for dashboard
+     */
+    @Query("SELECT COUNT(di) FROM DeviceInventory di WHERE di.quantityInStock <= di.minimumStockLevel")
+    Long getLowStockItemsCount();
+    
+    /**
+     * Get out of stock items count for dashboard
+     */
+    @Query("SELECT COUNT(di) FROM DeviceInventory di WHERE di.quantityInStock = 0")
+    Long getOutOfStockItemsCount();
+
+    /**
+     * Search inventory with filters using JPQL with JOIN FETCH
+     */
+    @Query("SELECT DISTINCT di FROM DeviceInventory di " +
+           "JOIN FETCH di.device d " +
+           "WHERE " +
+           "(:keyword IS NULL OR " +
+           "LOWER(d.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(d.model) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+           "AND (:lowStock IS NULL OR " +
+           "(:lowStock = true AND di.quantityInStock <= di.minimumStockLevel) OR " +
+           "(:lowStock = false AND di.quantityInStock > di.minimumStockLevel)) " +
+           "AND (:outOfStock IS NULL OR " +
+           "(:outOfStock = true AND di.quantityInStock = 0) OR " +
+           "(:outOfStock = false AND di.quantityInStock > 0))")
+    Page<DeviceInventory> searchInventory(
+            @Param("keyword") String keyword,
+            @Param("lowStock") Boolean lowStock,
+            @Param("outOfStock") Boolean outOfStock,
+            Pageable pageable);
 }

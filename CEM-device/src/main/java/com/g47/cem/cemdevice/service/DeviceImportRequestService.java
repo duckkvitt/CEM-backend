@@ -15,6 +15,7 @@ import com.g47.cem.cemdevice.entity.DeviceImportRequest;
 import com.g47.cem.cemdevice.enums.ImportRequestStatus;
 import com.g47.cem.cemdevice.repository.DeviceImportRequestRepository;
 import com.g47.cem.cemdevice.repository.DeviceRepository;
+import com.g47.cem.cemdevice.enums.InventoryReferenceType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -110,9 +111,10 @@ public class DeviceImportRequestService {
         inventoryService.addStock(
                 request.getDevice().getId(),
                 request.getRequestedQuantity(),
+                InventoryReferenceType.IMPORT_REQUEST,
+                request.getId(),
                 "Import request approved: " + request.getRequestNumber(),
-                reviewedBy,
-                request.getId()
+                reviewedBy
         );
         
         log.info("Approved device import request {} by {}", request.getRequestNumber(), reviewedBy);

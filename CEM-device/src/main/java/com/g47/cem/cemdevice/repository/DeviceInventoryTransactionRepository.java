@@ -57,25 +57,6 @@ public interface DeviceInventoryTransactionRepository extends JpaRepository<Devi
                                                     Pageable pageable);
     
     /**
-     * Search transactions with filters
-     */
-    @Query("SELECT dit FROM DeviceInventoryTransaction dit JOIN FETCH dit.device d WHERE " +
-           "(:keyword IS NULL OR " +
-           "LOWER(dit.transactionNumber) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(d.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(d.model) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(dit.createdBy) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(dit.transactionReason) LIKE LOWER(CONCAT('%', :keyword, '%'))) AND " +
-           "(:transactionType IS NULL OR dit.transactionType = :transactionType) AND " +
-           "(:referenceType IS NULL OR dit.referenceType = :referenceType) AND " +
-           "(:deviceId IS NULL OR dit.device.id = :deviceId)")
-    Page<DeviceInventoryTransaction> searchTransactions(@Param("keyword") String keyword,
-                                                       @Param("transactionType") InventoryTransactionType transactionType,
-                                                       @Param("referenceType") InventoryReferenceType referenceType,
-                                                       @Param("deviceId") Long deviceId,
-                                                       Pageable pageable);
-    
-    /**
      * Get transaction statistics
      */
     @Query("SELECT " +
@@ -113,4 +94,26 @@ public interface DeviceInventoryTransactionRepository extends JpaRepository<Devi
      */
     @Query("SELECT dit FROM DeviceInventoryTransaction dit WHERE dit.device.id = :deviceId ORDER BY dit.createdAt DESC")
     Optional<DeviceInventoryTransaction> findLastTransactionForDevice(@Param("deviceId") Long deviceId);
+
+    /**
+     * Search transactions with filters using JPQL with JOIN FETCH
+     */
+    @Query("SELECT DISTINCT dit FROM DeviceInventoryTransaction dit " +
+           "JOIN FETCH dit.device d " +
+           "WHERE " +
+           "(:keyword IS NULL OR " +
+           "LOWER(dit.transactionNumber) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(d.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(d.model) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(dit.createdBy) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(dit.transactionReason) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+           "AND (:transactionType IS NULL OR dit.transactionType = :transactionType) " +
+           "AND (:referenceType IS NULL OR dit.referenceType = :referenceType) " +
+           "AND (:deviceId IS NULL OR dit.device.id = :deviceId)")
+    Page<DeviceInventoryTransaction> searchTransactions(
+            @Param("keyword") String keyword,
+            @Param("transactionType") InventoryTransactionType transactionType,
+            @Param("referenceType") InventoryReferenceType referenceType,
+            @Param("deviceId") Long deviceId,
+            Pageable pageable);
 }

@@ -54,25 +54,6 @@ public interface SparePartsInventoryRepository extends JpaRepository<SparePartsI
     Long getActiveSparePartTypesCount();
     
     /**
-     * Search inventory with filters
-     */
-    @Query("SELECT spi FROM SparePartsInventory spi JOIN FETCH spi.sparePart sp WHERE " +
-           "(:keywordPattern IS NULL OR " +
-           "LOWER(sp.partName) LIKE :keywordPattern OR " +
-           "LOWER(sp.partCode) LIKE :keywordPattern OR " +
-           "LOWER(sp.description) LIKE :keywordPattern) AND " +
-           "(:lowStock IS NULL OR " +
-           "(:lowStock = true AND spi.quantityInStock <= spi.minimumStockLevel) OR " +
-           "(:lowStock = false AND spi.quantityInStock > spi.minimumStockLevel)) AND " +
-           "(:outOfStock IS NULL OR " +
-           "(:outOfStock = true AND spi.quantityInStock = 0) OR " +
-           "(:outOfStock = false AND spi.quantityInStock > 0))")
-    Page<SparePartsInventory> searchInventory(@Param("keywordPattern") String keywordPattern,
-                                            @Param("lowStock") Boolean lowStock,
-                                            @Param("outOfStock") Boolean outOfStock,
-                                            Pageable pageable);
-    
-    /**
      * Get inventory statistics
      */
     @Query("SELECT " +
@@ -82,15 +63,6 @@ public interface SparePartsInventoryRepository extends JpaRepository<SparePartsI
            "COUNT(CASE WHEN spi.quantityInStock = 0 THEN 1 END) as outOfStockCount " +
            "FROM SparePartsInventory spi")
     Object[] getInventoryStatistics();
-    
-    /**
-     * Find inventory items compatible with a specific device
-     */
-    @Query("SELECT spi FROM SparePartsInventory spi JOIN FETCH spi.sparePart sp WHERE " +
-           "(:deviceModel IS NULL OR " +
-           "LOWER(sp.compatibleDevices) LIKE LOWER(CONCAT('%', :deviceModel, '%'))) AND " +
-           "spi.quantityInStock > 0")
-    List<SparePartsInventory> findCompatibleSparePartsInStock(@Param("deviceModel") String deviceModel);
     
     /**
      * Get low stock items count for dashboard
@@ -103,4 +75,25 @@ public interface SparePartsInventoryRepository extends JpaRepository<SparePartsI
      */
     @Query("SELECT COUNT(spi) FROM SparePartsInventory spi WHERE spi.quantityInStock = 0")
     Long getOutOfStockItemsCount();
+
+    /**
+     * Search inventory with filters using JPQL with JOIN FETCH
+     */
+    @Query("SELECT DISTINCT spi FROM SparePartsInventory spi " +
+           "JOIN FETCH spi.sparePart sp " +
+           "WHERE " +
+           "(:keyword IS NULL OR " +
+           "LOWER(sp.partName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(sp.partCode) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+           "AND (:lowStock IS NULL OR " +
+           "(:lowStock = true AND spi.quantityInStock <= spi.minimumStockLevel) OR " +
+           "(:lowStock = false AND spi.quantityInStock > spi.minimumStockLevel)) " +
+           "AND (:outOfStock IS NULL OR " +
+           "(:outOfStock = true AND spi.quantityInStock = 0) OR " +
+           "(:outOfStock = false AND spi.quantityInStock > 0))")
+    Page<SparePartsInventory> searchInventory(
+            @Param("keyword") String keyword,
+            @Param("lowStock") Boolean lowStock,
+            @Param("outOfStock") Boolean outOfStock,
+            Pageable pageable);
 }

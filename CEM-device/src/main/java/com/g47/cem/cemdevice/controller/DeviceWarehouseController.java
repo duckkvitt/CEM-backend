@@ -106,6 +106,8 @@ public class DeviceWarehouseController {
         DeviceInventory adjusted = inventoryService.adjustStock(
                 request.getDeviceId(),
                 request.getNewQuantity(),
+                InventoryReferenceType.ADJUSTMENT,
+                null, // referenceId is null for manual adjustment
                 request.getReason(),
                 username
         );

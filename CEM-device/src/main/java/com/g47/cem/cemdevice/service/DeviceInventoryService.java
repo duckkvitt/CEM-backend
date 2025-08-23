@@ -3,6 +3,7 @@ package com.g47.cem.cemdevice.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.g47.cem.cemdevice.entity.Device;
 import com.g47.cem.cemdevice.entity.DeviceInventory;
 import com.g47.cem.cemdevice.entity.DeviceInventoryTransaction;
+import com.g47.cem.cemdevice.enums.InventoryTransactionType;
+import com.g47.cem.cemdevice.enums.InventoryReferenceType;
 import com.g47.cem.cemdevice.repository.DeviceInventoryRepository;
 import com.g47.cem.cemdevice.repository.DeviceInventoryTransactionRepository;
 import com.g47.cem.cemdevice.repository.DeviceRepository;
@@ -71,69 +74,67 @@ public class DeviceInventoryService {
     /**
      * Add stock to inventory
      */
-    public DeviceInventory addStock(Long deviceId, Integer quantity, String reason, String updatedBy, Long referenceId) {
+    public DeviceInventory addStock(Long deviceId, Integer quantity,
+                                   InventoryReferenceType referenceType, Long referenceId,
+                                   String reason, String createdBy) {
         DeviceInventory inventory = getOrCreateInventory(deviceId);
-        Integer beforeQuantity = inventory.getQuantityInStock();
-
-        inventory.addStock(quantity, updatedBy);
-        DeviceInventory savedInventory = deviceInventoryRepository.save(inventory);
-
+        
         // Create transaction record
-        transactionService.createImportTransaction(
-                inventory.getDevice(), quantity, beforeQuantity, 
-                referenceId, reason, updatedBy
-        );
-
-        log.info("Added {} units to device {} inventory. New quantity: {}", 
-                quantity, deviceId, savedInventory.getQuantityInStock());
-        return savedInventory;
+        DeviceInventoryTransaction transaction = DeviceInventoryTransaction.builder()
+                .device(inventory.getDevice())
+                .transactionType(InventoryTransactionType.IMPORT)
+                .quantityChange(quantity)
+                .referenceType(referenceType)
+                .referenceId(referenceId)
+                .transactionReason(reason)
+                .createdBy(createdBy)
+                .build();
+        
+        transactionRepository.save(transaction);
+        
+        // Update inventory
+        inventory.setQuantityInStock(inventory.getQuantityInStock() + quantity);
+        inventory.setLastUpdatedBy(createdBy);
+        
+        DeviceInventory saved = deviceInventoryRepository.save(inventory);
+        log.info("Added {} stock to device {} inventory. New total: {}", 
+                quantity, deviceId, saved.getQuantityInStock());
+        return saved;
     }
 
     /**
      * Remove stock from inventory
      */
-    public boolean removeStock(Long deviceId, Integer quantity, String reason, String updatedBy, Long referenceId) {
+    public DeviceInventory removeStock(Long deviceId, Integer quantity,
+                                      InventoryReferenceType referenceType, Long referenceId,
+                                      String reason, String createdBy) {
         DeviceInventory inventory = getOrCreateInventory(deviceId);
-        Integer beforeQuantity = inventory.getQuantityInStock();
-
-        if (beforeQuantity < quantity) {
-            log.warn("Insufficient stock for device {}. Requested: {}, Available: {}", 
-                    deviceId, quantity, beforeQuantity);
-            return false;
+        
+        if (inventory.getQuantityInStock() < quantity) {
+            throw new RuntimeException("Insufficient stock. Available: " + inventory.getQuantityInStock() + ", Requested: " + quantity);
         }
-
-        inventory.removeStock(quantity, updatedBy);
-        deviceInventoryRepository.save(inventory);
-
+        
         // Create transaction record
-        transactionService.createExportTransaction(
-                inventory.getDevice(), quantity, beforeQuantity, 
-                referenceId, reason, updatedBy
-        );
-
-        log.info("Removed {} units from device {} inventory. New quantity: {}", 
-                quantity, deviceId, inventory.getQuantityInStock());
-        return true;
-    }
-
-    /**
-     * Adjust stock to a specific quantity
-     */
-    public DeviceInventory adjustStock(Long deviceId, Integer newQuantity, String reason, String updatedBy) {
-        DeviceInventory inventory = getOrCreateInventory(deviceId);
-        Integer beforeQuantity = inventory.getQuantityInStock();
-
-        inventory.adjustStock(newQuantity, updatedBy);
-        DeviceInventory savedInventory = deviceInventoryRepository.save(inventory);
-
-        // Create transaction record
-        transactionService.createAdjustmentTransaction(
-                inventory.getDevice(), newQuantity, beforeQuantity, reason, updatedBy
-        );
-
-        log.info("Adjusted device {} inventory from {} to {}", 
-                deviceId, beforeQuantity, newQuantity);
-        return savedInventory;
+        DeviceInventoryTransaction transaction = DeviceInventoryTransaction.builder()
+                .device(inventory.getDevice())
+                .transactionType(InventoryTransactionType.EXPORT)
+                .quantityChange(-quantity)
+                .referenceType(referenceType)
+                .referenceId(referenceId)
+                .transactionReason(reason)
+                .createdBy(createdBy)
+                .build();
+        
+        transactionRepository.save(transaction);
+        
+        // Update inventory
+        inventory.setQuantityInStock(inventory.getQuantityInStock() - quantity);
+        inventory.setLastUpdatedBy(createdBy);
+        
+        DeviceInventory saved = deviceInventoryRepository.save(inventory);
+        log.info("Removed {} stock from device {} inventory. New total: {}", 
+                quantity, deviceId, saved.getQuantityInStock());
+        return saved;
     }
 
     /**
@@ -153,6 +154,39 @@ public class DeviceInventoryService {
         DeviceInventory saved = deviceInventoryRepository.save(inventory);
         log.info("Updated inventory settings for device {}: min={}, max={}", 
                 deviceId, minLevel, maxLevel);
+        return saved;
+    }
+
+    /**
+     * Adjust stock to a specific quantity
+     */
+    public DeviceInventory adjustStock(Long deviceId, Integer newQuantity,
+                                      InventoryReferenceType referenceType, Long referenceId,
+                                      String reason, String createdBy) {
+        DeviceInventory inventory = getOrCreateInventory(deviceId);
+        Integer beforeQuantity = inventory.getQuantityInStock();
+        Integer quantityChange = newQuantity - beforeQuantity;
+        
+        // Create transaction record
+        DeviceInventoryTransaction transaction = DeviceInventoryTransaction.builder()
+                .device(inventory.getDevice())
+                .transactionType(InventoryTransactionType.ADJUSTMENT)
+                .quantityChange(quantityChange)
+                .referenceType(referenceType)
+                .referenceId(referenceId)
+                .transactionReason(reason)
+                .createdBy(createdBy)
+                .build();
+        
+        transactionRepository.save(transaction);
+        
+        // Update inventory
+        inventory.setQuantityInStock(newQuantity);
+        inventory.setLastUpdatedBy(createdBy);
+        
+        DeviceInventory saved = deviceInventoryRepository.save(inventory);
+        log.info("Adjusted device {} inventory from {} to {}. Change: {}", 
+                deviceId, beforeQuantity, newQuantity, quantityChange);
         return saved;
     }
 
@@ -181,12 +215,12 @@ public class DeviceInventoryService {
     }
 
     /**
-     * Search inventory with filters
+     * Search inventory using repository method with JOIN FETCH
      */
     @Transactional(readOnly = true)
     public Page<DeviceInventory> searchInventory(String keyword, Boolean lowStock, Boolean outOfStock, Pageable pageable) {
-        String keywordPattern = (keyword == null || keyword.isBlank()) ? null : ("%" + keyword.toLowerCase() + "%");
-        return deviceInventoryRepository.searchInventory(keywordPattern, lowStock, outOfStock, pageable);
+        // Use repository method with JOIN FETCH to avoid LazyInitializationException
+        return deviceInventoryRepository.searchInventory(keyword, lowStock, outOfStock, pageable);
     }
 
     /**

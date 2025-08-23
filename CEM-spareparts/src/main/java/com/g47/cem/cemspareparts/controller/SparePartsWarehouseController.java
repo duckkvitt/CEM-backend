@@ -4,21 +4,33 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.g47.cem.cemspareparts.entity.SparePartsExportRequest;
 import com.g47.cem.cemspareparts.entity.SparePartsImportRequest;
 import com.g47.cem.cemspareparts.entity.SparePartsInventory;
+import com.g47.cem.cemspareparts.entity.SparePartsInventoryTransaction;
 import com.g47.cem.cemspareparts.enums.ExportRequestStatus;
 import com.g47.cem.cemspareparts.enums.ImportRequestStatus;
+import com.g47.cem.cemspareparts.enums.InventoryReferenceType;
+import com.g47.cem.cemspareparts.enums.InventoryTransactionType;
 import com.g47.cem.cemspareparts.service.SparePartsExportRequestService;
 import com.g47.cem.cemspareparts.service.SparePartsImportRequestService;
 import com.g47.cem.cemspareparts.service.SparePartsInventoryService;
+import com.g47.cem.cemspareparts.service.SparePartsInventoryTransactionService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +48,7 @@ public class SparePartsWarehouseController {
     private final SparePartsInventoryService inventoryService;
     private final SparePartsExportRequestService exportRequestService;
     private final SparePartsImportRequestService importRequestService;
+    private final SparePartsInventoryTransactionService transactionService;
 
     // === INVENTORY MANAGEMENT ===
 
@@ -480,6 +493,54 @@ public class SparePartsWarehouseController {
                 .sparePart(sparePart)
                 .supplier(supplier)
                 .build();
+    }
+
+    // === TRANSACTION MANAGEMENT ===
+
+    /**
+     * Get transactions for a specific spare part
+     */
+    @GetMapping("/transactions/spare-part/{sparePartId}")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    public ResponseEntity<List<SparePartsInventoryTransaction>> getSparePartTransactions(@PathVariable Long sparePartId) {
+        List<SparePartsInventoryTransaction> transactions = transactionService.getTransactionsBySparePartId(sparePartId);
+        return ResponseEntity.ok(transactions);
+    }
+
+    /**
+     * Search transactions
+     */
+    @GetMapping("/transactions/search")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    public ResponseEntity<Page<SparePartsInventoryTransaction>> searchTransactions(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) InventoryTransactionType transactionType,
+            @RequestParam(required = false) InventoryReferenceType referenceType,
+            @RequestParam(required = false) Long sparePartId,
+            Pageable pageable) {
+        Page<SparePartsInventoryTransaction> transactions = transactionService.searchTransactions(
+                keyword, transactionType, referenceType, sparePartId, pageable);
+        return ResponseEntity.ok(transactions);
+    }
+
+    /**
+     * Get recent transactions
+     */
+    @GetMapping("/transactions/recent")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    public ResponseEntity<Page<SparePartsInventoryTransaction>> getRecentTransactions(Pageable pageable) {
+        Page<SparePartsInventoryTransaction> transactions = transactionService.getRecentTransactions(pageable);
+        return ResponseEntity.ok(transactions);
+    }
+
+    /**
+     * Get transaction statistics
+     */
+    @GetMapping("/transactions/statistics")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    public ResponseEntity<SparePartsInventoryTransactionService.TransactionStatistics> getTransactionStatistics() {
+        SparePartsInventoryTransactionService.TransactionStatistics stats = transactionService.getTransactionStatistics();
+        return ResponseEntity.ok(stats);
     }
 
     // === DTOs ===

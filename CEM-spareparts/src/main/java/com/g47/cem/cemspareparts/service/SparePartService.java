@@ -9,6 +9,7 @@ import com.g47.cem.cemspareparts.enums.SparePartStatus;
 import com.g47.cem.cemspareparts.exception.BusinessException;
 import com.g47.cem.cemspareparts.exception.ResourceNotFoundException;
 import com.g47.cem.cemspareparts.repository.SparePartRepository;
+import com.g47.cem.cemspareparts.service.SparePartsInventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -30,6 +31,7 @@ public class SparePartService {
 
     private final SparePartRepository sparePartRepository;
     private final ModelMapper modelMapper;
+    private final SparePartsInventoryService inventoryService;
 
     public SparePartResponse createSparePart(CreateSparePartRequest request) {
         log.info("Creating new spare part with code: {}", request.getPartCode());
@@ -39,7 +41,11 @@ public class SparePartService {
         SparePart sparePart = modelMapper.map(request, SparePart.class);
         sparePart.setStatus(SparePartStatus.ACTIVE);
         SparePart savedSparePart = sparePartRepository.save(sparePart);
-        log.info("Successfully created spare part with ID: {}", savedSparePart.getId());
+        
+        // Create initial inventory record for the new spare part
+        inventoryService.getOrCreateInventory(savedSparePart.getId());
+        
+        log.info("Successfully created spare part with ID: {} and initial inventory", savedSparePart.getId());
         return modelMapper.map(savedSparePart, SparePartResponse.class);
     }
 
