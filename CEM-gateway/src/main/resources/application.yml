@@ -64,6 +64,24 @@ spring:
             - Path=/api/suppliers/**
           filters:
             - StripPrefix=1
+        - id: supplier-device-types-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/supplier-device-types/**
+          filters:
+            - StripPrefix=1
+        - id: spare-part-inventory-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/v1/spare-part-inventory/**
+          filters:
+            - StripPrefix=2
+        - id: spare-part-inventory-all-with-inventory
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/v1/spare-part-inventory/all-with-inventory/**
+          filters:
+            - StripPrefix=3
 
 management:
   endpoints:

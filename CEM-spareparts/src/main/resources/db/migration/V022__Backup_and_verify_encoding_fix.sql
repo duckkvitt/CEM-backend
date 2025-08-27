@@ -131,3 +131,4 @@ BEGIN
     RAISE NOTICE '   All inventory transaction queries should now work properly.';
     RAISE NOTICE '   Both spare parts and device services should function correctly.';
 END $$;
+

@@ -1,7 +1,5 @@
 package com.g47.cem.cemdevice.dto.request;
 
-import java.time.LocalDate;
-
 import com.g47.cem.cemdevice.enums.DeviceStatus;
 
 import jakarta.validation.constraints.NotBlank;
@@ -30,12 +28,8 @@ public class UpdateDeviceRequest {
     @Size(max = 255, message = "Serial number must not exceed 255 characters")
     private String serialNumber;
     
-    private LocalDate warrantyExpiry;
-    
     private DeviceStatus status;
 
-    private Integer quantity;
-    
     private java.math.BigDecimal price;
     
     @Size(max = 50, message = "Unit must not exceed 50 characters")

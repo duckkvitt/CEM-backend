@@ -20,3 +20,4 @@ END $$;
 -- Verify the table structure
 -- The spare_parts table should now only contain:
 -- id, part_name, part_code, description, compatible_devices, unit_of_measurement, status, created_at, updated_at
+

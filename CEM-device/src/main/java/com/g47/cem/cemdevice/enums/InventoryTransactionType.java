@@ -1,27 +1,14 @@
 package com.g47.cem.cemdevice.enums;
 
 /**
- * Enum representing types of inventory transactions
+ * Enum representing the types of inventory transactions
  */
 public enum InventoryTransactionType {
-    IMPORT("Import", "Nhập kho"),
-    EXPORT("Export", "Xuất kho"),
-    ADJUSTMENT("Adjustment", "Điều chỉnh"),
-    TRANSFER("Transfer", "Chuyển kho");
-
-    private final String englishName;
-    private final String vietnameseName;
-
-    InventoryTransactionType(String englishName, String vietnameseName) {
-        this.englishName = englishName;
-        this.vietnameseName = vietnameseName;
-    }
-
-    public String getEnglishName() {
-        return englishName;
-    }
-
-    public String getVietnameseName() {
-        return vietnameseName;
-    }
+    IMPORT,     // Stock in - from supplier
+    EXPORT,     // Stock out - to customer/task
+    ADJUSTMENT, // Stock adjustment - corrections, damages, etc.
+    TRANSFER,   // Stock transfer between locations
+    RETURN      // Return from customer
 }
+
+

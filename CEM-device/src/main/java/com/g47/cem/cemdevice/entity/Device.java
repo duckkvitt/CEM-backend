@@ -1,6 +1,5 @@
 package com.g47.cem.cemdevice.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,17 +57,10 @@ public class Device {
     @Column(name = "customer_id")
     private Long customerId;
     
-    @Column(name = "warranty_expiry")
-    private LocalDate warrantyExpiry;
-    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
     @Builder.Default
     private DeviceStatus status = DeviceStatus.ACTIVE;
-    
-    @Column(name = "quantity")
-    @Builder.Default
-    private Integer quantity = 1;
     
     @Column(name = "price", precision = 15, scale = 2)
     private java.math.BigDecimal price;

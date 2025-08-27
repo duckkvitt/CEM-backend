@@ -1,4 +1,4 @@
-package com.g47.cem.cemdevice.entity;
+package com.g47.cem.cemspareparts.entity;
 
 import java.time.LocalDateTime;
 
@@ -24,26 +24,26 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * DeviceInventory entity representing device stock in warehouse
+ * SparePartInventory entity representing spare part stock in warehouse
  */
 @Entity
-@Table(name = "device_inventory")
+@Table(name = "spare_part_inventory")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class DeviceInventory {
+public class SparePartInventory {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "device_id", nullable = false)
+    @JoinColumn(name = "spare_part_id", nullable = false)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Device device;
+    private SparePart sparePart;
     
     @Column(name = "quantity_in_stock", nullable = false)
     @Builder.Default

@@ -26,9 +26,6 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
     
     @Query("SELECT COUNT(d) FROM Device d WHERE d.status = :status")
     long countByStatus(@Param("status") DeviceStatus status);
-    
-    @Query("SELECT d FROM Device d WHERE d.warrantyExpiry IS NOT NULL AND d.warrantyExpiry < CURRENT_DATE")
-    Page<Device> findExpiredWarrantyDevices(Pageable pageable);
 
     /**
      * Search devices with flexible filters for keyword, stock status, and device status.

@@ -50,6 +50,7 @@ public interface SupplierDeviceTypeRepository extends JpaRepository<SupplierDevi
     
     /**
      * Search supplier device types with filters
+     * Enhanced query with better null handling and type safety
      */
     @Query("SELECT sdt FROM SupplierDeviceType sdt " +
            "LEFT JOIN FETCH sdt.supplier s " +
@@ -57,9 +58,10 @@ public interface SupplierDeviceTypeRepository extends JpaRepository<SupplierDevi
            "(:supplierId IS NULL OR sdt.supplier.id = :supplierId) AND " +
            "(:isActive IS NULL OR sdt.isActive = :isActive) AND " +
            "(:keyword IS NULL OR " +
-           "LOWER(sdt.deviceType) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(sdt.deviceModel) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-           "LOWER(s.companyName) LIKE LOWER(CONCAT('%', :keyword, '%')))")
+           "(:keyword != '' AND (" +
+           "LOWER(COALESCE(sdt.deviceType, '')) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(COALESCE(sdt.deviceModel, '')) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
+           "LOWER(COALESCE(s.companyName, '')) LIKE LOWER(CONCAT('%', :keyword, '%')))))")
     Page<SupplierDeviceType> searchSupplierDeviceTypes(@Param("supplierId") Long supplierId,
                                                        @Param("isActive") Boolean isActive,
                                                        @Param("keyword") String keyword,
@@ -107,4 +109,25 @@ public interface SupplierDeviceTypeRepository extends JpaRepository<SupplierDevi
            "LEFT JOIN FETCH sdt.supplier " +
            "WHERE sdt.supplier.id = :supplierId ORDER BY sdt.deviceType ASC")
     Page<SupplierDeviceType> findBySupplierIdOrderByDeviceType(@Param("supplierId") Long supplierId, Pageable pageable);
+    
+    /**
+     * Fallback native SQL query for search when JPA query fails due to type issues
+     * This query handles potential bytea/text type mismatches more gracefully
+     */
+    @Query(value = """
+            SELECT sdt.*, s.* FROM supplier_device_types sdt 
+            LEFT JOIN suppliers s ON s.id = sdt.supplier_id 
+            WHERE (:supplierId IS NULL OR s.id = :supplierId) 
+              AND (:isActive IS NULL OR sdt.is_active = :isActive) 
+              AND (:keyword IS NULL OR :keyword = '' OR (
+                LOWER(COALESCE(sdt.device_type, '')) LIKE LOWER(CONCAT('%', :keyword, '%')) OR 
+                LOWER(COALESCE(sdt.device_model, '')) LIKE LOWER(CONCAT('%', :keyword, '%')) OR 
+                LOWER(COALESCE(s.company_name, '')) LIKE LOWER(CONCAT('%', :keyword, '%'))
+              ))
+            ORDER BY sdt.id ASC
+            """, nativeQuery = true)
+    Page<SupplierDeviceType> searchSupplierDeviceTypesNative(@Param("supplierId") Long supplierId,
+                                                             @Param("isActive") Boolean isActive,
+                                                             @Param("keyword") String keyword,
+                                                             Pageable pageable);
 }
