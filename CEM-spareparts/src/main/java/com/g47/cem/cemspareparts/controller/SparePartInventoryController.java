@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  * REST controller for managing SparePartInventory operations
  */
 @RestController
-@RequestMapping("/api/v1/spare-part-inventory")
+@RequestMapping({"/api/v1/spare-part-inventory", "/spare-part-inventory"})
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Spare Part Inventory", description = "APIs for managing spare part inventory")
