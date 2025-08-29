@@ -10,8 +10,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.g47.cem.cemcontract.dto.request.external.CreateUserRequest;
-import com.g47.cem.cemcontract.dto.response.external.UserResponse;
 import com.g47.cem.cemcontract.dto.response.DeviceDto;
+import com.g47.cem.cemcontract.dto.response.external.UserResponse;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +75,11 @@ public class ExternalService {
             dto.setEmail(customer.getEmail());
             dto.setBusinessCode(null);
             dto.setTaxCode(customer.getCompanyTaxCode());
+            dto.setTitle(customer.getTitle());
+            dto.setIdentityNumber(customer.getIdentityNumber());
+            dto.setIdentityIssueDate(customer.getIdentityIssueDate());
+            dto.setIdentityIssuePlace(customer.getIdentityIssuePlace());
+            dto.setFax(customer.getFax());
             return dto;
         } catch (Exception e) {
             log.error("Failed to fetch customer info from Customer Service for ID {}: {}", customerId, e.getMessage());
@@ -243,6 +248,16 @@ public class ExternalService {
             dto.setEmail(customer.getEmail());
             dto.setBusinessCode(null);
             dto.setTaxCode(customer.getCompanyTaxCode());
+            dto.setTitle(customer.getTitle());
+            dto.setIdentityNumber(customer.getIdentityNumber());
+            dto.setIdentityIssueDate(customer.getIdentityIssueDate());
+            dto.setIdentityIssuePlace(customer.getIdentityIssuePlace());
+            dto.setFax(customer.getFax());
+            dto.setTitle(customer.getTitle());
+            dto.setIdentityNumber(customer.getIdentityNumber());
+            dto.setIdentityIssueDate(customer.getIdentityIssueDate());
+            dto.setIdentityIssuePlace(customer.getIdentityIssuePlace());
+            dto.setFax(customer.getFax());
             return dto;
         } catch (Exception e) {
             log.error("Failed to fetch customer info from Customer Service for email {}: {}", email, e.getMessage());
