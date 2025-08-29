@@ -16,4 +16,9 @@ public class CustomerDto {
     private String email;
     private String businessCode;
     private String taxCode;
+    private String title;
+    private String identityNumber;
+    private String identityIssueDate;
+    private String identityIssuePlace;
+    private String fax;
 }

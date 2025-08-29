@@ -1,6 +1,5 @@
 package com.g47.cem.cemdevice.dto.response;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,14 +25,12 @@ public class DeviceResponse {
     private String name;
     private String model;
     private String serialNumber;
-    private LocalDate warrantyExpiry;
     private DeviceStatus status;
     private String createdBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<DeviceNoteResponse> notes;
     private List<CustomerDeviceResponse> customerDevices;
-    private Integer quantity;
     private java.math.BigDecimal price;
     private String unit;
 } 

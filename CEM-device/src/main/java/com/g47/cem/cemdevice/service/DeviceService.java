@@ -48,10 +48,8 @@ public class DeviceService {
                 .model(request.getModel())
                 .serialNumber(request.getSerialNumber())
                 // customerId đã bị xóa
-                .quantity(request.getQuantity() != null ? request.getQuantity() : 1)
                 .price(request.getPrice())
                 .unit(request.getUnit())
-                .warrantyExpiry(request.getWarrantyExpiry())
                 .status(request.getStatus() != null ? request.getStatus() : DeviceStatus.ACTIVE)
                 .createdBy(createdBy)
                 .build();
@@ -157,12 +155,8 @@ public class DeviceService {
         device.setModel(request.getModel());
         device.setSerialNumber(request.getSerialNumber());
         // customerId đã bị xóa
-        if (request.getQuantity() != null) {
-            device.setQuantity(request.getQuantity());
-        }
         device.setPrice(request.getPrice());
         device.setUnit(request.getUnit());
-        device.setWarrantyExpiry(request.getWarrantyExpiry());
         if (request.getStatus() != null) {
             device.setStatus(request.getStatus());
         }
@@ -203,17 +197,6 @@ public class DeviceService {
         
         log.info("Device status updated successfully for ID: {}", id);
         return mapToDeviceResponse(device);
-    }
-    
-    /**
-     * Get expired warranty devices
-     */
-    @Transactional(readOnly = true)
-    public Page<DeviceResponse> getExpiredWarrantyDevices(Pageable pageable) {
-        log.debug("Fetching expired warranty devices");
-        
-        Page<Device> devices = deviceRepository.findExpiredWarrantyDevices(pageable);
-        return devices.map(this::mapToDeviceResponse);
     }
     
     /**
