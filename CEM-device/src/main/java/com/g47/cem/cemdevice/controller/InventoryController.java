@@ -104,8 +104,8 @@ public class InventoryController {
      * Get spare parts inventory overview
      */
     @GetMapping("/spare-parts")
-    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
-    @Operation(summary = "Get spare parts inventory overview", description = "Get overview of all spare parts inventory (Staff, Support Team, TechLead, Manager access required)")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'TECHNICIAN')")
+    @Operation(summary = "Get spare parts inventory overview", description = "Get overview of all spare parts inventory (Staff, Support Team, TechLead, Manager, Technician access required)")
     public ResponseEntity<ApiResponse<SparePartDto[]>> getSparePartsInventoryOverview() {
         log.debug("Fetching spare parts inventory overview");
         
@@ -124,8 +124,8 @@ public class InventoryController {
      * Get suppliers data
      */
     @GetMapping("/suppliers")
-    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
-    @Operation(summary = "Get suppliers data", description = "Get all suppliers data for inventory management (Staff, Support Team, TechLead, Manager access required)")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'TECHNICIAN')")
+    @Operation(summary = "Get suppliers data", description = "Get all suppliers data for inventory management (Staff, Support Team, TechLead, Manager, Technician access required)")
     public ResponseEntity<ApiResponse<SupplierDto[]>> getSuppliersData() {
         log.debug("Fetching suppliers data");
         
@@ -144,8 +144,8 @@ public class InventoryController {
      * Get supplier device types data
      */
     @GetMapping("/supplier-device-types")
-    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
-    @Operation(summary = "Get supplier device types data", description = "Get all supplier device types data for inventory management (Staff, Support Team, TechLead, Manager access required)")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'TECHNICIAN')")
+    @Operation(summary = "Get supplier device types data", description = "Get all supplier device types data for inventory management (Staff, Support Team, TechLead, Manager, Technician access required)")
     public ResponseEntity<ApiResponse<SupplierDeviceTypeDto[]>> getSupplierDeviceTypesData() {
         log.debug("Fetching supplier device types data");
         
@@ -231,8 +231,8 @@ public class InventoryController {
      * Get all inventory transactions
      */
     @GetMapping("/transactions")
-    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
-    @Operation(summary = "Get all inventory transactions", description = "Get all inventory transactions (Staff, Support Team, TechLead, Manager access required)")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'TECHNICIAN')")
+    @Operation(summary = "Get all inventory transactions", description = "Get all inventory transactions (Staff, Support Team, TechLead, Manager, Technician access required)")
     public ResponseEntity<ApiResponse<InventoryTransactionResponse[]>> getAllInventoryTransactions() {
         log.debug("Fetching all inventory transactions");
         
@@ -246,8 +246,8 @@ public class InventoryController {
      * Get inventory transactions by item type
      */
     @GetMapping("/transactions/type/{itemType}")
-    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
-    @Operation(summary = "Get inventory transactions by item type", description = "Get inventory transactions filtered by item type (Staff, Support Team, TechLead, Manager access required)")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'TECHNICIAN')")
+    @Operation(summary = "Get inventory transactions by item type", description = "Get inventory transactions filtered by item type (Staff, Support Team, TechLead, Manager, Technician access required)")
     public ResponseEntity<ApiResponse<InventoryTransactionResponse[]>> getInventoryTransactionsByItemType(
             @Parameter(description = "Item type (DEVICE or SPARE_PART)") @PathVariable InventoryItemType itemType) {
         log.debug("Fetching inventory transactions for item type: {}", itemType);
@@ -262,8 +262,8 @@ public class InventoryController {
      * Get inventory transactions by transaction type
      */
     @GetMapping("/transactions/transaction-type/{transactionType}")
-    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
-    @Operation(summary = "Get inventory transactions by transaction type", description = "Get inventory transactions filtered by transaction type (Staff, Support Team, TechLead, Manager access required)")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'TECHNICIAN')")
+    @Operation(summary = "Get inventory transactions by transaction type", description = "Get inventory transactions filtered by transaction type (Staff, Support Team, TechLead, Manager, Technician access required)")
     public ResponseEntity<ApiResponse<InventoryTransactionResponse[]>> getInventoryTransactionsByType(
             @Parameter(description = "Transaction type (IMPORT, EXPORT, ADJUSTMENT, etc.)") @PathVariable InventoryTransactionType transactionType) {
         log.debug("Fetching inventory transactions for transaction type: {}", transactionType);
@@ -278,8 +278,8 @@ public class InventoryController {
      * Search inventory transactions
      */
     @GetMapping("/transactions/search")
-    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
-    @Operation(summary = "Search inventory transactions", description = "Search inventory transactions with filters (Staff, Support Team, TechLead, Manager access required)")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'TECHNICIAN')")
+    @Operation(summary = "Search inventory transactions", description = "Search inventory transactions with filters (Staff, Support Team, TechLead, Manager, Technician access required)")
     public ResponseEntity<ApiResponse<Page<InventoryTransactionResponse>>> searchInventoryTransactions(
             @Parameter(description = "Search keyword") @RequestParam(required = false) String keyword,
             @Parameter(description = "Item type filter") @RequestParam(required = false) InventoryItemType itemType,
