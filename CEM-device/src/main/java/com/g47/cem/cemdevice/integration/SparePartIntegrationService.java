@@ -17,6 +17,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 /**
  * Service for integrating with Spare Parts service
@@ -259,8 +261,23 @@ public class SparePartIntegrationService {
                 return false;
             }
 
+        } catch (HttpClientErrorException.Conflict e) {
+            // Handle 409 Conflict specifically
+            log.warn("Conflict error (409) when removing stock from spare part ID: {}. Error: {}", 
+                    sparePartId, e.getMessage());
+            return false;
+        } catch (HttpClientErrorException e) {
+            // Handle other HTTP client errors (4xx)
+            log.warn("HTTP client error when removing stock from spare part ID: {}. Status: {}, Error: {}", 
+                    sparePartId, e.getStatusCode(), e.getMessage());
+            return false;
+        } catch (HttpServerErrorException e) {
+            // Handle HTTP server errors (5xx)
+            log.error("HTTP server error when removing stock from spare part ID: {}. Status: {}, Error: {}", 
+                    sparePartId, e.getStatusCode(), e.getMessage());
+            return false;
         } catch (Exception e) {
-            log.error("Error removing stock from spare part inventory for spare part ID: {}", sparePartId, e);
+            log.error("Unexpected error removing stock from spare part inventory for spare part ID: {}", sparePartId, e);
             return false;
         }
     }

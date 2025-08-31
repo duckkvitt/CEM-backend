@@ -1,5 +1,7 @@
 package com.g47.cem.cemdevice.dto.request;
 
+import java.time.LocalDate;
+
 import com.g47.cem.cemdevice.enums.DeviceStatus;
 
 import jakarta.validation.constraints.NotBlank;
@@ -34,4 +36,6 @@ public class UpdateDeviceRequest {
     
     @Size(max = 50, message = "Unit must not exceed 50 characters")
     private String unit;
+    
+    private LocalDate warrantyExpiry;
 } 

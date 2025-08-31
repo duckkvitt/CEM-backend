@@ -157,6 +157,7 @@ public class DeviceService {
         // customerId đã bị xóa
         device.setPrice(request.getPrice());
         device.setUnit(request.getUnit());
+        device.setWarrantyExpiry(request.getWarrantyExpiry());
         if (request.getStatus() != null) {
             device.setStatus(request.getStatus());
         }

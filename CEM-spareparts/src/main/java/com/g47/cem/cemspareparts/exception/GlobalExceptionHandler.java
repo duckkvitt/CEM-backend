@@ -1,8 +1,8 @@
 package com.g47.cem.cemspareparts.exception;
 
-import com.g47.cem.cemspareparts.dto.response.ApiResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.g47.cem.cemspareparts.dto.response.ApiResponse;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
 @Slf4j
@@ -56,10 +58,23 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Object>> handleDataIntegrityViolationException(
             DataIntegrityViolationException ex, HttpServletRequest request) {
         log.error("Data integrity violation for request {}: {}", request.getRequestURI(), ex.getMessage());
+        
         String message = "Data integrity constraint violation. Please check your input.";
-        if (ex.getMessage() != null && ex.getMessage().contains("duplicate key")) {
-            message = "Resource already exists with the provided information.";
+        
+        // Check for specific constraint violations
+        if (ex.getMessage() != null) {
+            String errorMsg = ex.getMessage().toLowerCase();
+            if (errorMsg.contains("duplicate key") || errorMsg.contains("unique constraint")) {
+                message = "Resource already exists with the provided information.";
+            } else if (errorMsg.contains("foreign key constraint")) {
+                message = "Cannot perform operation: referenced resource does not exist.";
+            } else if (errorMsg.contains("check constraint")) {
+                message = "Invalid data: value does not meet required constraints.";
+            } else if (errorMsg.contains("not null constraint")) {
+                message = "Required field is missing or empty.";
+            }
         }
+        
         ApiResponse<Object> response = ApiResponse.error(
                 message, HttpStatus.CONFLICT.value(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);

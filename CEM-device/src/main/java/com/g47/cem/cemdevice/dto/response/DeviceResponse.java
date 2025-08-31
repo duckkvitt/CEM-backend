@@ -1,5 +1,6 @@
 package com.g47.cem.cemdevice.dto.response;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,4 +34,5 @@ public class DeviceResponse {
     private List<CustomerDeviceResponse> customerDevices;
     private java.math.BigDecimal price;
     private String unit;
+    private LocalDate warrantyExpiry;
 } 

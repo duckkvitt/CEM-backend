@@ -315,21 +315,68 @@ public class SparePartInventoryService {
     public SparePartInventoryResponse addStock(Long sparePartId, Integer quantity, String notes) {
         log.info("Adding {} units to spare part inventory for spare part ID: {}", quantity, sparePartId);
         
-        SparePartInventory inventory = sparePartInventoryRepository.findBySparePartId(sparePartId)
-                .orElseThrow(() -> new ResourceNotFoundException("SparePartInventory", "sparePartId", sparePartId));
-        
-        inventory.addStock(quantity);
-        if (notes != null && !notes.trim().isEmpty()) {
-            String currentNotes = inventory.getNotes();
-            String newNotes = currentNotes != null ? currentNotes + "\n" + notes : notes;
-            inventory.setNotes(newNotes);
+        // Use a more robust approach to handle race conditions
+        SparePartInventory inventory = null;
+        try {
+            // First, try to find existing inventory
+            Optional<SparePartInventory> existingInventory = sparePartInventoryRepository.findBySparePartId(sparePartId);
+            
+            if (existingInventory.isPresent()) {
+                inventory = existingInventory.get();
+                log.debug("Found existing inventory record for spare part ID: {}", sparePartId);
+            } else {
+                // Create new inventory record with proper error handling
+                log.info("No inventory record found for spare part ID: {}, creating new one", sparePartId);
+                SparePart sparePart = sparePartRepository.findById(sparePartId)
+                        .orElseThrow(() -> new ResourceNotFoundException("SparePart", "id", sparePartId));
+                
+                try {
+                    inventory = SparePartInventory.builder()
+                            .sparePart(sparePart)
+                            .quantityInStock(0)
+                            .minimumStockLevel(5)
+                            .maximumStockLevel(100)
+                            .reorderPoint(10)
+                            .warehouseLocation("Main Warehouse")
+                            .createdBy("System")
+                            .build();
+                    
+                    // Save the new inventory record
+                    inventory = sparePartInventoryRepository.save(inventory);
+                    log.info("Successfully created new inventory record for spare part ID: {}", sparePartId);
+                } catch (Exception e) {
+                    // If save fails due to duplicate, try to find the record again
+                    log.warn("Failed to create inventory record, checking if it was created by another thread: {}", e.getMessage());
+                    Optional<SparePartInventory> retryInventory = sparePartInventoryRepository.findBySparePartId(sparePartId);
+                    if (retryInventory.isPresent()) {
+                        inventory = retryInventory.get();
+                        log.info("Found inventory record created by another thread for spare part ID: {}", sparePartId);
+                    } else {
+                        // If still not found, re-throw the original exception
+                        throw e;
+                    }
+                }
+            }
+            
+            // Now add stock to the inventory
+            inventory.addStock(quantity);
+            if (notes != null && !notes.trim().isEmpty()) {
+                String currentNotes = inventory.getNotes();
+                String newNotes = currentNotes != null ? currentNotes + "\n" + notes : notes;
+                inventory.setNotes(newNotes);
+            }
+            
+            SparePartInventory updatedInventory = sparePartInventoryRepository.save(inventory);
+            log.info("Successfully added {} units to spare part inventory. New quantity: {}", 
+                    quantity, updatedInventory.getQuantityInStock());
+            
+            return SparePartInventoryResponse.fromEntity(updatedInventory);
+            
+        } catch (Exception e) {
+            log.error("Error adding stock to spare part inventory for spare part ID: {}", sparePartId, e);
+            throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR, 
+                "Failed to add stock to spare part inventory: " + e.getMessage());
         }
-        
-        SparePartInventory updatedInventory = sparePartInventoryRepository.save(inventory);
-        log.info("Successfully added {} units to spare part inventory. New quantity: {}", 
-                quantity, updatedInventory.getQuantityInStock());
-        
-        return SparePartInventoryResponse.fromEntity(updatedInventory);
     }
     
     /**
@@ -338,26 +385,77 @@ public class SparePartInventoryService {
     public SparePartInventoryResponse removeStock(Long sparePartId, Integer quantity, String notes) {
         log.info("Removing {} units from spare part inventory for spare part ID: {}", quantity, sparePartId);
         
-        SparePartInventory inventory = sparePartInventoryRepository.findBySparePartId(sparePartId)
-                .orElseThrow(() -> new ResourceNotFoundException("SparePartInventory", "sparePartId", sparePartId));
-        
-        if (inventory.getQuantityInStock() < quantity) {
-            throw new BusinessException(HttpStatus.BAD_REQUEST, "Insufficient stock. Available: " + inventory.getQuantityInStock() + 
-                    ", Requested: " + quantity);
+        // Use a more robust approach to handle race conditions
+        SparePartInventory inventory = null;
+        try {
+            // First, try to find existing inventory
+            Optional<SparePartInventory> existingInventory = sparePartInventoryRepository.findBySparePartId(sparePartId);
+            
+            if (existingInventory.isPresent()) {
+                inventory = existingInventory.get();
+                log.debug("Found existing inventory record for spare part ID: {}", sparePartId);
+            } else {
+                // Create new inventory record with proper error handling
+                log.info("No inventory record found for spare part ID: {}, creating new one", sparePartId);
+                SparePart sparePart = sparePartRepository.findById(sparePartId)
+                        .orElseThrow(() -> new ResourceNotFoundException("SparePart", "id", sparePartId));
+                
+                try {
+                    inventory = SparePartInventory.builder()
+                            .sparePart(sparePart)
+                            .quantityInStock(0)
+                            .minimumStockLevel(5)
+                            .maximumStockLevel(100)
+                            .reorderPoint(10)
+                            .warehouseLocation("Main Warehouse")
+                            .createdBy("System")
+                            .build();
+                    
+                    // Save the new inventory record
+                    inventory = sparePartInventoryRepository.save(inventory);
+                    log.info("Successfully created new inventory record for spare part ID: {}", sparePartId);
+                } catch (Exception e) {
+                    // If save fails due to duplicate, try to find the record again
+                    log.warn("Failed to create inventory record, checking if it was created by another thread: {}", e.getMessage());
+                    Optional<SparePartInventory> retryInventory = sparePartInventoryRepository.findBySparePartId(sparePartId);
+                    if (retryInventory.isPresent()) {
+                        inventory = retryInventory.get();
+                        log.info("Found inventory record created by another thread for spare part ID: {}", sparePartId);
+                    } else {
+                        // If still not found, re-throw the original exception
+                        throw e;
+                    }
+                }
+            }
+            
+            // Check if we have sufficient stock to remove
+            if (inventory.getQuantityInStock() < quantity) {
+                throw new BusinessException(HttpStatus.BAD_REQUEST, "Insufficient stock. Available: " + inventory.getQuantityInStock() + 
+                        ", Requested: " + quantity);
+            }
+            
+            // Now remove stock from the inventory
+            inventory.removeStock(quantity);
+            if (notes != null && !notes.trim().isEmpty()) {
+                String currentNotes = inventory.getNotes();
+                String newNotes = currentNotes != null ? currentNotes + "\n" + notes : notes;
+                inventory.setNotes(newNotes);
+            }
+            
+            SparePartInventory updatedInventory = sparePartInventoryRepository.save(inventory);
+            log.info("Successfully removed {} units from spare part inventory. New quantity: {}", 
+                    quantity, updatedInventory.getQuantityInStock());
+            
+            return SparePartInventoryResponse.fromEntity(updatedInventory);
+            
+        } catch (Exception e) {
+            log.error("Error removing stock from spare part inventory for spare part ID: {}", sparePartId, e);
+            if (e instanceof BusinessException) {
+                throw e;
+            }
+            throw new BusinessException(HttpStatus.INTERNAL_SERVER_ERROR, 
+                "Failed to remove stock from spare part inventory: " + e.getMessage());
         }
-        
-        inventory.removeStock(quantity);
-        if (notes != null && !notes.trim().isEmpty()) {
-            String currentNotes = inventory.getNotes();
-            String newNotes = currentNotes != null ? currentNotes + "\n" + notes : notes;
-            inventory.setNotes(newNotes);
-        }
-        
-        SparePartInventory updatedInventory = sparePartInventoryRepository.save(inventory);
-        log.info("Successfully removed {} units from spare part inventory. New quantity: {}", 
-                quantity, updatedInventory.getQuantityInStock());
-        
-        return SparePartInventoryResponse.fromEntity(updatedInventory);
     }
     
     /**

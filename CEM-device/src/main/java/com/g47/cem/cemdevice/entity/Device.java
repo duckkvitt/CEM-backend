@@ -1,5 +1,6 @@
 package com.g47.cem.cemdevice.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -67,6 +68,9 @@ public class Device {
     
     @Column(name = "unit", length = 50)
     private String unit;
+    
+    @Column(name = "warranty_expiry")
+    private LocalDate warrantyExpiry;
     
     @Column(name = "created_by")
     private String createdBy;
