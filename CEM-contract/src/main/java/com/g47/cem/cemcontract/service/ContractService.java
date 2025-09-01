@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
@@ -42,8 +44,11 @@ import com.g47.cem.cemcontract.dto.request.CreateContractRequest;
 import com.g47.cem.cemcontract.dto.request.LinkDevicesRequest;
 import com.g47.cem.cemcontract.dto.request.SignatureRequestDto;
 import com.g47.cem.cemcontract.dto.request.UpdateContractRequest;
+import com.g47.cem.cemcontract.dto.request.UploadExistContractRequest;
+import com.g47.cem.cemcontract.dto.request.external.CreateUserRequest;
 import com.g47.cem.cemcontract.dto.response.ContractResponseDto;
 import com.g47.cem.cemcontract.dto.response.DeviceDto;
+import com.g47.cem.cemcontract.dto.response.external.UserResponse;
 import com.g47.cem.cemcontract.entity.Contract;
 import com.g47.cem.cemcontract.entity.ContractDeliverySchedule;
 import com.g47.cem.cemcontract.entity.ContractDetail;
@@ -205,6 +210,118 @@ public class ContractService {
         
         addHistory(savedContract, ContractAction.CREATED, "Contract created by " + username, username, null, null);
         log.info("Contract created with ID: {}", savedContract.getId());
+        return mapToDto(savedContract);
+    }
+
+    @Transactional
+    public ContractResponseDto uploadExistContract(UploadExistContractRequest requestDto, String username, HttpServletRequest request, String authToken) {
+        // Generate contract number
+        String contractNumber = contractNumberGenerator.generate();
+        
+        // Determine staffId - use from request if provided, otherwise get from JWT token
+        Long staffId = requestDto.getStaffId();
+        if (staffId == null) {
+            // Get userId from request attributes (set by JwtAuthenticationFilter)
+            Object userIdObj = request.getAttribute("userId");
+            if (userIdObj instanceof Long) {
+                staffId = ((Long) userIdObj).longValue();
+            } else if (userIdObj instanceof Integer) {
+                staffId = ((Integer) userIdObj).longValue();
+            }
+        }
+        
+        // Validate that we have a staffId
+        if (staffId == null) {
+            throw new BusinessException("Unable to determine staff ID for contract creation");
+        }
+        
+        // Check if customer has a user account, create one if they don't
+        ensureCustomerHasUserAccount(requestDto.getCustomerId(), authToken);
+        
+        Contract contract = Contract.builder()
+                        .contractNumber(contractNumber)
+                        .title(requestDto.getTitle())
+                        .description(requestDto.getDescription())
+                        .customerId(requestDto.getCustomerId())
+                        .staffId(staffId)
+                        .totalValue(requestDto.getTotalValue())
+                        // Note: startDate, endDate, paymentMethod, paymentTerm, bankAccount, warrantyProduct, warrantyPeriodMonths are NOT set
+                        // as they are not part of upload exist contract
+                        .status(ContractStatus.ACTIVE) // Set to ACTIVE since both parties have already signed the existing contract
+                        .isHidden(false)
+                        .createdBy(username)
+                        .filePath(requestDto.getFilePath()) // Use the uploaded PDF file path
+                        .build();
+
+        // Tạo contract details nếu có
+        if (requestDto.getContractDetails() != null && !requestDto.getContractDetails().isEmpty()) {
+            List<ContractDetail> details = requestDto.getContractDetails().stream().map(detailDto -> {
+                ContractDetail detail = ContractDetail.builder()
+                        .contract(contract)
+                        .workCode(detailDto.getWorkCode())
+                        .deviceId(detailDto.getDeviceId())
+                        .description(detailDto.getDescription())
+                        .quantity(detailDto.getQuantity())
+                        .unitPrice(detailDto.getUnitPrice())
+                        .warrantyMonths(detailDto.getWarrantyMonths())
+                        .notes(detailDto.getNotes())
+                        .build();
+                detail.calculateTotalPrice();
+                
+                // Log device information for debugging
+                if (detailDto.getDeviceId() != null) {
+                    log.debug("Adding device to contract: deviceId={}, description={}, quantity={}", 
+                            detailDto.getDeviceId(), detailDto.getDescription(), detailDto.getQuantity());
+                }
+                
+                return detail;
+            }).collect(Collectors.toList());
+            
+            contract.setContractDetails(details);
+            contract.updateTotalValue();
+            
+            // Log total devices in contract - these will be automatically added to customer's My Device
+            long deviceCount = details.stream().filter(d -> d.getDeviceId() != null).count();
+            log.info("Contract created with {} devices out of {} total items - devices will be added to customer's My Device", deviceCount, details.size());
+        }
+        
+        // Tạo delivery schedules nếu có (Điều 3)
+        if (requestDto.getDeliverySchedules() != null && !requestDto.getDeliverySchedules().isEmpty()) {
+            List<ContractDeliverySchedule> deliverySchedules = new ArrayList<>();
+            for (int i = 0; i < requestDto.getDeliverySchedules().size(); i++) {
+                UploadExistContractRequest.CreateDeliveryScheduleRequest deliveryDto = requestDto.getDeliverySchedules().get(i);
+                ContractDeliverySchedule schedule = ContractDeliverySchedule.builder()
+                        .contract(contract)
+                        .sequenceNumber(i + 1) // STT starts from 1
+                        .itemName(deliveryDto.getItemName())
+                        .unit(deliveryDto.getUnit())
+                        .quantity(deliveryDto.getQuantity())
+                        .deliveryTime(deliveryDto.getDeliveryTime())
+                        .deliveryLocation(deliveryDto.getDeliveryLocation())
+                        .notes(deliveryDto.getNotes())
+                        .build();
+                deliverySchedules.add(schedule);
+            }
+            contract.setDeliverySchedules(deliverySchedules);
+        }
+
+        Contract savedContract = contractRepository.save(contract);
+        
+        // No need to generate PDF since we're using an existing one
+        // The contract is set to ACTIVE status since both parties have already signed the existing contract
+
+        addHistory(savedContract, ContractAction.CREATED, "Contract uploaded from existing PDF (already signed by both parties) by " + username, username, null, null);
+        log.info("Contract uploaded from existing PDF with ID: {} - Status: ACTIVE (both parties signed)", savedContract.getId());
+        
+        // Since this contract is immediately ACTIVE, trigger device linking to add devices to customer's My Device
+        if (savedContract.getContractDetails() != null && !savedContract.getContractDetails().isEmpty()) {
+            long deviceCount = savedContract.getContractDetails().stream().filter(d -> d.getDeviceId() != null).count();
+            if (deviceCount > 0) {
+                log.info("Triggering device linking for Upload Exist Contract {} with {} devices", savedContract.getId(), deviceCount);
+                triggerDeviceLinkingForContract(savedContract);
+            }
+        }
+        
         return mapToDto(savedContract);
     }
 
@@ -1314,15 +1431,18 @@ public class ContractService {
                     dto.setServiceName(device.getName()); // Set serviceName for frontend compatibility
                     log.debug("Successfully fetched device info for deviceId: {} - Name: {}", detail.getDeviceId(), device.getName());
                 } else {
-                    dto.setDeviceName("Device not found (ID: " + detail.getDeviceId() + ")");
-                    dto.setServiceName("Device not found (ID: " + detail.getDeviceId() + ")");
-                    log.warn("Device not found for deviceId: {}", detail.getDeviceId());
+                    // Device not found - use description as fallback and log warning
+                    dto.setDeviceName(detail.getDescription() != null ? detail.getDescription() : "Device (ID: " + detail.getDeviceId() + ")");
+                    dto.setServiceName(detail.getDescription() != null ? detail.getDescription() : "Device (ID: " + detail.getDeviceId() + ")");
+                    dto.setDeviceModel("N/A");
+                    log.warn("Device not found for deviceId: {} - using description as fallback: {}", detail.getDeviceId(), detail.getDescription());
                 }
             } catch (Exception e) {
-                log.error("Could not fetch device info for deviceId: {} - Error: {}", detail.getDeviceId(), e.getMessage());
-                dto.setDeviceName("Device info unavailable (ID: " + detail.getDeviceId() + ")");
-                dto.setServiceName("Device info unavailable (ID: " + detail.getDeviceId() + ")");
-                dto.setDeviceModel("Error: " + e.getMessage());
+                // Error fetching device info - use description as fallback and log error
+                log.error("Could not fetch device info for deviceId: {} - Error: {}. Using description as fallback.", detail.getDeviceId(), e.getMessage());
+                dto.setDeviceName(detail.getDescription() != null ? detail.getDescription() : "Device (ID: " + detail.getDeviceId() + ")");
+                dto.setServiceName(detail.getDescription() != null ? detail.getDescription() : "Device (ID: " + detail.getDeviceId() + ")");
+                dto.setDeviceModel("N/A");
             }
         } else {
             // Use description as device name for non-device items
@@ -1402,5 +1522,138 @@ public class ContractService {
             }
         }
         return null;
+    }
+
+    /**
+     * Ensure that a customer has a user account in the authentication service.
+     * If they don't have one, create it automatically.
+     */
+    private void ensureCustomerHasUserAccount(Long customerId, String authToken) {
+        try {
+            // Get customer info from Customer service
+            CustomerDto customer = externalService.getCustomerInfo(customerId, authToken);
+            
+            if (customer == null) {
+                log.error("Failed to fetch customer info from Customer Service for customer ID: {}. Cannot create user account.", customerId);
+                throw new BusinessException("Failed to fetch customer information. Please check if the customer exists.");
+            }
+
+            log.debug("Successfully fetched customer info: ID={}, Company={}, Contact={}, Email={}", 
+                     customer.getId(), customer.getCompanyName(), customer.getContactName(), customer.getEmail());
+
+            // Extract customer details
+            String customerEmail = customer.getEmail();
+            String customerName = customer.getContactName() != null ? customer.getContactName() : customer.getCompanyName();
+            String companyName = customer.getCompanyName();
+            
+            // Validate customer email
+            if (customerEmail == null || customerEmail.trim().isEmpty()) {
+                log.error("Customer ID {} (Company: '{}', Contact: '{}') has no email address in the database. " +
+                         "Email is required to create user account for contract creation. Please update customer email in Customer Service.", 
+                         customer.getId(), customer.getCompanyName(), customer.getContactName());
+                throw new BusinessException("Customer email is required but not provided. Please update customer information with a valid email address.");
+            }
+
+            // First, try to get user info by email to check if account already exists
+            // This is more reliable than checkUserExistsByEmail which seems to have issues
+            try {
+                UserResponse existingUser = externalService.getUserByEmail(customerEmail);
+                if (existingUser != null) {
+                    log.info("Customer {} already has a user account with email: {} (User ID: {}). No need to create new account.", 
+                             customerId, customerEmail, existingUser.getId());
+                    return;
+                }
+            } catch (Exception e) {
+                log.debug("Could not fetch existing user by email {}: {}. Will proceed to create new account.", customerEmail, e.getMessage());
+            }
+
+            // If getUserByEmail fails, try a different approach: attempt to create user
+            // If creation fails with 409 (email exists), then user already exists
+            // This is a fallback mechanism when the getUserByEmail API is not working
+
+            log.info("Customer {} does not have a user account. Creating one with email: {}", customerId, customerEmail);
+
+            // Generate secure temporary password
+            String tempPassword = generateSecurePassword();
+            
+            // Parse customer name into first and last name
+            String[] nameParts = customerName != null ? customerName.trim().split("\\s+", 2) : new String[]{"Customer", "User"};
+            String customerFirstName = nameParts.length > 0 ? nameParts[0] : "Customer";
+            String customerLastName = nameParts.length > 1 ? nameParts[1] : (companyName != null ? companyName : "User");
+
+            // Get CUSTOMER role ID dynamically from Auth Service
+            RoleDto customerRole = externalService.getRoleByName("CUSTOMER");
+            if (customerRole == null) {
+                log.error("CUSTOMER role not found in Auth Service. Cannot create user account for customer {}", customerId);
+                throw new BusinessException("CUSTOMER role not found in authentication service. Please contact system administrator.");
+            }
+
+            // Create User in Auth Service
+            CreateUserRequest createUserRequest = new CreateUserRequest(
+                    customerEmail,
+                    customerFirstName,
+                    customerLastName,
+                    customer.getPhone(), // phone
+                    customerRole.getId(),   // Use dynamically resolved CUSTOMER role ID
+                    true
+            );
+
+            try {
+                UserResponse userResponse = externalService.createUser(createUserRequest).block();
+                if (userResponse != null) {
+                    log.info("Successfully created user account for customer {}: {} (User ID: {})", 
+                            customerId, userResponse.getEmail(), userResponse.getId());
+                    
+                    // Send notification email with account credentials
+                    try {
+                        emailService.sendContractSignedNotification(
+                            userResponse.getEmail(),
+                            customerName,
+                            "Contract Creation", // Since this is not a signed contract, use generic title
+                            tempPassword
+                        );
+                        log.info("Sent account creation notification email to {} for customer {}", 
+                                userResponse.getEmail(), customerId);
+                    } catch (Exception emailError) {
+                        log.error("Failed to send email notification to {} for customer {}: {}", 
+                                userResponse.getEmail(), customerId, emailError.getMessage());
+                        // Don't fail the whole process if email fails
+                    }
+                }
+            } catch (Exception e) {
+                // Check if the error is due to email already existing
+                if (e.getMessage() != null && e.getMessage().contains("409 CONFLICT") && e.getMessage().contains("Email already exists")) {
+                    log.info("Customer {} already has a user account with email: {} (detected via creation attempt). No need to create new account.", 
+                             customerId, customerEmail);
+                    return; // User already exists, we can proceed
+                } else {
+                    // This is a different error, re-throw it
+                    log.error("Failed to create user account for customer {}: {}", customerId, e.getMessage());
+                    throw new BusinessException("Failed to create user account for customer: " + e.getMessage());
+                }
+            }
+
+            log.info("User account creation completed for customer {}", customerId);
+            
+        } catch (Exception e) {
+            log.error("Error ensuring customer has user account for customer ID {}: {}", customerId, e.getMessage(), e);
+            if (e instanceof BusinessException) {
+                throw e; // Re-throw business exceptions
+            }
+            throw new BusinessException("Failed to ensure customer has user account: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Generate a secure random password
+     */
+    private String generateSecurePassword() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%";
+        SecureRandom random = new SecureRandom();
+        
+        return IntStream.range(0, 12)
+                .map(i -> random.nextInt(chars.length()))
+                .mapToObj(randomIndex -> String.valueOf(chars.charAt(randomIndex)))
+                .collect(Collectors.joining());
     }
 } 

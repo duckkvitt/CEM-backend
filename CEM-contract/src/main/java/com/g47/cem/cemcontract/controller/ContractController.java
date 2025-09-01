@@ -31,6 +31,7 @@ import com.g47.cem.cemcontract.dto.request.CreateContractRequest;
 import com.g47.cem.cemcontract.dto.request.DigitalSignatureRequest;
 import com.g47.cem.cemcontract.dto.request.UpdateContractRequest;
 import com.g47.cem.cemcontract.dto.request.UpdateContractStatusRequest;
+import com.g47.cem.cemcontract.dto.request.UploadExistContractRequest;
 import com.g47.cem.cemcontract.dto.response.ApiResponse;
 import com.g47.cem.cemcontract.dto.response.ContractResponseDto;
 import com.g47.cem.cemcontract.dto.response.DigitalSignatureResponseDto;
@@ -74,6 +75,22 @@ public class ContractController {
         }
         
         ContractResponseDto createdContract = contractService.createContract(requestDto, authentication.getName(), request, authToken);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(createdContract));
+    }
+
+    @PostMapping("/upload-exist")
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
+    public ResponseEntity<ApiResponse<ContractResponseDto>> uploadExistContract(
+            @Valid @RequestBody UploadExistContractRequest requestDto, 
+            Authentication authentication,
+            HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String authToken = null;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            authToken = authHeader.substring(7);
+        }
+        
+        ContractResponseDto createdContract = contractService.uploadExistContract(requestDto, authentication.getName(), request, authToken);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(createdContract));
     }
 

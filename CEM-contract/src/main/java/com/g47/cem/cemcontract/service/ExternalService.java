@@ -265,6 +265,39 @@ public class ExternalService {
         }
     }
 
+    /**
+     * Get user information by email from the authentication service
+     */
+    public UserResponse getUserByEmail(String email) {
+        if (email == null || email.isBlank()) {
+            log.error("Email is null or blank. Cannot get user by email.");
+            return null;
+        }
+        String url = authServiceUrl + "/admin/users/email/" + email;
+        String tokenToUse = extractAuthTokenOrServiceToken();
+        try {
+            WebClient.RequestHeadersSpec<?> request = webClient.get().uri(url)
+                .header("Authorization", "Bearer " + tokenToUse);
+            ApiUserResponseWrapper response = request.retrieve()
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse ->
+                    clientResponse.bodyToMono(String.class).map(body -> {
+                        log.error("Auth Service error getting user by email {}: {} - {}", email, clientResponse.statusCode().value(), body);
+                        return new RuntimeException(clientResponse.statusCode() + " - " + body);
+                    })
+                )
+                .bodyToMono(ApiUserResponseWrapper.class)
+                .block();
+            if (response == null || response.getData() == null) {
+                log.debug("No user found with email: {}", email);
+                return null;
+            }
+            return response.getData();
+        } catch (Exception e) {
+            log.error("Failed to get user by email {}: {}", email, e.getMessage());
+            return null;
+        }
+    }
+
     private String extractAuthTokenOrServiceToken() {
         // Try to extract from current request
         ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
