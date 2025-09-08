@@ -48,7 +48,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/")
@@ -137,7 +136,7 @@ public class ContractController {
 
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF')")
-    public ResponseEntity<ApiResponse<ContractResponseDto>> updateContractStatus(@PathVariable Long id, @RequestBody UpdateContractStatusRequest requestDto, Principal principal) {
+    public ResponseEntity<ApiResponse<ContractResponseDto>> updateContractStatus(@PathVariable Long id, @Valid @RequestBody UpdateContractStatusRequest requestDto, Principal principal) {
          ContractResponseDto dto = contractService.updateContractStatus(id, requestDto.getStatus(), principal.getName());
          return ResponseEntity.ok(ApiResponse.success(dto));
     }

@@ -18,6 +18,7 @@ import com.g47.cem.cemdevice.service.SupplierDeviceMappingService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class SupplierDeviceController {
     @PostMapping("/{supplierId}/devices")
     @PreAuthorize("hasAnyAuthority('STAFF','MANAGER')")
     @Operation(summary = "Replace supplier devices with provided set")
-    public ResponseEntity<ApiResponse<String>> replaceDevices(@PathVariable Long supplierId, @RequestBody ReplaceRequest request) {
+    public ResponseEntity<ApiResponse<String>> replaceDevices(@PathVariable Long supplierId, @Valid @RequestBody ReplaceRequest request) {
         mappingService.replaceSupplierDevices(supplierId, request.getDeviceIds());
         return ResponseEntity.ok(ApiResponse.success("Updated supplier devices"));
     }
