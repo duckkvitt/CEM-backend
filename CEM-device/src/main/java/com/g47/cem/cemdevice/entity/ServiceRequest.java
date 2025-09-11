@@ -79,6 +79,9 @@ public class ServiceRequest {
     @Column(name = "customer_comments", columnDefinition = "TEXT")
     private String customerComments;
 
+    @Column(name = "work_location", columnDefinition = "TEXT")
+    private String workLocation;
+
     @Column(name = "estimated_cost", precision = 15, scale = 2)
     private java.math.BigDecimal estimatedCost;
 

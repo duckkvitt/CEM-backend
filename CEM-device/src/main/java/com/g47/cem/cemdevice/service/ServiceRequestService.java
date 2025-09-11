@@ -85,6 +85,7 @@ public class ServiceRequestService {
                 .status(ServiceRequestStatus.PENDING)
                 .description(request.getDescription())
                 .preferredDateTime(request.getPreferredDateTime())
+                .workLocation(request.getWorkLocation())
                 .attachments(attachmentsJson)
                 .customerComments(request.getCustomerComments())
                 .createdBy(createdBy)
@@ -234,6 +235,9 @@ public class ServiceRequestService {
         if (request.getPreferredDateTime() != null) {
             serviceRequest.setPreferredDateTime(request.getPreferredDateTime());
         }
+        if (request.getWorkLocation() != null) {
+            serviceRequest.setWorkLocation(request.getWorkLocation());
+        }
         if (request.getCustomerComments() != null) {
             serviceRequest.setCustomerComments(request.getCustomerComments());
         }
@@ -368,6 +372,7 @@ public class ServiceRequestService {
         response.setEstimatedCost(serviceRequest.getEstimatedCost());
         response.setActualCost(serviceRequest.getActualCost());
         response.setCompletedAt(serviceRequest.getCompletedAt());
+        response.setWorkLocation(serviceRequest.getWorkLocation());
         response.setCreatedBy(serviceRequest.getCreatedBy());
         response.setCreatedAt(serviceRequest.getCreatedAt());
         response.setUpdatedAt(serviceRequest.getUpdatedAt());

@@ -49,6 +49,8 @@ public class ServiceRequestResponse {
     
     private String customerComments;
     
+    private String workLocation;
+
     private BigDecimal estimatedCost;
     
     private BigDecimal actualCost;

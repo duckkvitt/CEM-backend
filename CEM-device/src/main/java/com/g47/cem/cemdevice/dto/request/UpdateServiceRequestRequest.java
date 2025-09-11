@@ -35,6 +35,9 @@ public class UpdateServiceRequestRequest {
     
     @Size(max = 1000, message = "Customer comments must not exceed 1000 characters")
     private String customerComments;
+
+    @Size(max = 1000, message = "Work location must not exceed 1000 characters")
+    private String workLocation;
     
     private BigDecimal estimatedCost;
     
