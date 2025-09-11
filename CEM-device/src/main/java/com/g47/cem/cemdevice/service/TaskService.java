@@ -158,7 +158,7 @@ public class TaskService {
                 .estimatedDurationHours(request.getEstimatedDurationHours())
                 .serviceLocation(request.getServiceLocation())
                 .customerContactInfo(request.getCustomerContactInfo())
-                .estimatedCost(request.getEstimatedCost() != null ? request.getEstimatedCost() : serviceRequest.getEstimatedCost())
+                // No estimated cost in approval flow anymore
                 .supportNotes(request.getSupportNotes())
                 .createdBy(approvedBy)
                 .build();
