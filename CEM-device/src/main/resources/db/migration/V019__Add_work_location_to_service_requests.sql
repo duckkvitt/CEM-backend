@@ -4,3 +4,4 @@ ADD COLUMN IF NOT EXISTS work_location TEXT;
 
 COMMENT ON COLUMN service_requests.work_location IS 'Customer-provided work location for servicing the device';
 
+
