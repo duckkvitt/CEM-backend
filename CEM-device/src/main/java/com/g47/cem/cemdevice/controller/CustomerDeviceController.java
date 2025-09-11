@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import jakarta.servlet.http.HttpServletRequest;
 
 import com.g47.cem.cemdevice.dto.response.ApiResponse;
 import com.g47.cem.cemdevice.dto.response.CustomerDeviceResponse;
@@ -26,6 +25,7 @@ import com.g47.cem.cemdevice.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,6 +42,19 @@ public class CustomerDeviceController {
     private final CustomerDeviceService customerDeviceService;
     private final JwtUtil jwtUtil;
     private final ExternalCustomerService externalCustomerService;
+    
+    /**
+     * Staff: List devices of a specific customer by ID
+     */
+    @GetMapping("/staff")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM','LEAD_TECH','MANAGER','ADMIN')")
+    @Operation(summary = "List customer devices by customerId (staff)")
+    public ResponseEntity<ApiResponse<Page<CustomerDeviceResponse>>> listCustomerDevicesForStaff(
+            @RequestParam Long customerId,
+            @PageableDefault(size = 50) Pageable pageable) {
+        Page<CustomerDeviceResponse> page = customerDeviceService.getCustomerDevicesForStaff(customerId, pageable);
+        return ResponseEntity.ok(ApiResponse.success(page));
+    }
     
     /**
      * Get customer's purchased devices with pagination and filtering

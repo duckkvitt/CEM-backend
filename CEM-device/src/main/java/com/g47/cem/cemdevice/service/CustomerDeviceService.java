@@ -67,6 +67,15 @@ public class CustomerDeviceService {
         
         return customerDevices.map(this::mapToCustomerDeviceResponse);
     }
+
+    /**
+     * Get customer devices for staff by explicit customerId (no principal binding)
+     */
+    @Transactional(readOnly = true)
+    public Page<CustomerDeviceResponse> getCustomerDevicesForStaff(Long customerId, Pageable pageable) {
+        Page<CustomerDevice> customerDevices = customerDeviceRepository.findByCustomerId(customerId, pageable);
+        return customerDevices.map(this::mapToCustomerDeviceResponse);
+    }
     
     /**
      * Get customer device by ID
