@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -195,6 +196,21 @@ public class TaskController {
         TaskResponse response = taskService.updateTask(taskId, request, authentication.getName(), userRole);
         
         return ResponseEntity.ok(ApiResponse.success(response, "Task updated successfully"));
+    }
+    
+    /**
+     * Delete task (Support Team and TechLead)
+     */
+    @DeleteMapping("/{taskId}")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH')")
+    @Operation(summary = "Delete task", description = "Delete task by ID (Support Team and TechLead)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<ApiResponse<Void>> deleteTask(
+            @PathVariable Long taskId,
+            Authentication authentication) {
+        log.info("Deleting task {} by user: {}", taskId, authentication.getName());
+        taskService.deleteTask(taskId);
+        return ResponseEntity.ok(ApiResponse.success(null, "Task deleted successfully"));
     }
     
     // ========== TechLead Endpoints ==========

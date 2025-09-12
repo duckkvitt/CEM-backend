@@ -434,6 +434,10 @@ public class TaskService {
         if (request.getScheduledDate() != null) {
             task.setScheduledDate(request.getScheduledDate());
         }
+        // Frontend alias mapping: preferredCompletionDate -> scheduledDate
+        if (request.getPreferredCompletionDate() != null) {
+            task.setScheduledDate(request.getPreferredCompletionDate());
+        }
         if (request.getEstimatedDurationHours() != null) {
             task.setEstimatedDurationHours(request.getEstimatedDurationHours());
         }
@@ -452,6 +456,10 @@ public class TaskService {
         if (request.getSupportNotes() != null) {
             task.setSupportNotes(request.getSupportNotes());
         }
+        // Frontend alias mapping: staffNotes -> supportNotes
+        if (request.getStaffNotes() != null) {
+            task.setSupportNotes(request.getStaffNotes());
+        }
         if (request.getTechleadNotes() != null) {
             task.setTechleadNotes(request.getTechleadNotes());
         }
@@ -460,6 +468,9 @@ public class TaskService {
         }
         if (request.getCompletionNotes() != null) {
             task.setCompletionNotes(request.getCompletionNotes());
+        }
+        if (request.getType() != null) {
+            task.setType(request.getType());
         }
         
         task = taskRepository.save(task);
@@ -471,6 +482,19 @@ public class TaskService {
         
         log.info("Task {} updated by {}", task.getTaskId(), updatedBy);
         return mapToTaskResponse(task);
+    }
+
+    /**
+     * Delete task by ID (by Support Team or TechLead)
+     */
+    @Transactional
+    public void deleteTask(Long taskId) {
+        log.debug("Deleting task: {}", taskId);
+        if (!taskRepository.existsById(taskId)) {
+            throw new ResourceNotFoundException("Task", "id", taskId);
+        }
+        taskRepository.deleteById(taskId);
+        log.info("Task {} deleted", taskId);
     }
     
     /**

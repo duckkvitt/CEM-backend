@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import com.g47.cem.cemdevice.enums.TaskPriority;
 import com.g47.cem.cemdevice.enums.TaskStatus;
+import com.g47.cem.cemdevice.enums.TaskType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -16,6 +18,7 @@ import lombok.NoArgsConstructor;
 /**
  * Request DTO for updating a task
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 @Builder
 @AllArgsConstructor
@@ -33,6 +36,9 @@ public class UpdateTaskRequest {
     private TaskStatus status;
     
     private LocalDateTime scheduledDate;
+    
+    // Frontend alias for scheduledDate
+    private LocalDateTime preferredCompletionDate;
     
     @Positive(message = "Estimated duration must be positive")
     private Integer estimatedDurationHours;
@@ -52,6 +58,10 @@ public class UpdateTaskRequest {
     @Size(max = 2000, message = "Support notes must not exceed 2000 characters")
     private String supportNotes;
     
+    // Frontend alias for supportNotes
+    @Size(max = 2000, message = "Staff notes must not exceed 2000 characters")
+    private String staffNotes;
+    
     @Size(max = 2000, message = "TechLead notes must not exceed 2000 characters")
     private String techleadNotes;
     
@@ -60,4 +70,7 @@ public class UpdateTaskRequest {
     
     @Size(max = 2000, message = "Completion notes must not exceed 2000 characters")
     private String completionNotes;
+    
+    // Allow updating task type
+    private TaskType type;
 }
