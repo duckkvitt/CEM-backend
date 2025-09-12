@@ -70,8 +70,7 @@ public class ServiceRequest {
     @Column(name = "preferred_date_time")
     private LocalDateTime preferredDateTime;
 
-    @Column(name = "attachments", columnDefinition = "TEXT")
-    private String attachments; // JSON array of Google Drive file IDs
+    // Attachments removed from entity
 
     @Column(name = "staff_notes", columnDefinition = "TEXT")
     private String staffNotes;
@@ -82,11 +81,7 @@ public class ServiceRequest {
     @Column(name = "work_location", columnDefinition = "TEXT")
     private String workLocation;
 
-    @Column(name = "estimated_cost", precision = 15, scale = 2)
-    private java.math.BigDecimal estimatedCost;
-
-    @Column(name = "actual_cost", precision = 15, scale = 2)
-    private java.math.BigDecimal actualCost;
+    // Cost fields removed from entity
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt;

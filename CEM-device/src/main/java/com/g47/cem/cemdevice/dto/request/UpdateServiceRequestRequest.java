@@ -1,8 +1,7 @@
 package com.g47.cem.cemdevice.dto.request;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+// Attachments removed
 
 import com.g47.cem.cemdevice.enums.ServiceRequestStatus;
 
@@ -28,7 +27,7 @@ public class UpdateServiceRequestRequest {
     
     private LocalDateTime preferredDateTime;
     
-    private List<String> attachments; // Google Drive file IDs
+    // Attachments removed
     
     @Size(max = 2000, message = "Staff notes must not exceed 2000 characters")
     private String staffNotes;
@@ -39,9 +38,7 @@ public class UpdateServiceRequestRequest {
     @Size(max = 1000, message = "Work location must not exceed 1000 characters")
     private String workLocation;
     
-    private BigDecimal estimatedCost;
-    
-    private BigDecimal actualCost;
+    // Cost fields removed
     
     private LocalDateTime completedAt;
 } 

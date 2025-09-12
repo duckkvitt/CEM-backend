@@ -1,7 +1,7 @@
 package com.g47.cem.cemdevice.dto.request;
 
 import java.time.LocalDateTime;
-import java.util.List;
+// Attachments removed
 
 import com.g47.cem.cemdevice.enums.ServiceRequestType;
 
@@ -34,7 +34,7 @@ public class CreateServiceRequestRequest {
     
     private LocalDateTime preferredDateTime;
     
-    private List<String> attachments; // Google Drive file IDs
+    // Attachments removed from API
     
     @Size(max = 1000, message = "Customer comments must not exceed 1000 characters")
     private String customerComments;

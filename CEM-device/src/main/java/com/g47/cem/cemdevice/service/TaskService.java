@@ -93,7 +93,6 @@ public class TaskService {
                 .estimatedDurationHours(request.getEstimatedDurationHours())
                 .serviceLocation(request.getServiceLocation())
                 .customerContactInfo(request.getCustomerContactInfo())
-                .estimatedCost(request.getEstimatedCost())
                 .supportNotes(request.getSupportNotes())
                 .createdBy(createdBy)
                 .build();
@@ -447,12 +446,7 @@ public class TaskService {
         if (request.getCustomerContactInfo() != null) {
             task.setCustomerContactInfo(request.getCustomerContactInfo());
         }
-        if (request.getEstimatedCost() != null) {
-            task.setEstimatedCost(request.getEstimatedCost());
-        }
-        if (request.getActualCost() != null) {
-            task.setActualCost(request.getActualCost());
-        }
+        // Cost fields removed
         if (request.getSupportNotes() != null) {
             task.setSupportNotes(request.getSupportNotes());
         }

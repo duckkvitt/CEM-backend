@@ -66,16 +66,7 @@ public class ServiceRequestService {
         // Generate unique request ID
         String requestId = generateRequestId(request.getType());
         
-        // Convert attachments list to JSON string
-        String attachmentsJson = null;
-        if (request.getAttachments() != null && !request.getAttachments().isEmpty()) {
-            try {
-                attachmentsJson = objectMapper.writeValueAsString(request.getAttachments());
-            } catch (JsonProcessingException e) {
-                log.error("Failed to serialize attachments", e);
-                throw new BusinessException("Failed to process attachments");
-            }
-        }
+        // Attachments removed
         
         ServiceRequest serviceRequest = ServiceRequest.builder()
                 .requestId(requestId)
@@ -86,7 +77,6 @@ public class ServiceRequestService {
                 .description(request.getDescription())
                 .preferredDateTime(request.getPreferredDateTime())
                 .workLocation(request.getWorkLocation())
-                .attachments(attachmentsJson)
                 .customerComments(request.getCustomerComments())
                 .createdBy(createdBy)
                 .build();
@@ -241,26 +231,12 @@ public class ServiceRequestService {
         if (request.getCustomerComments() != null) {
             serviceRequest.setCustomerComments(request.getCustomerComments());
         }
-        if (request.getEstimatedCost() != null) {
-            serviceRequest.setEstimatedCost(request.getEstimatedCost());
-        }
-        if (request.getActualCost() != null) {
-            serviceRequest.setActualCost(request.getActualCost());
-        }
+        // Cost fields removed
         if (request.getCompletedAt() != null) {
             serviceRequest.setCompletedAt(request.getCompletedAt());
         }
         
-        // Update attachments if provided
-        if (request.getAttachments() != null) {
-            try {
-                String attachmentsJson = objectMapper.writeValueAsString(request.getAttachments());
-                serviceRequest.setAttachments(attachmentsJson);
-            } catch (JsonProcessingException e) {
-                log.error("Failed to serialize attachments", e);
-                throw new BusinessException("Failed to process attachments");
-            }
-        }
+        // Attachments removed
         
         // Update status if provided (staff only)
         if (request.getStatus() != null && !request.getStatus().equals(oldStatus)) {
@@ -369,8 +345,7 @@ public class ServiceRequestService {
         response.setPreferredDateTime(serviceRequest.getPreferredDateTime());
         response.setStaffNotes(serviceRequest.getStaffNotes());
         response.setCustomerComments(serviceRequest.getCustomerComments());
-        response.setEstimatedCost(serviceRequest.getEstimatedCost());
-        response.setActualCost(serviceRequest.getActualCost());
+        // Cost fields removed
         response.setCompletedAt(serviceRequest.getCompletedAt());
         response.setWorkLocation(serviceRequest.getWorkLocation());
         response.setCreatedBy(serviceRequest.getCreatedBy());
@@ -385,16 +360,7 @@ public class ServiceRequestService {
             response.setSerialNumber(serviceRequest.getDevice().getDevice().getSerialNumber());
         }
         
-        // Map attachments
-        if (serviceRequest.getAttachments() != null) {
-            try {
-                List<String> attachments = objectMapper.readValue(serviceRequest.getAttachments(), new TypeReference<List<String>>() {});
-                response.setAttachments(attachments);
-            } catch (JsonProcessingException e) {
-                log.error("Failed to deserialize attachments", e);
-                response.setAttachments(List.of());
-            }
-        }
+        // Attachments removed
         
         // Map history
         if (serviceRequest.getHistory() != null) {

@@ -1,6 +1,5 @@
 package com.g47.cem.cemdevice.dto.response;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public class ServiceRequestResponse {
     
     private LocalDateTime preferredDateTime;
     
-    private List<String> attachments;
+    // Attachments removed
     
     private String staffNotes;
     
@@ -51,9 +50,7 @@ public class ServiceRequestResponse {
     
     private String workLocation;
 
-    private BigDecimal estimatedCost;
-    
-    private BigDecimal actualCost;
+    // Cost fields removed
     
     private LocalDateTime completedAt;
     

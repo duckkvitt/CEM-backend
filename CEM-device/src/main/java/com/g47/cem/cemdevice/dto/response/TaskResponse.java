@@ -81,8 +81,6 @@ public class TaskResponse {
     private String customerContactInfo;
     
     // Cost information
-    private BigDecimal estimatedCost;
-    
     private BigDecimal actualCost;
     
     // Notes and comments

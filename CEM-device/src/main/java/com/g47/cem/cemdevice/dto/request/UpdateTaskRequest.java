@@ -1,6 +1,5 @@
 package com.g47.cem.cemdevice.dto.request;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.g47.cem.cemdevice.enums.TaskPriority;
@@ -49,11 +48,7 @@ public class UpdateTaskRequest {
     @Size(max = 500, message = "Customer contact info must not exceed 500 characters")
     private String customerContactInfo;
     
-    @Positive(message = "Estimated cost must be positive")
-    private BigDecimal estimatedCost;
-    
-    @Positive(message = "Actual cost must be positive")
-    private BigDecimal actualCost;
+    // Cost fields removed per requirements (estimated/actual cost not tracked here)
     
     @Size(max = 2000, message = "Support notes must not exceed 2000 characters")
     private String supportNotes;

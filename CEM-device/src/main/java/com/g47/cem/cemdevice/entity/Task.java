@@ -105,10 +105,6 @@ public class Task {
     @Column(name = "customer_contact_info", columnDefinition = "TEXT")
     private String customerContactInfo;
 
-    // Cost information
-    @Column(name = "estimated_cost", precision = 15, scale = 2)
-    private BigDecimal estimatedCost;
-
     @Column(name = "actual_cost", precision = 15, scale = 2)
     private BigDecimal actualCost;
 
