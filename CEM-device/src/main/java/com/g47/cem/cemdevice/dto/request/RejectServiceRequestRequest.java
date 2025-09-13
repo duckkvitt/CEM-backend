@@ -1,5 +1,7 @@
 package com.g47.cem.cemdevice.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -18,5 +20,6 @@ public class RejectServiceRequestRequest {
     
     @NotBlank(message = "Rejection reason is required")
     @Size(min = 10, max = 2000, message = "Rejection reason must be between 10 and 2000 characters")
+    @JsonAlias({"rejectedReason"})
     private String rejectionReason;
 }

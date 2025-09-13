@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +33,12 @@ import com.g47.cem.cemdevice.enums.TaskStatus;
 import com.g47.cem.cemdevice.enums.TaskType;
 import com.g47.cem.cemdevice.exception.BusinessException;
 import com.g47.cem.cemdevice.exception.ResourceNotFoundException;
+import com.g47.cem.cemdevice.integration.UserIntegrationService;
 import com.g47.cem.cemdevice.repository.CustomerDeviceRepository;
 import com.g47.cem.cemdevice.repository.ServiceRequestHistoryRepository;
 import com.g47.cem.cemdevice.repository.ServiceRequestRepository;
 import com.g47.cem.cemdevice.repository.TaskHistoryRepository;
 import com.g47.cem.cemdevice.repository.TaskRepository;
-import com.g47.cem.cemdevice.integration.UserIntegrationService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -175,34 +174,51 @@ public class TaskService {
      * Reject service request
      */
     @Transactional
+    
+
     public void rejectServiceRequest(Long serviceRequestId, RejectServiceRequestRequest request, String rejectedBy) {
         log.debug("Rejecting service request: {}", serviceRequestId);
-        
+
         ServiceRequest serviceRequest = serviceRequestRepository.findById(serviceRequestId)
                 .orElseThrow(() -> new ResourceNotFoundException("ServiceRequest", "id", serviceRequestId));
-        
+
+        // Idempotency and state validation
         if (!serviceRequest.isPending()) {
+            if (serviceRequest.isRejected()) {
+                throw new BusinessException("Service request already rejected");
+            }
             throw new BusinessException("Service request is not in PENDING status");
         }
-        
-        // Update service request status
+
+        String trimmedReason = request.getRejectionReason() != null ? request.getRejectionReason().trim() : null;
+        if (trimmedReason == null || trimmedReason.length() < 10) {
+            throw new BusinessException("Rejection reason must be between 10 and 2000 characters");
+        }
+
+        // Update service request status and audit fields
         serviceRequest.setStatus(ServiceRequestStatus.REJECTED);
-        serviceRequest.setRejectionReason(request.getRejectionReason());
+        serviceRequest.setRejectionReason(trimmedReason);
         serviceRequest.setRejectedBy(rejectedBy);
         serviceRequest.setRejectedAt(LocalDateTime.now());
         serviceRequestRepository.save(serviceRequest);
-        
-        // Create service request history
-        ServiceRequestHistory serviceHistory = ServiceRequestHistory.builder()
-                .serviceRequest(serviceRequest)
-                .status(ServiceRequestStatus.REJECTED)
-                .comment("Service request rejected: " + request.getRejectionReason())
-                .updatedBy(rejectedBy)
-                .build();
-        serviceRequestHistoryRepository.save(serviceHistory);
-        
+
+        // Create history entry directly - simple and reliable
+        try {
+            ServiceRequestHistory history = ServiceRequestHistory.builder()
+                    .serviceRequest(serviceRequest)
+                    .status(ServiceRequestStatus.REJECTED)
+                    .comment("Service request rejected: " + trimmedReason)
+                    .updatedBy(rejectedBy)
+                    .build();
+            serviceRequestHistoryRepository.save(history);
+        } catch (Exception ex) {
+            // Log but don't fail the main operation
+            log.warn("Failed to create history entry for rejected service request {}: {}", serviceRequestId, ex.getMessage());
+        }
+
         log.info("Service request {} rejected by {}", serviceRequest.getRequestId(), rejectedBy);
     }
+
     
     /**
      * Assign task to technician (by TechLead)
