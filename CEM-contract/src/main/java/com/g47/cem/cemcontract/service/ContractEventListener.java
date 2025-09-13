@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 import com.g47.cem.cemcontract.dto.request.external.CreateUserRequest;
 import com.g47.cem.cemcontract.entity.Contract;
 import com.g47.cem.cemcontract.event.SellerSignedEvent;
-import com.g47.cem.cemcontract.service.CustomerDto;
-import com.g47.cem.cemcontract.service.RoleDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -102,21 +100,10 @@ public class ContractEventListener {
                     log.info("CUSTOMER MAPPING: Customer ID {} -> User ID {} (Email: {})", 
                             customer.getId(), userResponse.getId(), userResponse.getEmail());
                     
-                    // Send notification email with account credentials
-                    try {
-                        emailService.sendContractSignedNotification(
-                            userResponse.getEmail(),
-                            customerName,
-                            contract.getContractNumber(),
-                            tempPassword
-                        );
-                        log.info("Sent contract signed notification email to {} for contract {}", 
-                                userResponse.getEmail(), contract.getContractNumber());
-                    } catch (Exception emailError) {
-                        log.error("Failed to send email notification to {} for contract {}: {}", 
-                                userResponse.getEmail(), contract.getContractNumber(), emailError.getMessage());
-                        // Don't fail the whole process if email fails
-                    }
+                    // Note: Email notification is now handled by the authentication service
+                    // via UserCreatedEvent with CUSTOMER role-specific template
+                    log.info("User account created for contract {}. Email notification will be sent by authentication service.", 
+                            contract.getContractNumber());
                 })
                 .doOnError(error -> {
                     log.error("Failed to create user for contract {}: {}", contract.getId(), error.getMessage());

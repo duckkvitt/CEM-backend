@@ -93,7 +93,8 @@ public class UserManagementService {
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                temporaryPassword));
+                temporaryPassword,
+                user.getRole().getName()));
 
         // Create user response
         UserResponse userResponse = mapToUserResponse(user);

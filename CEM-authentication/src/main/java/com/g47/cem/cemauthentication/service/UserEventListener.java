@@ -20,7 +20,7 @@ public class UserEventListener {
     @Async("taskExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleUserCreated(UserCreatedEvent event) {
-        log.info("Handling UserCreatedEvent - sending account email to {}", event.email());
-        emailService.sendAccountCreationEmail(event.email(), event.firstName(), event.lastName(), event.temporaryPassword());
+        log.info("Handling UserCreatedEvent - sending account email to {} with role {}", event.email(), event.roleName());
+        emailService.sendAccountCreationEmail(event.email(), event.firstName(), event.lastName(), event.temporaryPassword(), event.roleName());
     }
 } 

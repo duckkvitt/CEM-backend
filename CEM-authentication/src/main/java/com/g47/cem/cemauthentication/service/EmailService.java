@@ -25,21 +25,27 @@ public class EmailService {
     private String resetPasswordBaseUrl;
     
     @Async("taskExecutor")
-    public void sendAccountCreationEmail(String toEmail, String firstName, String lastName, String temporaryPassword) {
+    public void sendAccountCreationEmail(String toEmail, String firstName, String lastName, String temporaryPassword, String roleName) {
         try {
-            log.info("Sending account creation email to: {}", toEmail);
+            log.info("Sending account creation email to: {} with role: {}", toEmail, roleName);
             
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(fromEmail);
             message.setTo(toEmail);
-            message.setSubject("Welcome to CEM - Your Account Has Been Created");
             
-            String emailBody = buildAccountCreationEmailBody(firstName, lastName, toEmail, temporaryPassword);
+            String emailBody;
+            if ("CUSTOMER".equals(roleName)) {
+                message.setSubject("Hợp đồng đã được ký - Contract Signed");
+                emailBody = buildCustomerAccountCreationEmailBody(firstName, lastName, toEmail, temporaryPassword);
+            } else {
+                message.setSubject("Welcome to CEM - Your Account Has Been Created");
+                emailBody = buildAccountCreationEmailBody(firstName, lastName, toEmail, temporaryPassword);
+            }
+            
             message.setText(emailBody);
-            
             mailSender.send(message);
             
-            log.info("Account creation email sent successfully to: {}", toEmail);
+            log.info("Account creation email sent successfully to: {} with role: {}", toEmail, roleName);
             
         } catch (Exception e) {
             log.error("Failed to send account creation email to: {}. Error: {}", toEmail, e.getMessage(), e);
@@ -72,6 +78,43 @@ public class EmailService {
             ---
             This is an automated message. Please do not reply to this email.
             """, firstName, lastName, email, temporaryPassword);
+    }
+    
+    private String buildCustomerAccountCreationEmailBody(String firstName, String lastName, String email, String temporaryPassword) {
+        return String.format("""
+            Xin chào %s %s,
+            
+            Hợp đồng đã được ký thành công.
+            
+            Để truy cập hệ thống quản lý hợp đồng, vui lòng sử dụng thông tin đăng nhập sau:
+            - Email: %s
+            - Mật khẩu tạm thời: %s
+            
+            Vui lòng đổi mật khẩu sau lần đăng nhập đầu tiên.
+            
+            Truy cập hệ thống tại: https://cem.vercel.app
+            
+            Cảm ơn bạn đã tin tưởng dịch vụ của chúng tôi.
+            
+            ---
+            
+            Dear %s %s,
+            
+            Contract has been successfully signed.
+            
+            To access the contract management system, please use the following credentials:
+            - Email: %s
+            - Temporary Password: %s
+            
+            Please change your password after your first login.
+            
+            Access the system at: https://cem.vercel.app
+            
+            Thank you for trusting our services.
+            
+            Trân trọng,
+            Công ty TNHH Thương mại và Sản xuất Thành Đạt
+            """, firstName, lastName, email, temporaryPassword, firstName, lastName, email, temporaryPassword);
     }
     
     @Async("taskExecutor")

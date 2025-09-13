@@ -1604,21 +1604,10 @@ public class ContractService {
                     log.info("Successfully created user account for customer {}: {} (User ID: {})", 
                             customerId, userResponse.getEmail(), userResponse.getId());
                     
-                    // Send notification email with account credentials
-                    try {
-                        emailService.sendContractSignedNotification(
-                            userResponse.getEmail(),
-                            customerName,
-                            "Contract Creation", // Since this is not a signed contract, use generic title
-                            tempPassword
-                        );
-                        log.info("Sent account creation notification email to {} for customer {}", 
-                                userResponse.getEmail(), customerId);
-                    } catch (Exception emailError) {
-                        log.error("Failed to send email notification to {} for customer {}: {}", 
-                                userResponse.getEmail(), customerId, emailError.getMessage());
-                        // Don't fail the whole process if email fails
-                    }
+                    // Note: Email notification is now handled by the authentication service
+                    // via UserCreatedEvent with CUSTOMER role-specific template
+                    log.info("User account created for customer {}. Email notification will be sent by authentication service.", 
+                            customerId);
                 }
             } catch (Exception e) {
                 // Check if the error is due to email already existing
