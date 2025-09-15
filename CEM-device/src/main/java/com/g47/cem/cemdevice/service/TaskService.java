@@ -18,6 +18,7 @@ import com.g47.cem.cemdevice.dto.request.CreateTaskRequest;
 import com.g47.cem.cemdevice.dto.request.RejectServiceRequestRequest;
 import com.g47.cem.cemdevice.dto.request.TaskActionRequest;
 import com.g47.cem.cemdevice.dto.request.UpdateTaskRequest;
+import com.g47.cem.cemdevice.dto.request.UpdateTaskStatusRequest;
 import com.g47.cem.cemdevice.dto.response.TaskHistoryResponse;
 import com.g47.cem.cemdevice.dto.response.TaskResponse;
 import com.g47.cem.cemdevice.dto.response.TaskStatisticsResponse;
@@ -416,6 +417,46 @@ public class TaskService {
                 technicianUsername, "TECHNICIAN");
         
         log.info("Task {} completed by technician {}", task.getTaskId(), technicianId);
+        return mapToTaskResponse(task);
+    }
+
+    /**
+     * Update task status (generic flow used by Technician UI)
+     */
+    @Transactional
+    public TaskResponse updateTaskStatusByTechnician(Long taskId, UpdateTaskStatusRequest request, String technicianUsername, Long technicianId) {
+        log.debug("Technician {} updating status of task {} to {}", technicianId, taskId, request.getStatus());
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new ResourceNotFoundException("Task", "id", taskId));
+        if (!technicianId.equals(task.getAssignedTechnicianId())) {
+            throw new BusinessException("Task is not assigned to this technician");
+        }
+        TaskStatus target = request.getStatus();
+        TaskStatus current = task.getStatus();
+        // Allowed transitions for technician
+        boolean allowed =
+            (current == TaskStatus.ASSIGNED && (target == TaskStatus.ACCEPTED)) ||
+            (current == TaskStatus.ACCEPTED && (target == TaskStatus.IN_PROGRESS)) ||
+            (current == TaskStatus.IN_PROGRESS && (target == TaskStatus.COMPLETED));
+        if (!allowed) {
+            throw new BusinessException("Invalid status transition from " + current + " to " + target);
+        }
+        task.setStatus(target);
+        if (target == TaskStatus.IN_PROGRESS) {
+            // append technician notes on start
+            if (request.getComment() != null) {
+                String existingNotes = task.getTechnicianNotes();
+                task.setTechnicianNotes(existingNotes != null ? existingNotes + "\n" + request.getComment() : request.getComment());
+            }
+        }
+        if (target == TaskStatus.COMPLETED) {
+            task.setCompletedAt(LocalDateTime.now());
+            if (request.getComment() != null) {
+                task.setCompletionNotes(request.getComment());
+            }
+        }
+        task = taskRepository.save(task);
+        createTaskHistory(task, target, "Status updated to " + target + (request.getComment() != null ? ": " + request.getComment() : ""), technicianUsername, "TECHNICIAN");
         return mapToTaskResponse(task);
     }
     

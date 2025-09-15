@@ -13,8 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,6 +29,7 @@ import com.g47.cem.cemdevice.dto.request.CreateTaskRequest;
 import com.g47.cem.cemdevice.dto.request.RejectServiceRequestRequest;
 import com.g47.cem.cemdevice.dto.request.TaskActionRequest;
 import com.g47.cem.cemdevice.dto.request.UpdateTaskRequest;
+import com.g47.cem.cemdevice.dto.request.UpdateTaskStatusRequest;
 import com.g47.cem.cemdevice.dto.response.ApiResponse;
 import com.g47.cem.cemdevice.dto.response.TaskResponse;
 import com.g47.cem.cemdevice.dto.response.TaskStatisticsResponse;
@@ -427,6 +428,22 @@ public class TaskController {
     }
     
     /**
+     * Update task status (Technician)
+     */
+    @PutMapping("/{taskId}/status")
+    @PreAuthorize("hasAuthority('TECHNICIAN')")
+    @Operation(summary = "Update task status", description = "Update task status by Technician")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<ApiResponse<TaskResponse>> updateTaskStatus(
+            @PathVariable Long taskId,
+            @Valid @RequestBody UpdateTaskStatusRequest request,
+            Authentication authentication) {
+        Long technicianId = extractTechnicianId(authentication);
+        TaskResponse response = taskService.updateTaskStatusByTechnician(taskId, request, authentication.getName(), technicianId);
+        return ResponseEntity.ok(ApiResponse.success(response, "Task status updated successfully"));
+    }
+    
+    /**
      * Get technician work schedule
      */
     @GetMapping("/my-schedule")
@@ -453,7 +470,7 @@ public class TaskController {
     /**
      * Get task by ID
      */
-    @GetMapping("/{taskId}")
+    @GetMapping("/{taskId:\\d+}")
     @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'TECHNICIAN', 'MANAGER', 'ADMIN')")
     @Operation(summary = "Get task by ID", description = "Get task details by ID")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -476,6 +493,20 @@ public class TaskController {
         TaskResponse response = taskService.getTaskById(taskId);
         
         return ResponseEntity.ok(ApiResponse.success(response, "Task retrieved successfully"));
+    }
+
+    /**
+     * Alias for technician work schedule to match existing frontend route
+     */
+    @GetMapping("/technician-schedule")
+    @PreAuthorize("hasAuthority('TECHNICIAN')")
+    @Operation(summary = "Get my work schedule (alias)", description = "Alias for technician work schedule to keep backward compatibility")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<ApiResponse<List<TechnicianWorkScheduleResponse>>> getMyWorkScheduleAlias(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            Authentication authentication) {
+        return getMyWorkSchedule(startDate, endDate, authentication);
     }
     
     /**
