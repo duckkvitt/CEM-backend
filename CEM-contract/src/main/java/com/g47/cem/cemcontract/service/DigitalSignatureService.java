@@ -22,6 +22,8 @@ import java.util.Base64;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,8 +49,15 @@ import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.geom.Vector;
+import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.StampingProperties;
+import com.itextpdf.kernel.pdf.canvas.parser.EventType;
+import com.itextpdf.kernel.pdf.canvas.parser.PdfCanvasProcessor;
+import com.itextpdf.kernel.pdf.canvas.parser.data.IEventData;
+import com.itextpdf.kernel.pdf.canvas.parser.data.TextRenderInfo;
+import com.itextpdf.kernel.pdf.canvas.parser.listener.IEventListener;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.signatures.BouncyCastleDigest;
 import com.itextpdf.signatures.DigestAlgorithms;
@@ -78,6 +87,21 @@ public class DigitalSignatureService {
     
     static {
         Security.addProvider(new BouncyCastleProvider());
+    }
+
+    private String resolveSignerName(DigitalSignatureRequest request) {
+        if (request.getSignerName() != null && !request.getSignerName().isBlank()) {
+            return request.getSignerName();
+        }
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.getName() != null && !auth.getName().isBlank()) {
+                return auth.getName();
+            }
+        } catch (Exception e) {
+            log.debug("Could not read SecurityContext for signer name: {}", e.getMessage());
+        }
+        return "Digital Signer";
     }
 
     /**
@@ -222,20 +246,15 @@ public class DigitalSignatureService {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-            int pageNum = 4;
+            int pageNum = detectSignaturePage(pdfBytes);
 
-            float x, y, width = 200f, height = 80f;
+            float width = 200f;
+            float height = 80f;
             SignerType signerType = SignerType.valueOf(request.getSignerType());
-            if (signerType == SignerType.MANAGER) {
-                x = 100f;
-                y = 150f;
-            } else if (signerType == SignerType.CUSTOMER) {
-                x = 400f;
-                y = 150f;
-            } else {
-                x = 50f;
-                y = 100f;
-            }
+
+            Rectangle targetRect = findSignaturePositionByHeading(pdfBytes, pageNum, signerType, width, height);
+            float x = targetRect.getX();
+            float y = targetRect.getY();
 
             // Tên field phải duy nhất
             String fieldName = "Signature_" + System.currentTimeMillis() + "_" + request.getSignerType();
@@ -272,6 +291,121 @@ public class DigitalSignatureService {
         } catch (Exception e) {
             log.error("Failed to sign PDF with visible signature: {}", e.getMessage(), e);
             throw new BusinessException("Failed to sign PDF: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Determine which page to place signatures. Default to the last page.
+     */
+    private int detectSignaturePage(byte[] pdfBytes) {
+        try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)))) {
+            int lastPage = pdfDoc.getNumberOfPages();
+            return Math.max(1, lastPage);
+        } catch (Exception e) {
+            log.warn("Failed to detect signature page, defaulting to 1: {}", e.getMessage());
+            return 1;
+        }
+    }
+
+    /**
+     * Find the coordinates just below the heading for MANAGER/CUSTOMER on the given page.
+     * Falls back to sensible defaults if headings are not found.
+     */
+    private Rectangle findSignaturePositionByHeading(byte[] pdfBytes, int pageNum, SignerType signerType,
+                                                     float width, float height) {
+        float defaultX = signerType == SignerType.CUSTOMER ? 360f : 120f;
+        float defaultY = 150f;
+
+        try (PdfDocument pdfDoc = new PdfDocument(new PdfReader(new ByteArrayInputStream(pdfBytes)))) {
+            if (pageNum < 1 || pageNum > pdfDoc.getNumberOfPages()) {
+                pageNum = pdfDoc.getNumberOfPages();
+            }
+
+            String targetText = signerType == SignerType.CUSTOMER ? "ĐẠI DIỆN BÊN B" : "ĐẠI DIỆN BÊN A";
+
+            HeadingFinderListener listener = new HeadingFinderListener(targetText);
+            PdfCanvasProcessor processor = new PdfCanvasProcessor(listener);
+            processor.processPageContent(pdfDoc.getPage(pageNum));
+
+            HeadingMatch match = listener.getBestMatch();
+            if (match != null) {
+                float marginBelow = 40f;
+                float pageWidth = pdfDoc.getPage(pageNum).getPageSize().getWidth();
+                float headingCenterX = match.x + (match.width / 2f);
+                float x = Math.max(20f, Math.min(pageWidth - width - 20f, headingCenterX - (width / 2f)));
+                float y = Math.max(50f, match.y - marginBelow - height);
+                return new Rectangle(x, y, width, height);
+            }
+
+            // If not found on this page, try to scan all pages starting from last to first
+            for (int p = pdfDoc.getNumberOfPages(); p >= 1; p--) {
+                HeadingFinderListener l = new HeadingFinderListener(targetText);
+                PdfCanvasProcessor pr = new PdfCanvasProcessor(l);
+                pr.processPageContent(pdfDoc.getPage(p));
+                HeadingMatch m = l.getBestMatch();
+                if (m != null) {
+                    float marginBelow = 40f;
+                    float pageWidth = pdfDoc.getPage(p).getPageSize().getWidth();
+                    float headingCenterX = m.x + (m.width / 2f);
+                    float x = Math.max(20f, Math.min(pageWidth - width - 20f, headingCenterX - (width / 2f)));
+                    float y = Math.max(50f, m.y - marginBelow - height);
+                    return new Rectangle(x, y, width, height);
+                }
+            }
+
+            // Fallback
+            return new Rectangle(defaultX, defaultY, width, height);
+        } catch (Exception e) {
+            log.warn("Failed to find heading position, using defaults: {}", e.getMessage());
+            return new Rectangle(defaultX, defaultY, width, height);
+        }
+    }
+
+    /** Simple container for a heading match. */
+    private static class HeadingMatch {
+        final float x;
+        final float y;
+        final float width;
+        HeadingMatch(float x, float y, float width) { this.x = x; this.y = y; this.width = width; }
+    }
+
+    /**
+     * Listener that captures coordinates of text runs matching a given heading.
+     */
+    private static class HeadingFinderListener implements IEventListener {
+        private final String target;
+        private HeadingMatch match;
+
+        HeadingFinderListener(String target) {
+            this.target = target;
+        }
+
+        @Override
+        public void eventOccurred(IEventData data, EventType type) {
+            if (type == EventType.RENDER_TEXT) {
+                TextRenderInfo tri = (TextRenderInfo) data;
+                String text = tri.getText();
+                if (text != null && !text.isEmpty()) {
+                    String normalized = text.trim();
+                    if (normalized.contains(target)) {
+                        Vector start = tri.getBaseline().getStartPoint();
+                        Vector end = tri.getAscentLine().getEndPoint();
+                        float x = start.get(0);
+                        float y = start.get(1);
+                        float w = Math.max(0f, end.get(0) - start.get(0));
+                        match = new HeadingMatch(x, y, w);
+                    }
+                }
+            }
+        }
+
+        @Override
+        public java.util.Set<EventType> getSupportedEvents() {
+            return java.util.EnumSet.of(EventType.RENDER_TEXT);
+        }
+
+        HeadingMatch getBestMatch() {
+            return match;
         }
     }
     
@@ -361,7 +495,7 @@ public class DigitalSignatureService {
             SignatureFieldAppearance appearance = new SignatureFieldAppearance(fieldName);
 
             // Create custom appearance content
-            String signerName = request.getSignerName() != null ? request.getSignerName() : "Digital Signer";
+            String signerName = resolveSignerName(request);
             String reason = request.getReason() != null ? request.getReason() : "Digital contract signature";
             String location = request.getLocation() != null ? request.getLocation() : "CEM Digital Platform";
 
