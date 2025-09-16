@@ -251,6 +251,23 @@ public class TaskService {
                 (request.getTechleadNotes() != null ? " - " + request.getTechleadNotes() : ""), 
                 assignedBy, "LEAD_TECH");
         
+        // Update related service request status to ASSIGNED
+        if (task.getServiceRequestId() != null) {
+            ServiceRequest serviceRequest = serviceRequestRepository.findById(task.getServiceRequestId()).orElse(null);
+            if (serviceRequest != null && serviceRequest.getStatus() != ServiceRequestStatus.ASSIGNED) {
+                serviceRequest.setStatus(ServiceRequestStatus.ASSIGNED);
+                serviceRequestRepository.save(serviceRequest);
+                
+                ServiceRequestHistory serviceHistory = ServiceRequestHistory.builder()
+                        .serviceRequest(serviceRequest)
+                        .status(ServiceRequestStatus.ASSIGNED)
+                        .comment("Task assigned to technician for this request")
+                        .updatedBy(assignedBy)
+                        .build();
+                serviceRequestHistoryRepository.save(serviceHistory);
+            }
+        }
+        
         log.info("Task {} assigned to technician {} by {}", task.getTaskId(), request.getTechnicianId(), assignedBy);
         return mapToTaskResponse(task);
     }
@@ -360,6 +377,23 @@ public class TaskService {
         createTaskHistory(task, TaskStatus.IN_PROGRESS, 
                 "Work started on task" + (request.getComment() != null ? " - " + request.getComment() : ""), 
                 technicianUsername, "TECHNICIAN");
+        
+        // Update related service request status to IN_PROGRESS
+        if (task.getServiceRequestId() != null) {
+            ServiceRequest serviceRequest = serviceRequestRepository.findById(task.getServiceRequestId()).orElse(null);
+            if (serviceRequest != null && serviceRequest.getStatus() != ServiceRequestStatus.IN_PROGRESS) {
+                serviceRequest.setStatus(ServiceRequestStatus.IN_PROGRESS);
+                serviceRequestRepository.save(serviceRequest);
+                
+                ServiceRequestHistory serviceHistory = ServiceRequestHistory.builder()
+                        .serviceRequest(serviceRequest)
+                        .status(ServiceRequestStatus.IN_PROGRESS)
+                        .comment("Technician started working on the task")
+                        .updatedBy(technicianUsername)
+                        .build();
+                serviceRequestHistoryRepository.save(serviceHistory);
+            }
+        }
         
         log.info("Work started on task {} by technician {}", task.getTaskId(), technicianId);
         return mapToTaskResponse(task);

@@ -15,6 +15,11 @@ public enum ServiceRequestStatus {
     APPROVED,
     
     /**
+     * Task has been created and assigned to a technician
+     */
+    ASSIGNED,
+    
+    /**
      * Rejected by Support Team
      */
     REJECTED,
