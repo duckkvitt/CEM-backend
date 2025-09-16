@@ -50,6 +50,12 @@ public interface ServiceRequestRepository extends JpaRepository<ServiceRequest, 
      * Find service request by request ID
      */
     Optional<ServiceRequest> findByRequestId(String requestId);
+
+    @Query("SELECT sr FROM ServiceRequest sr " +
+           "JOIN FETCH sr.device cd " +
+           "JOIN FETCH cd.device d " +
+           "WHERE sr.id = :id")
+    Optional<ServiceRequest> findByIdWithDevice(@Param("id") Long id);
     
     /**
      * Find service requests by status with pagination

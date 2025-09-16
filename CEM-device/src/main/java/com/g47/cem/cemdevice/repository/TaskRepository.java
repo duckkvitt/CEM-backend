@@ -58,6 +58,11 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByServiceRequestId(Long serviceRequestId);
     
     /**
+     * Find latest task by service request ID
+     */
+    Optional<Task> findFirstByServiceRequestIdOrderByCreatedAtDesc(Long serviceRequestId);
+    
+    /**
      * Find tasks by type with pagination
      */
     Page<Task> findByType(TaskType type, Pageable pageable);
