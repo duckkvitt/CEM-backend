@@ -76,8 +76,26 @@ public class AuthController {
 
 
 
-    @PostMapping("/refresh-token")
+    @PostMapping("/refresh")
     @Operation(summary = "Refresh access token", description = "Generate new access token using refresh token")
+    public ResponseEntity<ApiResponse<AuthResponse>> refresh(
+            @RequestHeader("Authorization") String authHeader,
+            HttpServletRequest httpRequest) {
+        
+        String refreshToken = authHeader.replace("Bearer ", "");
+        AuthResponse authResponse = authService.refreshToken(refreshToken);
+        
+        ApiResponse<AuthResponse> response = ApiResponse.success(
+            authResponse, 
+            "Token refresh successful"
+        );
+        response.setPath(httpRequest.getRequestURI());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh-token")
+    @Operation(summary = "Refresh access token (legacy)", description = "Generate new access token using refresh token")
     public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(
             @RequestHeader("Authorization") String authHeader,
             HttpServletRequest httpRequest) {

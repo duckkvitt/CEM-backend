@@ -35,8 +35,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJwtFromRequest(request);
 
             if (StringUtils.hasText(jwt) && SecurityContextHolder.getContext().getAuthentication() == null) {
+                String username = null;
                 try {
-                    String username = jwtUtil.extractUsername(jwt);
+                    username = jwtUtil.extractUsername(jwt);
 
                     if (username != null) {
                         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -57,6 +58,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             log.debug("Invalid JWT token for user: {}", username);
                         }
                     }
+                } catch (io.jsonwebtoken.ExpiredJwtException e) {
+                    log.debug("JWT token expired for user: {}", username);
                 } catch (Exception e) {
                     log.warn("JWT token validation failed: {}", e.getMessage());
                 }
@@ -85,6 +88,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Skip JWT processing for public endpoints
         return path.startsWith("/v1/auth/login") ||
                path.startsWith("/v1/auth/register") ||
+               path.startsWith("/v1/auth/refresh") ||
                path.startsWith("/v1/auth/refresh-token") ||
                path.startsWith("/v1/auth/verify-email") ||
                path.startsWith("/swagger-ui") ||
