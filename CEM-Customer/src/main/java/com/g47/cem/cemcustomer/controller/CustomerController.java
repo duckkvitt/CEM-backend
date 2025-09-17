@@ -1,4 +1,4 @@
-﻿package com.g47.cem.cemcustomer.controller;
+package com.g47.cem.cemcustomer.controller;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,7 +35,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.annotation.Secured;
 
 /**
  * REST Controller for Customer management
@@ -331,4 +331,6 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
 }
+
+
 
