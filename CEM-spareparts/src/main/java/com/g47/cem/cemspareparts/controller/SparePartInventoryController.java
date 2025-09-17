@@ -195,7 +195,7 @@ public class SparePartInventoryController {
     }
     
     @GetMapping("/total-value")
-    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'ADMIN')")
     @Operation(summary = "Get total inventory value", description = "Get total value of all spare part inventory (Support Team, TechLead, Manager access required)")
     public ResponseEntity<ApiResponse<Object>> getTotalInventoryValue() {
         Object totalValue = sparePartInventoryService.getTotalInventoryValue();
@@ -203,7 +203,7 @@ public class SparePartInventoryController {
     }
     
     @GetMapping("/dashboard/stats")
-    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'ADMIN')")
     @Operation(summary = "Get dashboard statistics", description = "Get dashboard statistics for spare part inventory (Support Team, TechLead, Manager access required)")
     public ResponseEntity<ApiResponse<SparePartInventoryService.DashboardStats>> getDashboardStats() {
         SparePartInventoryService.DashboardStats stats = sparePartInventoryService.getDashboardStats();

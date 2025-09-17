@@ -21,12 +21,12 @@ import com.g47.cem.cemdevice.dto.request.ImportRequest;
 import com.g47.cem.cemdevice.dto.response.ApiResponse;
 import com.g47.cem.cemdevice.dto.response.DeviceInventoryResponse;
 import com.g47.cem.cemdevice.dto.response.InventoryTransactionResponse;
-import com.g47.cem.cemdevice.integration.SparePartIntegrationService;
-import com.g47.cem.cemdevice.integration.SparePartIntegrationService.SparePartDto;
-import com.g47.cem.cemdevice.integration.SparePartIntegrationService.SupplierDto;
-import com.g47.cem.cemdevice.integration.SparePartIntegrationService.SupplierDeviceTypeDto;
 import com.g47.cem.cemdevice.enums.InventoryItemType;
 import com.g47.cem.cemdevice.enums.InventoryTransactionType;
+import com.g47.cem.cemdevice.integration.SparePartIntegrationService;
+import com.g47.cem.cemdevice.integration.SparePartIntegrationService.SparePartDto;
+import com.g47.cem.cemdevice.integration.SparePartIntegrationService.SupplierDeviceTypeDto;
+import com.g47.cem.cemdevice.integration.SparePartIntegrationService.SupplierDto;
 import com.g47.cem.cemdevice.service.InventoryService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -303,7 +303,7 @@ public class InventoryController {
      * Get inventory dashboard statistics
      */
     @GetMapping("/dashboard/stats")
-    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'ADMIN')")
     @Operation(summary = "Get inventory dashboard statistics", description = "Get statistics for inventory dashboard (Support Team, TechLead, Manager access required)")
     public ResponseEntity<ApiResponse<InventoryService.InventoryDashboardStats>> getInventoryDashboardStats() {
         log.debug("Fetching inventory dashboard statistics");
@@ -316,7 +316,7 @@ public class InventoryController {
      * Get recent inventory activity
      */
     @GetMapping("/dashboard/recent-activity")
-    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER')")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'MANAGER', 'ADMIN')")
     @Operation(summary = "Get recent inventory activity", description = "Get recent inventory activity for dashboard (Support Team, TechLead, Manager access required)")
     public ResponseEntity<ApiResponse<InventoryTransactionResponse[]>> getRecentInventoryActivity(
             @Parameter(description = "Number of recent activities to retrieve") @RequestParam(defaultValue = "10") int limit) {
