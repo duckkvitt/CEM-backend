@@ -1,4 +1,4 @@
-package com.g47.cem.cemcustomer.controller;
+﻿package com.g47.cem.cemcustomer.controller;
 
 import java.util.List;
 
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.g47.cem.cemcustomer.dto.request.CreateCustomerRequest;
+import com.g47.cem.cemcustomer.dto.request.UpdateCustomerRequest;
 import com.g47.cem.cemcustomer.dto.response.ApiResponse;
 import com.g47.cem.cemcustomer.dto.response.CustomerResponse;
 import com.g47.cem.cemcustomer.service.CustomerService;
@@ -75,6 +76,32 @@ public class CustomerController {
     }
     
     /**
+     * Update customer
+     */
+    @PutMapping("/{id}")
+    @Operation(summary = "Update customer", description = "Update an existing customer's details")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PreAuthorize("hasAuthority('STAFF')")
+    public ResponseEntity<ApiResponse<CustomerResponse>> updateCustomer(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateCustomerRequest request,
+            Authentication authentication,
+            HttpServletRequest httpRequest) {
+
+        log.info("Updating customer with ID: {} by user: {}", id, authentication.getName());
+
+        CustomerResponse customer = customerService.updateCustomer(id, request);
+
+        ApiResponse<CustomerResponse> response = ApiResponse.success(
+                customer,
+                "Customer updated successfully"
+        );
+        response.setPath(httpRequest.getRequestURI());
+
+        return ResponseEntity.ok(response);
+    }
+
+    /**
      * Get customer by ID
      */
     @GetMapping("/{id}")
@@ -84,19 +111,19 @@ public class CustomerController {
     public ResponseEntity<ApiResponse<CustomerResponse>> getCustomerById(
             @PathVariable Long id,
             HttpServletRequest httpRequest) {
-        
+
         log.debug("Fetching customer with ID: {}", id);
-        log.debug("Current user authorities: {}", 
+        log.debug("Current user authorities: {}",
                 SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        
+
         CustomerResponse customer = customerService.getCustomerById(id);
-        
+
         ApiResponse<CustomerResponse> response = ApiResponse.success(customer);
         response.setPath(httpRequest.getRequestURI());
-        
+
         return ResponseEntity.ok(response);
     }
-    
+
     /**
      * Get customer by email
      */
@@ -304,3 +331,4 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
 }
+
