@@ -23,3 +23,4 @@ CREATE INDEX IF NOT EXISTS idx_feedback_submitted_at ON customer_feedbacks(submi
 CREATE INDEX IF NOT EXISTS idx_feedback_service_type ON customer_feedbacks(service_type);
 
 
+
