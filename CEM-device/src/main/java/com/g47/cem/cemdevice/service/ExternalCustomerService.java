@@ -73,6 +73,55 @@ public class ExternalCustomerService {
             return null;
         }
     }
+
+    /**
+     * Get customer information by ID
+     */
+    public CustomerInfo getCustomerById(Long id) {
+        if (id == null) {
+            log.error("Customer id is null. Cannot fetch customer by id.");
+            return null;
+        }
+
+        String url = customerServiceUrl + "/" + id;
+        String tokenToUse = extractAuthTokenOrServiceToken();
+
+        try {
+            log.debug("Calling customer service by id at: {}", url);
+
+            WebClient.RequestHeadersSpec<?> request = webClient.get().uri(url);
+
+            if (tokenToUse != null && !tokenToUse.isBlank()) {
+                request = request.header("Authorization", "Bearer " + tokenToUse);
+            }
+
+            CustomerApiResponse response = request.retrieve()
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), clientResponse ->
+                    clientResponse.bodyToMono(String.class).map(body -> {
+                        log.error("Customer Service error for id {}: {} - {}", id, clientResponse.statusCode().value(), body);
+                        return new RuntimeException(clientResponse.statusCode() + " - " + body);
+                    })
+                )
+                .bodyToMono(CustomerApiResponse.class)
+                .block();
+
+            if (response != null && response.isSuccess() && response.getData() != null) {
+                CustomerResponse customer = response.getData();
+                CustomerInfo info = new CustomerInfo();
+                info.setId(customer.getId());
+                info.setEmail(customer.getEmail());
+                info.setCompanyName(customer.getCompanyName());
+                info.setContactName(customer.getLegalRepresentative());
+                return info;
+            } else {
+                log.warn("Customer not found by id {}", id);
+                return null;
+            }
+        } catch (Exception e) {
+            log.error("Failed to fetch customer by id {}: {}", id, e.getMessage(), e);
+            return null;
+        }
+    }
     
     /**
      * Extract authorization token from current request context

@@ -125,24 +125,27 @@ public class UserIntegrationService {
     public Optional<UserDto> getUserById(Long userId, String bearerToken) {
         try {
             log.debug("Fetching user with ID: {} from authentication service", userId);
-
-            String url = authServiceUrl + "/v1/auth/admin/users/" + userId;
-
+            // Build headers with bearer token
             HttpHeaders headers = new HttpHeaders();
             if (bearerToken != null && !bearerToken.isEmpty()) {
                 headers.set("Authorization", bearerToken.startsWith("Bearer ") ? bearerToken : "Bearer " + bearerToken);
             }
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
-            ResponseEntity<ApiResponse<UserDto>> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                entity,
-                new ParameterizedTypeReference<ApiResponse<UserDto>>() {}
-            );
-
-            if (response.getBody() != null && response.getBody().isSuccess()) {
-                return Optional.of(response.getBody().getData());
+            // Use non-admin endpoint (controller base is /v1/auth inside Auth service)
+            String userUrl = authServiceUrl + "/v1/auth/users/" + userId;
+            try {
+                ResponseEntity<ApiResponse<UserDto>> response = restTemplate.exchange(
+                    userUrl,
+                    HttpMethod.GET,
+                    entity,
+                    new ParameterizedTypeReference<ApiResponse<UserDto>>() {}
+                );
+                if (response.getBody() != null && response.getBody().isSuccess() && response.getBody().getData() != null) {
+                    return Optional.of(response.getBody().getData());
+                }
+            } catch (Exception nonAdminEx) {
+                log.warn("User lookup failed for user {}: {}", userId, nonAdminEx.getMessage());
             }
 
             return Optional.empty();

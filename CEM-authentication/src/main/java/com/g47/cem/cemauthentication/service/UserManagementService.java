@@ -185,6 +185,13 @@ public class UserManagementService {
         return userResponse;
     }
 
+    @Transactional(readOnly = true)
+    public UserResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
+        return mapToUserResponse(user);
+    }
+
     private RoleResponse mapToRoleResponse(Role role) {
         return modelMapper.map(role, RoleResponse.class);
     }

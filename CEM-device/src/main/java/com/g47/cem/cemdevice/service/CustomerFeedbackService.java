@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.g47.cem.cemdevice.dto.request.CreateCustomerFeedbackRequest;
 import com.g47.cem.cemdevice.dto.response.CustomerFeedbackResponse;
@@ -16,6 +18,7 @@ import com.g47.cem.cemdevice.entity.Task;
 import com.g47.cem.cemdevice.enums.ServiceRequestStatus;
 import com.g47.cem.cemdevice.exception.BusinessException;
 import com.g47.cem.cemdevice.exception.ResourceNotFoundException;
+import com.g47.cem.cemdevice.integration.UserIntegrationService;
 import com.g47.cem.cemdevice.repository.CustomerFeedbackRepository;
 import com.g47.cem.cemdevice.repository.ServiceRequestRepository;
 import com.g47.cem.cemdevice.repository.TaskRepository;
@@ -31,6 +34,8 @@ public class CustomerFeedbackService {
     private final ServiceRequestRepository serviceRequestRepository;
     private final TaskRepository taskRepository;
     private final TechnicianProfileRepository technicianProfileRepository;
+    private final ExternalCustomerService externalCustomerService;
+    private final UserIntegrationService userIntegrationService;
 
     @Transactional
     public CustomerFeedbackResponse submitFeedback(Long customerId, String username, CreateCustomerFeedbackRequest request) {
@@ -111,6 +116,7 @@ public class CustomerFeedbackService {
         String deviceName = null;
         String deviceType = null;
         String technicianName = null;
+        String customerName = null;
         String serviceRequestCode = null;
         if (sr != null) {
             serviceRequestCode = sr.getRequestId();
@@ -118,15 +124,31 @@ public class CustomerFeedbackService {
                 deviceName = sr.getDevice().getDevice().getName();
                 deviceType = sr.getDevice().getDevice().getModel();
             }
-            if (fb.getTechnicianId() != null) {
-                technicianName = String.valueOf(fb.getTechnicianId());
-            }
+        }
+        // Resolve customer name from Customer service
+        var customerInfo = externalCustomerService.getCustomerById(fb.getCustomerId());
+        if (customerInfo != null) {
+            customerName = customerInfo.getCompanyName() != null && !customerInfo.getCompanyName().isBlank()
+                    ? customerInfo.getCompanyName()
+                    : customerInfo.getContactName();
+        }
+        // Resolve technician full name from Auth service using current bearer token
+        if (fb.getTechnicianId() != null) {
+            String bearer = extractBearerToken();
+            technicianName = userIntegrationService.getUserById(fb.getTechnicianId(), bearer)
+                    .map(u -> {
+                        String full = u.getFullName();
+                        if (full != null && !full.trim().isEmpty()) return full.trim();
+                        return (u.getEmail() != null && !u.getEmail().isBlank()) ? u.getEmail() : null;
+                    })
+                    .orElse(null);
         }
         return CustomerFeedbackResponse.builder()
                 .id(fb.getId())
                 .serviceRequestId(fb.getServiceRequestId())
                 .serviceRequestCode(serviceRequestCode)
                 .customerId(fb.getCustomerId())
+                .customerName(customerName)
                 .deviceId(fb.getDeviceId())
                 .deviceName(deviceName)
                 .deviceType(deviceType)
@@ -137,6 +159,17 @@ public class CustomerFeedbackService {
                 .technicianName(technicianName)
                 .submittedAt(fb.getSubmittedAt())
                 .build();
+    }
+
+    private String extractBearerToken() {
+        ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attrs != null && attrs.getRequest() != null) {
+            String header = attrs.getRequest().getHeader("Authorization");
+            if (header != null && !header.isBlank()) {
+                return header.startsWith("Bearer ") ? header.substring(7) : header;
+            }
+        }
+        return null;
     }
 }
 

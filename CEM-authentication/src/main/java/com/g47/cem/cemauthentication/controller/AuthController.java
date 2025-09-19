@@ -341,6 +341,19 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/users/{id}")
+    @Operation(summary = "Get user by ID", description = "Retrieve a single user by ID (requires authentication)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<ApiResponse<UserResponse>> getUserById(
+            @PathVariable Long id,
+            HttpServletRequest httpRequest) {
+
+        UserResponse user = userManagementService.getUserById(id);
+        ApiResponse<UserResponse> response = ApiResponse.success(user, "User retrieved successfully");
+        response.setPath(httpRequest.getRequestURI());
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/admin/users/{id}/deactivate")
     @Operation(summary = "Deactivate user", description = "Set user's status to INACTIVE (Admin only)")
     @SecurityRequirement(name = "Bearer Authentication")
