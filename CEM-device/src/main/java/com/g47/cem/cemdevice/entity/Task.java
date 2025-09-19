@@ -131,6 +131,11 @@ public class Task {
     @Column(name = "rejected_at")
     private LocalDateTime rejectedAt;
 
+    // Previous status tracking for rejection rollback
+    @Enumerated(EnumType.STRING)
+    @Column(name = "previous_status", length = 50)
+    private TaskStatus previousStatus;
+
     // Timestamps
     @Column(name = "completed_at")
     private LocalDateTime completedAt;

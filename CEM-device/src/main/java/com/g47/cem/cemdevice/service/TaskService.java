@@ -235,6 +235,9 @@ public class TaskService {
             throw new BusinessException("Task cannot be assigned in current status: " + task.getStatus());
         }
         
+        // Store previous status before assignment
+        task.setPreviousStatus(task.getStatus());
+        
         // Update task assignment
         task.setStatus(TaskStatus.ASSIGNED);
         task.setAssignedTechnicianId(request.getTechnicianId());
@@ -329,20 +332,29 @@ public class TaskService {
             throw new BusinessException("Rejection reason is required");
         }
         
-        // Update task status
-        task.setStatus(TaskStatus.REJECTED);
+        // Store rejection information
         task.setRejectionReason(request.getRejectionReason());
         task.setRejectedBy(technicianUsername);
         task.setRejectedAt(LocalDateTime.now());
         
+        // Return task to previous status instead of REJECTED
+        TaskStatus previousStatus = task.getPreviousStatus() != null ? task.getPreviousStatus() : TaskStatus.PENDING;
+        task.setStatus(previousStatus);
+        
+        // Clear assignment information so it can be reassigned
+        task.setAssignedTechnicianId(null);
+        task.setAssignedBy(null);
+        task.setAssignedAt(null);
+        task.setPreviousStatus(null); // Clear previous status after rollback
+        
         task = taskRepository.save(task);
         
         // Create task history
-        createTaskHistory(task, TaskStatus.REJECTED, 
-                "Task rejected by technician: " + request.getRejectionReason(), 
+        createTaskHistory(task, previousStatus, 
+                "Task rejected by technician and returned to " + previousStatus + ": " + request.getRejectionReason(), 
                 technicianUsername, "TECHNICIAN");
         
-        log.info("Task {} rejected by technician {}: {}", task.getTaskId(), technicianId, request.getRejectionReason());
+        log.info("Task {} rejected by technician {} and returned to {}: {}", task.getTaskId(), technicianId, previousStatus, request.getRejectionReason());
         return mapToTaskResponse(task);
     }
     

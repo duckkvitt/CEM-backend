@@ -382,7 +382,7 @@ public class TaskController {
         
         TaskResponse response = taskService.rejectTask(taskId, request, authentication.getName(), technicianId);
         
-        return ResponseEntity.ok(ApiResponse.success(response, "Task rejected successfully"));
+        return ResponseEntity.ok(ApiResponse.success(response, "Task rejected and returned to previous status for reassignment"));
     }
     
     /**
