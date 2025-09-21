@@ -68,6 +68,11 @@ public class UserManagementService {
         Role role = roleRepository.findById(request.getRoleId())
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found with ID: " + request.getRoleId()));
 
+        // Prevent Admin from creating CUSTOMER accounts
+        if ("CUSTOMER".equalsIgnoreCase(role.getName())) {
+            throw new BusinessException("Admin is not allowed to create CUSTOMER accounts. CUSTOMER accounts are created automatically when contracts are signed.", HttpStatus.FORBIDDEN);
+        }
+
         // Generate temporary password
         String temporaryPassword = emailService.generateTemporaryPassword();
 
@@ -111,6 +116,12 @@ public class UserManagementService {
                 .stream()
                 .map(this::mapToRoleResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Role getRoleById(Long roleId) {
+        log.info("Fetching role by ID: {}", roleId);
+        return roleRepository.findById(roleId).orElse(null);
     }
 
     @Transactional

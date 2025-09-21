@@ -175,6 +175,19 @@ public class AuthController {
         log.info("Create user request received by admin: {} for email: {}", 
                 authentication.getName(), request.getEmail());
         
+        // Additional validation to prevent CUSTOMER role creation
+        if (request.getRoleId() != null) {
+            Role role = userManagementService.getRoleById(request.getRoleId());
+            if (role != null && "CUSTOMER".equalsIgnoreCase(role.getName())) {
+                ApiResponse<UserResponse> response = ApiResponse.error(
+                    "Admin is not allowed to create CUSTOMER accounts. CUSTOMER accounts are created automatically when contracts are signed.",
+                    HttpStatus.FORBIDDEN.value()
+                );
+                response.setPath(httpRequest.getRequestURI());
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+            }
+        }
+        
         UserResponse userResponse = userManagementService.createUser(request, authentication.getName());
         
         ApiResponse<UserResponse> response = ApiResponse.success(

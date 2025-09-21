@@ -100,6 +100,7 @@ public class DeviceService {
     /**
      * Search devices with filters.
      * This method combines keyword search, stock status, and device status.
+     * Optimized to use appropriate query based on filters.
      */
     @Transactional(readOnly = true)
     public Page<DeviceResponse> searchDevices(String keyword, Boolean inStock, DeviceStatus status, Pageable pageable) {
@@ -110,13 +111,18 @@ public class DeviceService {
             pattern = "%" + keyword.trim() + "%";
         }
 
-        // Ensure inStock is Boolean or null
-        Boolean safeInStock = null;
+        Page<Device> devices;
+        
+        // Use optimized query based on whether inStock filter is applied
         if (inStock != null) {
-            safeInStock = Boolean.TRUE.equals(inStock) ? Boolean.TRUE : Boolean.FALSE;
+            // Use LEFT JOIN query when inStock filter is applied
+            Boolean safeInStock = Boolean.TRUE.equals(inStock) ? Boolean.TRUE : Boolean.FALSE;
+            devices = deviceRepository.searchDevicesWithStockFilter(pattern, safeInStock, status, pageable);
+        } else {
+            // Use basic query when no inStock filter (better performance)
+            devices = deviceRepository.searchDevicesBasic(pattern, status, pageable);
         }
-
-        Page<Device> devices = deviceRepository.searchDevices(pattern, safeInStock, status, pageable);
+        
         return devices.map(this::mapToDeviceResponse);
     }
     
@@ -178,9 +184,46 @@ public class DeviceService {
         Device device = deviceRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Device", "id", id));
         
+        // Check for constraints before deletion
+        validateDeviceDeletion(id);
+        
         deviceRepository.delete(device);
         
         log.info("Device deleted successfully with ID: {}", id);
+    }
+    
+    /**
+     * Validate if device can be deleted by checking all constraints
+     */
+    @Transactional(readOnly = true)
+    public void validateDeviceDeletion(Long deviceId) {
+        log.debug("Validating device deletion for ID: {}", deviceId);
+        
+        StringBuilder constraintReasons = new StringBuilder();
+        
+        // Check if device is linked to customers through contracts
+        if (deviceRepository.isDeviceLinkedToCustomer(deviceId)) {
+            constraintReasons.append("Device is currently linked to customers through contracts. ");
+        }
+        
+        // Check if device has any tasks assigned
+        if (deviceRepository.hasDeviceTasks(deviceId)) {
+            constraintReasons.append("Device has active or completed tasks assigned. ");
+        }
+        
+        // Check if device has any notes
+        if (deviceRepository.hasDeviceNotes(deviceId)) {
+            constraintReasons.append("Device has associated notes. ");
+        }
+        
+        // If there are any constraints, throw an exception
+        if (constraintReasons.length() > 0) {
+            String errorMessage = "Cannot delete device due to: " + constraintReasons.toString().trim();
+            log.warn("Device deletion blocked for ID {}: {}", deviceId, errorMessage);
+            throw new BusinessException(errorMessage);
+        }
+        
+        log.debug("Device deletion validation passed for ID: {}", deviceId);
     }
     
     /**
