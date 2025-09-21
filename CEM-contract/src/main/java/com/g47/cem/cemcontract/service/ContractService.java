@@ -1335,7 +1335,7 @@ public class ContractService {
                     List<ContractStatus> statusList = Arrays.stream(status.split(","))
                             .map(s -> ContractStatus.valueOf(s.trim()))
                             .collect(Collectors.toList());
-                    return contractRepository.findByStatusIn(statusList, pageable)
+                    return contractRepository.findByStatusInAndIsHiddenFalse(statusList, pageable)
                             .map(this::mapToDto);
                 }
             } else {
@@ -1354,17 +1354,17 @@ public class ContractService {
             
             // Apply filters for customer
             if (search != null && !search.trim().isEmpty()) {
-                return contractRepository.findByCustomerIdAndTitleContainingIgnoreCaseOrCustomerIdAndContractNumberContainingIgnoreCase(
-                        userCustomerId, search.trim(), userCustomerId, search.trim(), pageable)
+                return contractRepository.findByCustomerIdAndTitleContainingIgnoreCaseOrContractNumberContainingIgnoreCaseAndIsHiddenFalse(
+                        userCustomerId, search.trim(), pageable)
                         .map(this::mapToDto);
             } else if (status != null && !status.trim().isEmpty()) {
                 List<ContractStatus> statusList = Arrays.stream(status.split(","))
                         .map(s -> ContractStatus.valueOf(s.trim()))
                         .collect(Collectors.toList());
-                return contractRepository.findByCustomerIdAndStatusIn(userCustomerId, statusList, pageable)
+                return contractRepository.findByCustomerIdAndStatusInAndIsHiddenFalse(userCustomerId, statusList, pageable)
                         .map(this::mapToDto);
             } else {
-                return contractRepository.findByCustomerId(userCustomerId, pageable)
+                return contractRepository.findByCustomerIdAndIsHiddenFalse(userCustomerId, pageable)
                         .map(this::mapToDto);
             }
         }

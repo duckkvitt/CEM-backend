@@ -184,7 +184,23 @@ public interface ContractRepository extends JpaRepository<Contract, Long>, JpaSp
             Long customerId1, String title, Long customerId2, String contractNumber, Pageable pageable);
     
     /**
+     * Find contracts by customer ID and title or contract number containing search term, excluding hidden contracts
+     */
+    @Query("SELECT c FROM Contract c WHERE c.customerId = :customerId AND c.isHidden = false AND " +
+           "(LOWER(c.title) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+           "LOWER(c.contractNumber) LIKE LOWER(CONCAT('%', :searchTerm, '%')))")
+    Page<Contract> findByCustomerIdAndTitleContainingIgnoreCaseOrContractNumberContainingIgnoreCaseAndIsHiddenFalse(
+            @Param("customerId") Long customerId, 
+            @Param("searchTerm") String searchTerm, 
+            Pageable pageable);
+    
+    /**
      * Find contracts by customer ID and status list
      */
     Page<Contract> findByCustomerIdAndStatusIn(Long customerId, List<ContractStatus> statuses, Pageable pageable);
+    
+    /**
+     * Find contracts by customer ID and status list, excluding hidden contracts
+     */
+    Page<Contract> findByCustomerIdAndStatusInAndIsHiddenFalse(Long customerId, List<ContractStatus> statuses, Pageable pageable);
 } 
