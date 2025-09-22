@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerDeviceService {
     
     private final CustomerDeviceRepository customerDeviceRepository;
-    private final ModelMapper modelMapper; // reserved for future mappings
     
     /**
      * Get customer's purchased devices with pagination and filtering

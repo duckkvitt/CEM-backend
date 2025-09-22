@@ -1,7 +1,5 @@
 package com.g47.cem.cemauthentication.config;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +33,7 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
 
     @Value("#{'${app.security.permitAll}'.split(',')}")
-    private List<String> permitAllEndpoints;
+    private String[] permitAllEndpoints;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -43,6 +41,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    @SuppressWarnings("deprecation")
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
@@ -68,11 +67,8 @@ public class SecurityConfig {
             .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> {
-                // Convert permitAll endpoints to array
-                String[] permitAllArray = permitAllEndpoints.toArray(new String[0]);
-                
                 auth
-                    .requestMatchers(permitAllArray).permitAll()
+                    .requestMatchers(permitAllEndpoints).permitAll()
                     .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated();
             })

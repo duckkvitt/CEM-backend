@@ -25,7 +25,6 @@ import com.g47.cem.cemdevice.enums.ServiceRequestType;
 import com.g47.cem.cemdevice.service.ExternalCustomerService;
 import com.g47.cem.cemdevice.service.ServiceRequestService;
 import com.g47.cem.cemdevice.service.ServiceRequestService.ServiceRequestStatistics;
-import com.g47.cem.cemdevice.util.JwtUtil;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ServiceRequestController {
     
     private final ServiceRequestService serviceRequestService;
-    private final JwtUtil jwtUtil; // kept for potential future token validations
+    
     private final ExternalCustomerService externalCustomerService;
     
     /**
@@ -261,7 +260,7 @@ public class ServiceRequestController {
                 throw new RuntimeException("Customer not found for current user");
             }
             return customerInfo.getId();
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             log.error("Failed to extract customer ID from authentication: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to extract customer ID");
         }

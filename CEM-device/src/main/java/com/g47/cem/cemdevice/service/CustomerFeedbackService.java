@@ -33,7 +33,8 @@ public class CustomerFeedbackService {
     private final CustomerFeedbackRepository customerFeedbackRepository;
     private final ServiceRequestRepository serviceRequestRepository;
     private final TaskRepository taskRepository;
-    private final TechnicianProfileRepository technicianProfileRepository;
+    @SuppressWarnings("unused")
+    private final TechnicianProfileRepository technicianProfileRepository; // reserved for potential future use
     private final ExternalCustomerService externalCustomerService;
     private final UserIntegrationService userIntegrationService;
 

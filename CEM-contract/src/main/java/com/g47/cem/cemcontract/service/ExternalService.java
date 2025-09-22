@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -29,7 +28,6 @@ public class ExternalService {
     private String customerServiceUrl;
     @Value("${app.services.device-service.url}")
     private String deviceServiceUrl;
-    private final RestTemplate restTemplate;
     // ... (rest of the ExternalService implementation, including all methods and static inner DTOs)
 
     public CustomerDto getCustomerInfo(Long customerId, String authToken) {

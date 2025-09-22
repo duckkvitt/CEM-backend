@@ -1,7 +1,6 @@
 package com.g47.cem.cemcontract.dto.response.external;
 
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
 public class UserResponse {

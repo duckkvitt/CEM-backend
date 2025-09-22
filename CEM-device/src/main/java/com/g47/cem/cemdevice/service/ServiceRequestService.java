@@ -5,16 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.g47.cem.cemdevice.dto.request.CreateServiceRequestRequest;
 import com.g47.cem.cemdevice.dto.request.UpdateServiceRequestRequest;
 import com.g47.cem.cemdevice.dto.response.ServiceRequestHistoryResponse;
@@ -45,8 +41,7 @@ public class ServiceRequestService {
     private final ServiceRequestRepository serviceRequestRepository;
     private final ServiceRequestHistoryRepository serviceRequestHistoryRepository;
     private final CustomerDeviceRepository customerDeviceRepository;
-    private final ModelMapper modelMapper;
-    private final ObjectMapper objectMapper;
+    
     
     /**
      * Create a new service request

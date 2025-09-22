@@ -20,7 +20,6 @@ import com.g47.cem.cemdevice.enums.CustomerDeviceStatus;
 import com.g47.cem.cemdevice.service.CustomerDeviceService;
 import com.g47.cem.cemdevice.service.CustomerDeviceService.CustomerDeviceStatistics;
 import com.g47.cem.cemdevice.service.ExternalCustomerService;
-import com.g47.cem.cemdevice.util.JwtUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomerDeviceController {
     
     private final CustomerDeviceService customerDeviceService;
-    private final JwtUtil jwtUtil;
+    
     private final ExternalCustomerService externalCustomerService;
     
     /**

@@ -2,10 +2,7 @@ package com.g47.cem.cemcontract.controller;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.MalformedURLException;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
