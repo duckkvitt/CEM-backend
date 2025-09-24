@@ -322,6 +322,91 @@ public class SparePartIntegrationService {
         }
     }
 
+    /**
+     * Export spare part for a task (centralized in Spareparts service)
+     */
+    public Optional<TaskSparePartUsageDto> exportSparePartForTask(Long taskId, Long sparePartId, Integer quantity, String notes, String bearerToken, java.math.BigDecimal unitPrice) {
+        try {
+            String url = sparePartsServiceUrl + "/api/v1/spare-part-usage/export";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", "application/json");
+            if (bearerToken != null && !bearerToken.isEmpty()) {
+                headers.set("Authorization", bearerToken.startsWith("Bearer ") ? bearerToken : "Bearer " + bearerToken);
+            }
+
+            var body = new java.util.HashMap<String,Object>();
+            body.put("taskId", taskId);
+            body.put("sparePartId", sparePartId);
+            body.put("quantity", quantity);
+            if (unitPrice != null) body.put("unitPrice", unitPrice);
+            if (notes != null) body.put("notes", notes);
+
+            HttpEntity<java.util.Map<String,Object>> entity = new HttpEntity<>(body, headers);
+
+            ResponseEntity<ApiResponse<TaskSparePartUsageDto>> response = restTemplate.exchange(
+                url,
+                HttpMethod.POST,
+                entity,
+                new ParameterizedTypeReference<ApiResponse<TaskSparePartUsageDto>>() {}
+            );
+
+            if (response.getBody() != null && response.getBody().isSuccess()) {
+                return Optional.ofNullable(response.getBody().getData());
+            }
+            return Optional.empty();
+        } catch (Exception e) {
+            log.error("Error exporting spare part for task {}: {}", taskId, e.getMessage(), e);
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Get usages by task from Spareparts service
+     */
+    public java.util.List<TaskSparePartUsageDto> getTaskUsages(Long taskId, String bearerToken) {
+        try {
+            String url = sparePartsServiceUrl + "/api/v1/spare-part-usage/tasks/" + taskId;
+
+            HttpHeaders headers = new HttpHeaders();
+            if (bearerToken != null && !bearerToken.isEmpty()) {
+                headers.set("Authorization", bearerToken.startsWith("Bearer ") ? bearerToken : "Bearer " + bearerToken);
+            }
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<ApiResponse<java.util.List<TaskSparePartUsageDto>>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<ApiResponse<java.util.List<TaskSparePartUsageDto>>>() {}
+            );
+
+            if (response.getBody() != null && response.getBody().isSuccess() && response.getBody().getData() != null) {
+                return response.getBody().getData();
+            }
+            return java.util.List.of();
+        } catch (Exception e) {
+            log.error("Error fetching usages for task {}: {}", taskId, e.getMessage(), e);
+            return java.util.List.of();
+        }
+    }
+
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class TaskSparePartUsageDto {
+        private Long id;
+        private Long taskId;
+        private Long sparePartId;
+        private String sparePartName;
+        private String sparePartCode;
+        private Integer quantityUsed;
+        private java.math.BigDecimal unitPrice;
+        private java.math.BigDecimal totalCost;
+        private String notes;
+        private java.time.LocalDateTime usedAt;
+        private String createdBy;
+    }
+
     // DTOs for API responses
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)

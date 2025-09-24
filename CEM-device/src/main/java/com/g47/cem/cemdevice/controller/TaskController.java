@@ -39,6 +39,9 @@ import com.g47.cem.cemdevice.enums.TaskPriority;
 import com.g47.cem.cemdevice.enums.TaskStatus;
 import com.g47.cem.cemdevice.enums.TaskType;
 import com.g47.cem.cemdevice.service.TaskService;
+import com.g47.cem.cemdevice.service.TaskSparePartService;
+import com.g47.cem.cemdevice.dto.request.ExportTaskSparePartRequest;
+import com.g47.cem.cemdevice.dto.response.TaskSparePartUsageResponse;
 import com.g47.cem.cemdevice.util.JwtUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,6 +63,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TaskController {
     
     private final TaskService taskService;
+    private final TaskSparePartService taskSparePartService;
     private final JwtUtil jwtUtil;
     
     // ========== Support Team Endpoints ==========
@@ -493,6 +497,56 @@ public class TaskController {
         TaskResponse response = taskService.getTaskById(taskId);
         
         return ResponseEntity.ok(ApiResponse.success(response, "Task retrieved successfully"));
+    }
+
+    /**
+     * Get spare parts used in a task (Technician and above)
+     */
+    @GetMapping("/{taskId}/spare-parts")
+    @PreAuthorize("hasAnyAuthority('SUPPORT_TEAM', 'LEAD_TECH', 'TECHNICIAN', 'MANAGER', 'ADMIN')")
+    @Operation(summary = "Get task spare parts usage", description = "List spare parts used for a task")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<ApiResponse<List<TaskSparePartUsageResponse>>> getTaskSpareParts(
+            @PathVariable Long taskId,
+            Authentication authentication,
+            HttpServletRequest httpRequest) {
+        // Restrict technicians to their own tasks
+        String userRole = extractUserRole(authentication);
+        if ("TECHNICIAN".equals(userRole)) {
+            Long technicianId = extractTechnicianId(authentication);
+            TaskResponse task = taskService.getTaskById(taskId);
+            if (!technicianId.equals(task.getAssignedTechnicianId())) {
+                return ResponseEntity.status(403).body(ApiResponse.error("Access denied to this task", 403));
+            }
+        }
+        String bearer = httpRequest.getHeader("Authorization");
+        List<TaskSparePartUsageResponse> usages = taskSparePartService.getTaskSpareParts(taskId, bearer);
+        return ResponseEntity.ok(ApiResponse.success(usages, "Task spare parts retrieved successfully"));
+    }
+
+    /**
+     * Export a spare part for a task (Technician)
+     */
+    @PostMapping("/{taskId}/spare-parts/export")
+    @PreAuthorize("hasAuthority('TECHNICIAN')")
+    @Operation(summary = "Export spare part for task", description = "Deduct inventory and record usage")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public ResponseEntity<ApiResponse<TaskSparePartUsageResponse>> exportSparePart(
+            @PathVariable Long taskId,
+            @Valid @RequestBody ExportTaskSparePartRequest request,
+            Authentication authentication,
+            HttpServletRequest httpRequest) {
+        Long technicianId = extractTechnicianId(authentication);
+        TaskResponse task = taskService.getTaskById(taskId);
+        if (!technicianId.equals(task.getAssignedTechnicianId())) {
+            return ResponseEntity.status(403).body(ApiResponse.error("Access denied to this task", 403));
+        }
+        // Ensure path variable and body taskId align
+        request.setTaskId(taskId);
+
+        String bearer = httpRequest.getHeader("Authorization");
+        TaskSparePartUsageResponse usage = taskSparePartService.exportSparePart(request, authentication.getName(), bearer);
+        return ResponseEntity.ok(ApiResponse.success(usage, "Spare part exported successfully"));
     }
 
     /**
