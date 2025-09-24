@@ -1140,9 +1140,13 @@ public class ContractService {
                         LinkDevicesRequest.DeviceInfo deviceInfo = new LinkDevicesRequest.DeviceInfo();
                         deviceInfo.setDeviceId(detail.getDeviceId());
                         deviceInfo.setQuantity(detail.getQuantity());
-                        deviceInfo.setWarrantyMonths(detail.getWarrantyMonths());
-                        log.debug("Adding device to link: deviceId={}, quantity={}, warrantyMonths={}", 
-                                detail.getDeviceId(), detail.getQuantity(), detail.getWarrantyMonths());
+                        // Prefer item-level warranty; fallback to contract-level warranty period if item-level is null
+                        Integer effectiveWarrantyMonths = detail.getWarrantyMonths() != null
+                                ? detail.getWarrantyMonths()
+                                : contract.getWarrantyPeriodMonths();
+                        deviceInfo.setWarrantyMonths(effectiveWarrantyMonths);
+                        log.debug("Adding device to link: deviceId={}, quantity={}, warrantyMonths={} (effective)",
+                                detail.getDeviceId(), detail.getQuantity(), effectiveWarrantyMonths);
                         return deviceInfo;
                     })
                     .collect(Collectors.toList());

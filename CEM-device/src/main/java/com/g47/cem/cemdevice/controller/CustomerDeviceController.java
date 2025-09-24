@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,7 +51,7 @@ public class CustomerDeviceController {
     @Operation(summary = "List customer devices by customerId (staff)")
     public ResponseEntity<ApiResponse<Page<CustomerDeviceResponse>>> listCustomerDevicesForStaff(
             @RequestParam Long customerId,
-            @PageableDefault(size = 50) Pageable pageable) {
+            @PageableDefault(size = 50, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<CustomerDeviceResponse> page = customerDeviceService.getCustomerDevicesForStaff(customerId, pageable);
         return ResponseEntity.ok(ApiResponse.success(page));
     }
@@ -66,7 +67,7 @@ public class CustomerDeviceController {
             @Parameter(description = "Device status filter") @RequestParam(required = false) CustomerDeviceStatus status,
             @Parameter(description = "Filter by expired warranty") @RequestParam(required = false) Boolean warrantyExpired,
             @Parameter(description = "Filter by contract ID") @RequestParam(required = false) Long contractId,
-            @PageableDefault(size = 20) Pageable pageable,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
             Principal principal,
             HttpServletRequest request) {
         

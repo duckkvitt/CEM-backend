@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,23 +46,33 @@ public class CustomerDeviceService {
         log.debug("Fetching purchased devices for customer: {} with filters - keyword: {}, status: {}, warrantyExpired: {}", 
                 customerId, keyword, status, warrantyExpired);
         
+        // Enforce default sorting by newest first when client does not specify a sort
+        Pageable effectivePageable = pageable;
+        if (effectivePageable == null || effectivePageable.getSort() == null || effectivePageable.getSort().isUnsorted()) {
+            effectivePageable = PageRequest.of(
+                    pageable != null ? pageable.getPageNumber() : 0,
+                    pageable != null ? pageable.getPageSize() : 20,
+                    Sort.by(Sort.Direction.DESC, "createdAt")
+            );
+        }
+
         Page<CustomerDevice> customerDevices;
         
         if (contractId != null) {
-            customerDevices = customerDeviceRepository.findByCustomerIdAndContractId(customerId, contractId, pageable);
+            customerDevices = customerDeviceRepository.findByCustomerIdAndContractId(customerId, contractId, effectivePageable);
         } else if (keyword != null && !keyword.trim().isEmpty()) {
             // Search by device name, model, or serial number
             customerDevices = customerDeviceRepository.findByCustomerIdAndDeviceInfoContaining(
-                    customerId, keyword.trim(), pageable);
+                    customerId, keyword.trim(), effectivePageable);
         } else if (status != null) {
             // Filter by status
-            customerDevices = customerDeviceRepository.findByCustomerIdAndStatus(customerId, status, pageable);
+            customerDevices = customerDeviceRepository.findByCustomerIdAndStatus(customerId, status, effectivePageable);
         } else if (warrantyExpired != null && warrantyExpired) {
             // Filter by expired warranty
-            customerDevices = customerDeviceRepository.findByCustomerIdAndWarrantyExpired(customerId, LocalDate.now(), pageable);
+            customerDevices = customerDeviceRepository.findByCustomerIdAndWarrantyExpired(customerId, LocalDate.now(), effectivePageable);
         } else {
             // Get all customer devices
-            customerDevices = customerDeviceRepository.findByCustomerId(customerId, pageable);
+            customerDevices = customerDeviceRepository.findByCustomerId(customerId, effectivePageable);
         }
         
         return customerDevices.map(this::mapToCustomerDeviceResponse);
@@ -71,7 +83,15 @@ public class CustomerDeviceService {
      */
     @Transactional(readOnly = true)
     public Page<CustomerDeviceResponse> getCustomerDevicesForStaff(Long customerId, Pageable pageable) {
-        Page<CustomerDevice> customerDevices = customerDeviceRepository.findByCustomerId(customerId, pageable);
+        Pageable effectivePageable = pageable;
+        if (effectivePageable == null || effectivePageable.getSort() == null || effectivePageable.getSort().isUnsorted()) {
+            effectivePageable = PageRequest.of(
+                    pageable != null ? pageable.getPageNumber() : 0,
+                    pageable != null ? pageable.getPageSize() : 50,
+                    Sort.by(Sort.Direction.DESC, "createdAt")
+            );
+        }
+        Page<CustomerDevice> customerDevices = customerDeviceRepository.findByCustomerId(customerId, effectivePageable);
         return customerDevices.map(this::mapToCustomerDeviceResponse);
     }
     
