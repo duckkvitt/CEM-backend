@@ -1278,7 +1278,7 @@ public class ContractService {
         boolean isManagerOrStaff = authorities.stream()
                 .anyMatch(a -> {
                     String role = a.getAuthority();
-                    return role.equals("MANAGER") || role.equals("STAFF") || role.equals("SUPPORT_TEAM") || role.equals("TECH_LEAD") || role.equals("TECHNICIAN");
+                    return role.equals("MANAGER") || role.equals("STAFF") || role.equals("SUPPORT_TEAM") || role.equals("LEAD_TECH") || role.equals("TECHNICIAN");
                 });
 
         if (isManagerOrStaff) {
@@ -1317,7 +1317,7 @@ public class ContractService {
         boolean isManagerOrStaff = authorities.stream()
                 .anyMatch(a -> {
                     String role = a.getAuthority();
-                    return role.equals("MANAGER") || role.equals("STAFF") || role.equals("SUPPORT_TEAM") || role.equals("TECH_LEAD") || role.equals("TECHNICIAN");
+                    return role.equals("MANAGER") || role.equals("STAFF") || role.equals("SUPPORT_TEAM") || role.equals("LEAD_TECH") || role.equals("TECHNICIAN");
                 });
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());

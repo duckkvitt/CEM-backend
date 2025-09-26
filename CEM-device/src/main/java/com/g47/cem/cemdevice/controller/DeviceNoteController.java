@@ -72,7 +72,7 @@ public class DeviceNoteController {
      * Get device note by ID (Staff can access all notes, customers can only access notes for their own devices)
      */
     @GetMapping("/{noteId}")
-    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER', 'SUPPORT_TEAM', 'LEAD_TECH', 'TECHNICIAN', 'CUSTOMER')")
     @Operation(summary = "Get device note by ID", description = "Retrieves a specific device note. Staff can access all notes, customers can only access notes for their own devices.")
     public ResponseEntity<ApiResponse<DeviceNoteResponse>> getDeviceNoteById(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
@@ -86,7 +86,7 @@ public class DeviceNoteController {
                 .anyMatch(a -> {
                     String role = a.getAuthority();
                     return role.equals("STAFF") || role.equals("MANAGER") || 
-                           role.equals("SUPPORT_TEAM") || role.equals("TECH_LEAD") || 
+                           role.equals("SUPPORT_TEAM") || role.equals("LEAD_TECH") || 
                            role.equals("TECHNICIAN");
                 });
         
@@ -122,7 +122,7 @@ public class DeviceNoteController {
      * Get all notes for a device (Staff can access all notes, customers can only access notes for their own devices)
      */
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER', 'SUPPORT_TEAM', 'LEAD_TECH', 'TECHNICIAN', 'CUSTOMER')")
     @Operation(summary = "Get device notes", description = "Retrieves all notes for a device. Staff can access all notes, customers can only access notes for their own devices.")
     public ResponseEntity<ApiResponse<Object>> getDeviceNotes(
             @Parameter(description = "Device ID") @PathVariable Long deviceId,
@@ -138,7 +138,7 @@ public class DeviceNoteController {
                 .anyMatch(a -> {
                     String role = a.getAuthority();
                     return role.equals("STAFF") || role.equals("MANAGER") || 
-                           role.equals("SUPPORT_TEAM") || role.equals("TECH_LEAD") || 
+                           role.equals("SUPPORT_TEAM") || role.equals("LEAD_TECH") || 
                            role.equals("TECHNICIAN");
                 });
         

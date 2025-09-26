@@ -94,8 +94,8 @@ public class ContractController {
     }
 
     @GetMapping(value = {"", "/"})
-    // Allow additional internal roles such as SUPPORT_TEAM, TECH_LEAD and TECHNICIAN to access the contract list as read-only
-    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN')")
+    // Allow additional internal roles such as SUPPORT_TEAM, LEAD_TECH and TECHNICIAN to access the contract list as read-only
+    @PreAuthorize("hasAnyAuthority('MANAGER', 'STAFF', 'CUSTOMER', 'SUPPORT_TEAM', 'LEAD_TECH', 'TECHNICIAN')")
     public ResponseEntity<ApiResponse<Page<ContractResponseDto>>> getContractsForUser(
             Authentication authentication, 
             HttpServletRequest request,

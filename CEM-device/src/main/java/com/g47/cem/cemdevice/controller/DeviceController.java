@@ -73,7 +73,7 @@ public class DeviceController {
      * Get device by ID
      */
     @GetMapping("/{id}")
-    @Secured({"STAFF", "MANAGER", "SUPPORT_TEAM", "TECH_LEAD", "TECHNICIAN", "CUSTOMER"})
+    @Secured({"STAFF", "MANAGER", "SUPPORT_TEAM", "LEAD_TECH", "TECHNICIAN", "CUSTOMER"})
     @Operation(summary = "Get device by ID", description = "Retrieves device details by ID")
     public ResponseEntity<ApiResponse<DeviceResponse>> getDeviceById(
             @Parameter(description = "Device ID") @PathVariable Long id) {
@@ -107,7 +107,7 @@ public class DeviceController {
      * Get all devices with pagination and filtering
      */
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER', 'SUPPORT_TEAM', 'TECH_LEAD', 'TECHNICIAN')")
+    @PreAuthorize("hasAnyAuthority('STAFF', 'MANAGER', 'SUPPORT_TEAM', 'LEAD_TECH', 'TECHNICIAN')")
     @Operation(summary = "Get all devices", description = "Retrieves paginated list of devices with optional filtering")
     public ResponseEntity<ApiResponse<Page<DeviceResponse>>> getAllDevices(
             @Parameter(description = "Search keyword (matches name, model, serial number)") @RequestParam(required = false) String keyword,
